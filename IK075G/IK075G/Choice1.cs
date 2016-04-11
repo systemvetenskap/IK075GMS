@@ -10,11 +10,18 @@ using System.Windows.Forms;
 
 namespace IK075G
 {
-    public partial class Form1 : Form
+    public partial class Choice1 : Form
     {
-        public Form1()
+        public Choice1()
         {
             InitializeComponent();
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            MainMenu huvudmeny = new MainMenu();
+            huvudmeny.ShowDialog();
         }
     }
 }
