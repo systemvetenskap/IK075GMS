@@ -59,6 +59,12 @@
     <Compile Include="Choice2.Designer.cs">
       <DependentUpon>Choice2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Choice3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Choice3.Designer.cs">
+      <DependentUpon>Choice3.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +78,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Choice2.resx">
       <DependentUpon>Choice2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Choice3.resx">
+      <DependentUpon>Choice3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
