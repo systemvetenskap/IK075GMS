@@ -32,6 +32,7 @@
             this.btnChoice2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
+            this.btnChoice3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,12 +71,23 @@
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
+            // btnChoice3
+            // 
+            this.btnChoice3.Location = new System.Drawing.Point(35, 191);
+            this.btnChoice3.Name = "btnChoice3";
+            this.btnChoice3.Size = new System.Drawing.Size(195, 87);
+            this.btnChoice3.TabIndex = 3;
+            this.btnChoice3.Text = "Uppföljning av mätvärden";
+            this.btnChoice3.UseVisualStyleBackColor = true;
+            this.btnChoice3.Click += new System.EventHandler(this.btnChoice3_Click);
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(540, 232);
+            this.ClientSize = new System.Drawing.Size(540, 320);
+            this.Controls.Add(this.btnChoice3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnChoice2);
             this.Controls.Add(this.btnChoice1);
@@ -96,6 +108,7 @@
         private System.Windows.Forms.Button btnChoice2;
         private System.Windows.Forms.Label label1;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
+        private System.Windows.Forms.Button btnChoice3;
     }
 }
 

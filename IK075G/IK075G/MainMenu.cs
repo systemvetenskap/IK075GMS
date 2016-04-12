@@ -31,5 +31,12 @@ namespace IK075G
             Choice2 val2 = new Choice2();
             val2.ShowDialog();
         }
+
+        private void btnChoice3_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Choice3 val3 = new Choice3();
+            val3.ShowDialog();
+        }
     }
 }

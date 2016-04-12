@@ -16,5 +16,19 @@ namespace IK075G
         {
             InitializeComponent();
         }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            //Tillbaks till huvudmenyn
+            this.Hide();
+            MainMenu huvudmeny = new MainMenu();
+            huvudmeny.ShowDialog();
+        }
+
+        private void btnShowUpdateDiagram_Click(object sender, EventArgs e)
+        {
+            //Knapp för att updatera/visa diagrammet
+            chart1.Show();
+        }
     }
 }
