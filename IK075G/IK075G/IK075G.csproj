@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Npgsql, Version=2.2.4.3, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Olika saker\Google Drive\MIUN\3.2015VT\IK102G Datamodellering och databaser\Uppgift 8\Cirkus\packages\Npgsql.3.0.3\lib\net45\Npgsql.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -47,23 +51,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Choice1.cs">
+    <Compile Include="OperationMethod.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Choice1.Designer.cs">
-      <DependentUpon>Choice1.cs</DependentUpon>
+    <Compile Include="OperationMethod.Designer.cs">
+      <DependentUpon>OperationMethod.cs</DependentUpon>
     </Compile>
-    <Compile Include="Choice2.cs">
+    <Compile Include="ResponseTime.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Choice2.Designer.cs">
-      <DependentUpon>Choice2.cs</DependentUpon>
+    <Compile Include="ResponseTime.Designer.cs">
+      <DependentUpon>ResponseTime.cs</DependentUpon>
     </Compile>
-    <Compile Include="Choice3.cs">
+    <Compile Include="MonitoringMeasurements.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Choice3.Designer.cs">
-      <DependentUpon>Choice3.cs</DependentUpon>
+    <Compile Include="MonitoringMeasurements.Designer.cs">
+      <DependentUpon>MonitoringMeasurements.cs</DependentUpon>
     </Compile>
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
@@ -73,14 +77,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Choice1.resx">
-      <DependentUpon>Choice1.cs</DependentUpon>
+    <EmbeddedResource Include="OperationMethod.resx">
+      <DependentUpon>OperationMethod.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Choice2.resx">
-      <DependentUpon>Choice2.cs</DependentUpon>
+    <EmbeddedResource Include="ResponseTime.resx">
+      <DependentUpon>ResponseTime.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Choice3.resx">
-      <DependentUpon>Choice3.cs</DependentUpon>
+    <EmbeddedResource Include="MonitoringMeasurements.resx">
+      <DependentUpon>MonitoringMeasurements.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>

@@ -28,14 +28,14 @@ namespace IK075G
         private void btnChoice2_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Choice2 val2 = new Choice2();
+            ResponseTime val2 = new ResponseTime();
             val2.ShowDialog();
         }
 
         private void btnChoice3_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Choice3 val3 = new Choice3();
+            MonitoringMeasurements val3 = new MonitoringMeasurements();
             val3.ShowDialog();
         }
     }

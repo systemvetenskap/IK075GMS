@@ -1,6 +1,6 @@
 ﻿namespace IK075G
 {
-    partial class Choice2
+    partial class ResponseTime
     {
         /// <summary>
         /// Required designer variable.
