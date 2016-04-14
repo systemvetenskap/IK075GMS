@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace IK075G
 {
-    public partial class Choice2 : Form
+    public partial class ResponseTime : Form
     {
-        public Choice2()
+        public ResponseTime()
         {
             InitializeComponent();
         }
