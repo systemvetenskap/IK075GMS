@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label8 = new System.Windows.Forms.Label();
             this.btnBack = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -170,7 +170,7 @@
             this.dateTimePickerDayFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePickerDayFrom.Location = new System.Drawing.Point(286, 68);
             this.dateTimePickerDayFrom.Name = "dateTimePickerDayFrom";
-            this.dateTimePickerDayFrom.Size = new System.Drawing.Size(164, 22);
+            this.dateTimePickerDayFrom.Size = new System.Drawing.Size(180, 22);
             this.dateTimePickerDayFrom.TabIndex = 42;
             // 
             // dateTimePickerDayTo
@@ -178,7 +178,7 @@
             this.dateTimePickerDayTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePickerDayTo.Location = new System.Drawing.Point(477, 68);
             this.dateTimePickerDayTo.Name = "dateTimePickerDayTo";
-            this.dateTimePickerDayTo.Size = new System.Drawing.Size(164, 22);
+            this.dateTimePickerDayTo.Size = new System.Drawing.Size(180, 22);
             this.dateTimePickerDayTo.TabIndex = 43;
             // 
             // comboBoxTimeInterval
@@ -195,29 +195,31 @@
             // 
             this.comboBoxYearFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxYearFrom.FormattingEnabled = true;
-            this.comboBoxYearFrom.Location = new System.Drawing.Point(286, 68);
+            this.comboBoxYearFrom.Location = new System.Drawing.Point(286, 89);
             this.comboBoxYearFrom.Name = "comboBoxYearFrom";
-            this.comboBoxYearFrom.Size = new System.Drawing.Size(70, 24);
+            this.comboBoxYearFrom.Size = new System.Drawing.Size(69, 24);
             this.comboBoxYearFrom.TabIndex = 46;
             this.comboBoxYearFrom.Text = "Startår";
+            this.comboBoxYearFrom.SelectedIndexChanged += new System.EventHandler(this.comboBoxYearFrom_SelectedIndexChanged);
             // 
             // comboBoxWeekFrom
             // 
             this.comboBoxWeekFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxWeekFrom.FormattingEnabled = true;
-            this.comboBoxWeekFrom.Location = new System.Drawing.Point(355, 68);
+            this.comboBoxWeekFrom.Location = new System.Drawing.Point(361, 89);
             this.comboBoxWeekFrom.Name = "comboBoxWeekFrom";
-            this.comboBoxWeekFrom.Size = new System.Drawing.Size(95, 24);
+            this.comboBoxWeekFrom.Size = new System.Drawing.Size(105, 24);
             this.comboBoxWeekFrom.TabIndex = 47;
             this.comboBoxWeekFrom.Text = "Startvecka";
+            this.comboBoxWeekFrom.SelectedIndexChanged += new System.EventHandler(this.comboBoxWeekFrom_SelectedIndexChanged);
             // 
             // comboBoxWeekTo
             // 
             this.comboBoxWeekTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxWeekTo.FormattingEnabled = true;
-            this.comboBoxWeekTo.Location = new System.Drawing.Point(546, 68);
+            this.comboBoxWeekTo.Location = new System.Drawing.Point(552, 89);
             this.comboBoxWeekTo.Name = "comboBoxWeekTo";
-            this.comboBoxWeekTo.Size = new System.Drawing.Size(95, 24);
+            this.comboBoxWeekTo.Size = new System.Drawing.Size(105, 24);
             this.comboBoxWeekTo.TabIndex = 48;
             this.comboBoxWeekTo.Text = "Slutvecka";
             // 
@@ -225,20 +227,21 @@
             // 
             this.comboBoxYearTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxYearTo.FormattingEnabled = true;
-            this.comboBoxYearTo.Location = new System.Drawing.Point(477, 68);
+            this.comboBoxYearTo.Location = new System.Drawing.Point(477, 89);
             this.comboBoxYearTo.Name = "comboBoxYearTo";
-            this.comboBoxYearTo.Size = new System.Drawing.Size(70, 24);
+            this.comboBoxYearTo.Size = new System.Drawing.Size(69, 24);
             this.comboBoxYearTo.TabIndex = 49;
             this.comboBoxYearTo.Text = "Slutår";
+            this.comboBoxYearTo.SelectedIndexChanged += new System.EventHandler(this.comboBoxYearTo_SelectedIndexChanged);
             // 
             // dateTimePickerMonthFrom
             // 
             this.dateTimePickerMonthFrom.CustomFormat = "MMMM yyyy";
             this.dateTimePickerMonthFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePickerMonthFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerMonthFrom.Location = new System.Drawing.Point(286, 68);
+            this.dateTimePickerMonthFrom.Location = new System.Drawing.Point(286, 122);
             this.dateTimePickerMonthFrom.Name = "dateTimePickerMonthFrom";
-            this.dateTimePickerMonthFrom.Size = new System.Drawing.Size(164, 22);
+            this.dateTimePickerMonthFrom.Size = new System.Drawing.Size(180, 22);
             this.dateTimePickerMonthFrom.TabIndex = 58;
             this.dateTimePickerMonthFrom.Value = new System.DateTime(2016, 4, 1, 0, 0, 0, 0);
             // 
@@ -247,9 +250,9 @@
             this.dateTimePickerMonthTo.CustomFormat = "MMMM yyyy";
             this.dateTimePickerMonthTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePickerMonthTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerMonthTo.Location = new System.Drawing.Point(477, 68);
+            this.dateTimePickerMonthTo.Location = new System.Drawing.Point(477, 122);
             this.dateTimePickerMonthTo.Name = "dateTimePickerMonthTo";
-            this.dateTimePickerMonthTo.Size = new System.Drawing.Size(164, 22);
+            this.dateTimePickerMonthTo.Size = new System.Drawing.Size(180, 22);
             this.dateTimePickerMonthTo.TabIndex = 59;
             this.dateTimePickerMonthTo.Value = new System.DateTime(2016, 4, 1, 0, 0, 0, 0);
             // 
@@ -266,16 +269,16 @@
             // 
             // chart1
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart1.Legends.Add(legend4);
+            chartArea6.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            this.chart1.Legends.Add(legend6);
             this.chart1.Location = new System.Drawing.Point(12, 150);
             this.chart1.Name = "chart1";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chart1.Series.Add(series4);
+            series6.ChartArea = "ChartArea1";
+            series6.Legend = "Legend1";
+            series6.Name = "Series1";
+            this.chart1.Series.Add(series6);
             this.chart1.Size = new System.Drawing.Size(1160, 386);
             this.chart1.TabIndex = 61;
             this.chart1.Text = "chart1";

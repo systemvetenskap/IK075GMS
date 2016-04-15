@@ -21,7 +21,7 @@ namespace IK075G
         {
             InitializeComponent();
         }
-        public void LoadCustomerGroups()
+        public void LoadCustomerGroups()//Metod för att LADDA kundgrupper i comboboxen
         {
             string sql = "SELECT cugr FROM imp_cugr_tab";
             conn.Open();
@@ -33,8 +33,8 @@ namespace IK075G
                 comboBoxCustomerGroup.Items.Add(cugr);
             }
             conn.Close();
-        }//Metod för att LADDA kundgrupper i comboboxen
-        public void LoadAnalysis()
+        }
+        public void LoadAnalysis()//Metod för att LADDA analyser i comboboxen
         {
             string sql = "SELECT DISTINCT anco FROM imp_a_ana_tab ORDER BY anco";
             conn.Open();
@@ -46,8 +46,8 @@ namespace IK075G
                 comboBoxAnalysis.Items.Add(anco);
             }
             conn.Close();
-        }//Metod för att LADDA analyser i comboboxen
-        public void LoadPriorityGroup()
+        }
+        public void LoadPriorityGroup()//Metod för att LADDA prioritetsgrupper i comboboxen
         {
             string sql = "SELECT DISTINCT prio FROM imp_a_ana_tab ORDER BY prio";
             conn.Open();
@@ -59,14 +59,69 @@ namespace IK075G
                 comboBoxPriorityGroup.Items.Add(prio);
             }
             conn.Close();
-        }//Metod för att LADDA prioritetsgrupper i comboboxen
-        public void LoadTimeInterval()
+        }
+        public void LoadTimeInterval()//Metod för att FYLLA comboboxen med tidsintervall
         {
             comboBoxTimeInterval.Items.Add("Dagsvis");
             comboBoxTimeInterval.Items.Add("Veckovis");
             comboBoxTimeInterval.Items.Add("Månadsvis");
-        }//Metod för att FYLLA comboboxen med tidsintervall
-        public void DisableDatePick()
+        }
+        public void LoadWeekNumbers()//Metod för att FYLLA comboboxarna med veckonummer
+        {
+            comboBoxYearFrom.Enabled = true;
+            comboBoxWeekFrom.Enabled = false;
+            comboBoxYearTo.Enabled = false;
+            comboBoxWeekTo.Enabled = false;
+
+            if (comboBoxYearFrom.Text!="Startår")
+            {
+                comboBoxWeekFrom.Enabled = true;
+                if (comboBoxWeekFrom.Text!="Startvecka")
+                {
+                    comboBoxYearTo.Enabled = true;
+                    if (comboBoxYearTo.Text!="Slutår")
+                    {
+                        comboBoxWeekTo.Enabled = true;
+                    }
+                }
+            }     
+
+                for (int i = 1; i <= 52; i++)
+                {
+                comboBoxWeekFrom.Items.Add(i.ToString());
+                comboBoxWeekTo.Items.Add(i.ToString());
+                }
+            
+        }
+        public void LoadYears()// Metod för att LADDA in årtal i comboboxar -från och till
+        {
+            //Från år
+            string sql1 = "SELECT DISTINCT substr(altm,1,2) altm FROM imp_a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) >0 ORDER BY altm";
+            conn.Open();
+            cmd = new NpgsqlCommand(sql1, conn);
+            NpgsqlDataReader dr1 = cmd.ExecuteReader();
+            while (dr1.Read())
+            {
+                string yearOrderedbyLowest = dr1["altm"].ToString();
+                comboBoxYearFrom.Items.Add(yearOrderedbyLowest);
+            }
+            conn.Close();
+
+            //Till år
+            string sql2 = "SELECT DISTINCT substr(altm,1,2) altm FROM imp_a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) >0 ORDER BY altm";
+            conn.Open();
+            cmd = new NpgsqlCommand(sql2, conn);
+            NpgsqlDataReader dr2 = cmd.ExecuteReader();
+            while (dr2.Read())
+            {
+                string yearOrderedbyLowest = dr2["altm"].ToString();
+                comboBoxYearTo.Items.Add(yearOrderedbyLowest);
+            }
+            conn.Close();
+
+
+        }
+        public void DisableDatePick()//Metod för att dölja tids valen
         {
             //Dagsvis
             dateTimePickerDayFrom.Visible = false;
@@ -91,7 +146,6 @@ namespace IK075G
         }
         private void btnBack_Click(object sender, EventArgs e)
         {
-            //Tillbaks till huvudmenyn
             this.Hide();
             MainMenu huvudmeny = new MainMenu();
             huvudmeny.ShowDialog();
@@ -158,6 +212,8 @@ namespace IK075G
                     dateTimePickerMonthTo.Visible = false;
                     dateTimePickerDayFrom.Visible = false;
                     dateTimePickerDayTo.Visible = false;
+                    LoadWeekNumbers();
+                    LoadYears();
                 }
                 else if (comboBoxTimeInterval.Text == "Månadsvis")
                 {
@@ -172,6 +228,21 @@ namespace IK075G
                 }
             }
 
+        }
+
+        private void comboBoxYearFrom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadWeekNumbers();
+        }
+
+        private void comboBoxYearTo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadWeekNumbers();
+        }
+
+        private void comboBoxWeekFrom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadWeekNumbers();
         }
     }
 }
