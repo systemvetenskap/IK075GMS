@@ -138,8 +138,6 @@ namespace IK075G
         }
         public List<MonitorByWeek> getWeekValues(string Analysis, string yearFrom, string yearTo, string weekFrom, string weekTo, string prio, string customerGroup)
         {
-
-                    //private List<Kund> kundregister = new List<Kund> { }
             List<MonitorByWeek> newListMember = new List<MonitorByWeek>();
 
             string sql1 = "SELECT to_char(to_date(substr(altm,1,6), 'YYMMDD'),'YYYY') year, to_char(to_date(substr(altm,1,6), 'YYMMDD'),'WW') week,";
