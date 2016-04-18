@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Npgsql;
 using NpgsqlTypes;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace IK075G
 {
@@ -135,6 +136,58 @@ namespace IK075G
             dateTimePickerMonthFrom.Visible = false;
             dateTimePickerMonthTo.Visible = false;
         }
+        public List<MonitorByWeek> getWeekValues(string Analysis, string yearFrom, string yearTo, string weekFrom, string weekTo, string prio, string customerGroup)
+        {
+
+                    //private List<Kund> kundregister = new List<Kund> { }
+            List<MonitorByWeek> newListMember = new List<MonitorByWeek>();
+
+            string sql1 = "SELECT to_char(to_date(substr(altm,1,6), 'YYMMDD'),'YYYY') year, to_char(to_date(substr(altm,1,6), 'YYMMDD'),'WW') week,";
+            sql1 = sql1 + "prio, anco,min(cast(replace(rawr, ',', '.') AS numeric)) minrawr,max(cast(replace(rawr, ',', '.') AS numeric)) maxrawr,";
+            sql1 = sql1 + "avg(cast(replace(rawr, ',', '.') AS numeric)) medelrawr";
+            sql1 = sql1 + "FROM imp_a_ana_tab";
+            sql1 = sql1 + " WHERE 1 = 1";
+            sql1 = sql1 + "AND anco = :newFirstanco";
+            sql1 = sql1 + "AND substr(altm,1, 2) BETWEEN :yearFrom AND :yearTo";
+            sql1 = sql1 + "AND to_char(to_date(substr(altm, 1, 6), 'YYMMDD'), 'WW') BETWEEN :weekFrom AND :weekTo";
+            sql1 = sql1 + "AND length(altm) > 0";
+            sql1 = sql1 + "GROUP BY to_char(to_date(substr(altm, 1, 6), 'YYMMDD'), 'YYYY'), to_char(to_date(substr(altm, 1, 6), 'YYMMDD'), 'WW'), prio, anco";
+            sql1 = sql1 + "ORDER BY to_char(to_date(substr(altm, 1, 6), 'YYMMDD'), 'YYYY'), to_char(to_date(substr(altm, 1, 6), 'YYMMDD'), 'WW'), prio, anco; ";
+
+            cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
+            cmd.Parameters["newFirstanco"].Value = Analysis;
+            cmd.Parameters.Add(new NpgsqlParameter("newyearFrom", NpgsqlDbType.Varchar));
+            cmd.Parameters["newyearFrom"].Value = yearFrom;
+            cmd.Parameters.Add(new NpgsqlParameter("newyearTo", NpgsqlDbType.Varchar));
+            cmd.Parameters["newyearTo"].Value = yearTo;
+            cmd.Parameters.Add(new NpgsqlParameter("newweekFrom", NpgsqlDbType.Varchar));
+            cmd.Parameters["newweekFrom"].Value = weekFrom;
+            cmd.Parameters.Add(new NpgsqlParameter("newweekTo", NpgsqlDbType.Varchar));
+            cmd.Parameters["newweekTo"].Value = weekTo;
+            cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
+            cmd.Parameters["newPrio"].Value = prio;
+            cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
+            cmd.Parameters["newcustomerGroup"].Value = customerGroup;
+
+            conn.Open();
+            cmd = new NpgsqlCommand(sql1, conn);
+            NpgsqlDataReader dr1 = cmd.ExecuteReader();
+            while (dr1.Read())
+            {
+                MonitorByWeek newMonitorByWeek = new MonitorByWeek();
+                newMonitorByWeek.year = dr1["year"].ToString();
+                newMonitorByWeek.week = dr1["week"].ToString();
+                newMonitorByWeek.prio = dr1["prio"].ToString();
+                newMonitorByWeek.analysis = dr1["analysis"].ToString();
+                newMonitorByWeek.minrawr = dr1["minrawr"].ToString();
+                newMonitorByWeek.maxrawr = dr1["maxrawr"].ToString();
+                newMonitorByWeek.medelrawr = dr1["medelrawr"].ToString();
+
+                newListMember.Add(newMonitorByWeek);
+            }
+            conn.Close();
+            return newListMember;
+        }
         private void MonitoringMeasurements_Load(object sender, EventArgs e)
         {
             DisableDatePick();
@@ -176,13 +229,33 @@ namespace IK075G
                 string monthfrom = dateTimePickerMonthFrom.Value.ToShortDateString();
                 string monthto = dateTimePickerMonthTo.Value.ToShortDateString();
             }
-            
+            // titel ovanför diagramet  
+            chart1.Titles.Add("Enhet");
+
+            chart1.Series["Series1"].ChartType= SeriesChartType.Line;
+
+            // se legend  
+            chart1.Series["Series1"].Name = "Analys1";
+
+            // Detta är temporört, tills man inte hämtar veckor från db... 
+            for (int i = 0; i <= 10; i++)
+            {
+                DataPoint newDataPoint = new DataPoint();
+                newDataPoint.AxisLabel = i.ToString();
+
+                //här sätts ett värde från databasen
+                newDataPoint.SetValueY(i);
+                // här skall veckan anges
+                chart1.Series["Analys1"].Points.Add(newDataPoint);
+
+            }
+            chart1.Show();
+
         }
         private void comboBoxCustomerGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
-
         private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxTimeInterval.SelectedIndex<0)
@@ -229,20 +302,25 @@ namespace IK075G
             }
 
         }
-
         private void comboBoxYearFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadWeekNumbers();
         }
-
         private void comboBoxYearTo_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadWeekNumbers();
         }
-
         private void comboBoxWeekFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadWeekNumbers();
+        }
+        private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void comboBoxPriorityGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
