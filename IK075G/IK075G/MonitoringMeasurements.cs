@@ -24,7 +24,7 @@ namespace IK075G
         }
         public void LoadCustomerGroups()//Metod för att LADDA kundgrupper i comboboxen
         {
-            string sql = "SELECT cugr FROM imp_cugr_tab";
+            string sql = "SELECT cugr FROM cugr_tab";
             conn.Open();
             cmd = new NpgsqlCommand(sql, conn);
             NpgsqlDataReader dr = cmd.ExecuteReader();
@@ -37,7 +37,7 @@ namespace IK075G
         }
         public void LoadAnalysis()//Metod för att LADDA analyser i comboboxen
         {
-            string sql = "SELECT DISTINCT anco FROM imp_a_ana_tab ORDER BY anco";
+            string sql = "SELECT DISTINCT anco FROM a_ana_tab ORDER BY anco";
             conn.Open();
             cmd = new NpgsqlCommand(sql, conn);
             NpgsqlDataReader dr = cmd.ExecuteReader();
@@ -50,7 +50,7 @@ namespace IK075G
         }
         public void LoadPriorityGroup()//Metod för att LADDA prioritetsgrupper i comboboxen
         {
-            string sql = "SELECT DISTINCT prio FROM imp_a_ana_tab ORDER BY prio";
+            string sql = "SELECT DISTINCT prio FROM a_ana_tab ORDER BY prio";
             conn.Open();
             cmd = new NpgsqlCommand(sql, conn);
             NpgsqlDataReader dr = cmd.ExecuteReader();
@@ -97,7 +97,7 @@ namespace IK075G
         public void LoadYears()// Metod för att LADDA in årtal i comboboxar -från och till
         {
             //Från år
-            string sql1 = "SELECT DISTINCT substr(altm,1,2) altm FROM imp_a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) >0 ORDER BY altm";
+            string sql1 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) >0 ORDER BY altm";
             conn.Open();
             cmd = new NpgsqlCommand(sql1, conn);
             NpgsqlDataReader dr1 = cmd.ExecuteReader();
@@ -107,9 +107,8 @@ namespace IK075G
                 comboBoxYearFrom.Items.Add(yearOrderedbyLowest);
             }
             conn.Close();
-
             //Till år
-            string sql2 = "SELECT DISTINCT substr(altm,1,2) altm FROM imp_a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) >0 ORDER BY altm";
+            string sql2 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) >0 ORDER BY altm";
             conn.Open();
             cmd = new NpgsqlCommand(sql2, conn);
             NpgsqlDataReader dr2 = cmd.ExecuteReader();
@@ -119,8 +118,6 @@ namespace IK075G
                 comboBoxYearTo.Items.Add(yearOrderedbyLowest);
             }
             conn.Close();
-
-
         }
         public void DisableDatePick()//Metod för att dölja tids valen
         {
@@ -136,47 +133,62 @@ namespace IK075G
             dateTimePickerMonthFrom.Visible = false;
             dateTimePickerMonthTo.Visible = false;
         }
-        public List<MonitorByWeek> getWeekValues(string Analysis, string yearFrom, string yearTo, string weekFrom, string weekTo, string prio, string customerGroup)
+        public List<MonitorByWeek> getWeekValues(string customergroup, string analysis, string prioritygroup, 
+            string timeinterval, string yearfrom, string yearto, string weekfrom, string weekto)
         {
             List<MonitorByWeek> newListMember = new List<MonitorByWeek>();
 
-            string sql1 = "SELECT to_char(to_date(substr(altm,1,6), 'YYMMDD'),'YYYY') year, to_char(to_date(substr(altm,1,6), 'YYMMDD'),'WW') week,";
-            sql1 = sql1 + "prio, anco,min(cast(replace(rawr, ',', '.') AS numeric)) minrawr,max(cast(replace(rawr, ',', '.') AS numeric)) maxrawr,";
-            sql1 = sql1 + "avg(cast(replace(rawr, ',', '.') AS numeric)) medelrawr";
-            sql1 = sql1 + "FROM imp_a_ana_tab";
-            sql1 = sql1 + " WHERE 1 = 1";
-            sql1 = sql1 + "AND anco = :newFirstanco";
-            sql1 = sql1 + "AND substr(altm,1, 2) BETWEEN :yearFrom AND :yearTo";
-            sql1 = sql1 + "AND to_char(to_date(substr(altm, 1, 6), 'YYMMDD'), 'WW') BETWEEN :weekFrom AND :weekTo";
-            sql1 = sql1 + "AND length(altm) > 0";
-            sql1 = sql1 + "GROUP BY to_char(to_date(substr(altm, 1, 6), 'YYMMDD'), 'YYYY'), to_char(to_date(substr(altm, 1, 6), 'YYMMDD'), 'WW'), prio, anco";
-            sql1 = sql1 + "ORDER BY to_char(to_date(substr(altm, 1, 6), 'YYMMDD'), 'YYYY'), to_char(to_date(substr(altm, 1, 6), 'YYMMDD'), 'WW'), prio, anco; ";
+            string sql = string.Empty;
+            sql = sql + "SELECT  '' cugr, ";
+            sql = sql + "	anco,    ";
+            sql = sql + " 	prio, ";
+            sql = sql + "	to_char(to_timestamp(altm, 'yymmddhh24mi'),'YYYYWW') week,";
+            sql = sql + "	count(anco),		";
+            sql = sql + "	min(cast(replace(rawr, ',', '.') AS numeric)) minrawr, ";
+            sql = sql + "	max(cast(replace(rawr, ',', '.') AS numeric)) maxrawr, ";
+            sql = sql + "	avg(cast(replace(rawr, ',', '.') AS numeric)) medelrawr ";
+            sql = sql + " FROM a_ana_tab  ";
+            sql = sql + "    LEFT JOIN a_samp_tab AS a_samp_tab ON (a_samp_tab.lidn = a_ana_tab.lidn)";
+            sql = sql + " WHERE length(replace(altm,' ','')) > 0";
+            sql = sql + " AND length(replace(artm,' ','')) > 0";
+            sql = sql + " AND prio = :newPrio";
+            sql = sql + " AND anco LIKE 'VB  CAJON M1'";
+            sql = sql + " AND to_char(to_date(altm,'yymmddhh24mi'),'YY') BETWEEN '09' AND '16'";
+            sql = sql + " AND to_char(to_date(altm,'yymmddhh24mi'),'WW') BETWEEN '1' AND '52'";
+            sql = sql + " GROUP BY prio, anco, to_char(to_timestamp(altm, 'yymmddhh24mi'),'YYYYWW'), to_char(to_date(altm,'yymmddhh24mi'),'WW')";
+            sql = sql + " ORDER BY prio, anco, to_char(to_timestamp(altm, 'yymmddhh24mi'),'YYYYWW'), to_char(to_date(altm,'yymmddhh24mi'),'WW')";
 
             cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
-            cmd.Parameters["newFirstanco"].Value = Analysis;
+            cmd.Parameters["newFirstanco"].Value = analysis;
+
             cmd.Parameters.Add(new NpgsqlParameter("newyearFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearFrom"].Value = yearFrom;
+            cmd.Parameters["newyearFrom"].Value = yearfrom;
+
             cmd.Parameters.Add(new NpgsqlParameter("newyearTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearTo"].Value = yearTo;
+            cmd.Parameters["newyearTo"].Value = yearto;
+
             cmd.Parameters.Add(new NpgsqlParameter("newweekFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newweekFrom"].Value = weekFrom;
+            cmd.Parameters["newweekFrom"].Value = weekfrom;
+
             cmd.Parameters.Add(new NpgsqlParameter("newweekTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newweekTo"].Value = weekTo;
+            cmd.Parameters["newweekTo"].Value = weekto;
+
             cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
-            cmd.Parameters["newPrio"].Value = prio;
+            cmd.Parameters["newPrio"].Value = prioritygroup;
+
             cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
-            cmd.Parameters["newcustomerGroup"].Value = customerGroup;
+            cmd.Parameters["newcustomerGroup"].Value = customergroup;
 
             conn.Open();
-            cmd = new NpgsqlCommand(sql1, conn);
+            cmd = new NpgsqlCommand(sql, conn);
             NpgsqlDataReader dr1 = cmd.ExecuteReader();
             while (dr1.Read())
             {
                 MonitorByWeek newMonitorByWeek = new MonitorByWeek();
-                newMonitorByWeek.year = dr1["year"].ToString();
+                //newMonitorByWeek.year = dr1["year"].ToString();
                 newMonitorByWeek.week = dr1["week"].ToString();
                 newMonitorByWeek.prio = dr1["prio"].ToString();
-                newMonitorByWeek.analysis = dr1["analysis"].ToString();
+                newMonitorByWeek.analysis = dr1["anco"].ToString();
                 newMonitorByWeek.minrawr = dr1["minrawr"].ToString();
                 newMonitorByWeek.maxrawr = dr1["maxrawr"].ToString();
                 newMonitorByWeek.medelrawr = dr1["medelrawr"].ToString();
@@ -204,23 +216,25 @@ namespace IK075G
         private void btnShowUpdateDiagram_Click(object sender, EventArgs e)
         {
             //Knapp för att updatera/visa diagrammet
-            string customergroup = comboBoxCustomerGroup.SelectedText;
-            string analysis = comboBoxAnalysis.SelectedText;
-            string prioritygroup = comboBoxPriorityGroup.SelectedText;
-            string timeinterval = comboBoxTimeInterval.SelectedText;
+            List<MonitorByWeek> newListMember = new List<MonitorByWeek>();
+            string customergroup = comboBoxCustomerGroup.Text;
+            string analysis = comboBoxAnalysis.Text;
+            string prioritygroup = comboBoxPriorityGroup.Text;
+            string timeinterval = comboBoxTimeInterval.Text;
 
             if (timeinterval=="Dagvis")
             {
                 string dayfrom = dateTimePickerDayFrom.Value.ToShortDateString();
                 string dayto = dateTimePickerDayTo.Value.ToShortDateString();
             }
-            else if (timeinterval=="Veckovis")
+            else if (timeinterval== "Veckovis")
             {
                 string yearfrom = comboBoxYearFrom.Text;
                 string weekfrom = comboBoxWeekFrom.Text;
-
                 string yearto = comboBoxYearTo.Text;
                 string weekto = comboBoxWeekTo.Text;
+                
+                newListMember = getWeekValues(customergroup, analysis, prioritygroup, timeinterval, yearfrom, yearto, weekfrom, weekto);
             }
             else if (timeinterval=="Månadsvis")
             {
