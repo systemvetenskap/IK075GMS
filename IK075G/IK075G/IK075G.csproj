@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MonitorByWeek.cs" />
     <Compile Include="OperationMethod.cs">
       <SubType>Form</SubType>
     </Compile>
