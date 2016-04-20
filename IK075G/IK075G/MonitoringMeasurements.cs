@@ -21,6 +21,7 @@ namespace IK075G
         public MonitoringMeasurements()
         {
             InitializeComponent();
+
         }
         public void LoadCustomerGroups()//Metod för att LADDA kundgrupper i comboboxen
         {
@@ -222,10 +223,17 @@ namespace IK075G
             LoadCustomerGroups();
             LoadAnalysis();
             LoadPriorityGroup();
-
+            
+            
             comboBoxPriorityGroup.Enabled = false;
             comboBoxAnalysis.Enabled = false;
             comboBoxTimeInterval.Enabled = false;
+
+
+            //Klocka och datum
+            timer1.Interval = 1000;  //in milliseconds
+            timer1.Tick += new EventHandler(this.timer1_Tick);
+            timer1.Start();
         }
         private void btnBack_Click(object sender, EventArgs e)
         {
@@ -414,6 +422,47 @@ namespace IK075G
                     e.KeyChar = Convert.ToChar(e.KeyChar.ToString().ToUpper());
             }
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            int hh = DateTime.Now.Hour;
+            int mm = DateTime.Now.Minute;
+            int ss = DateTime.Now.Second;
+
+            string time = "";
+
+            if (hh < 10)
+            {
+                time += "0" + hh;
+            }
+            else
+            {
+                time += hh;
+            }
+            time += ":";
+
+            if (mm < 10)
+            {
+                time += "0" + mm;
+            }
+            else
+            {
+                time += mm;
+            }
+            time += ":";
+
+            if (ss < 10)
+            {
+                time += "0" + ss;
+            }
+            else
+            {
+                time += ss;
+            }
+            lblTodaysDateAndTime.Text = DateTime.Now.ToShortDateString()+"  "+ DateTime.Now.DayOfWeek+"  " +time;
+
+           
+        }//Klocka
 
         private void comboBoxPriorityGroup_KeyPress(object sender, KeyPressEventArgs e)
         {
