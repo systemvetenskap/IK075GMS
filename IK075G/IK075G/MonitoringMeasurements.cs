@@ -23,6 +23,98 @@ namespace IK075G
             InitializeComponent();
 
         }
+        private void MonitoringMeasurements_Load(object sender, EventArgs e)//Formuläret laddas
+        {
+            DisableDatePick();
+            LoadTimeInterval();
+            LoadCustomerGroups();
+            LoadAnalysis();
+            LoadPriorityGroup();
+
+            comboBoxPriorityGroup.Enabled = false;
+            comboBoxAnalysis.Enabled = false;
+            comboBoxTimeInterval.Enabled = false;
+            btnShowUpdateDiagram.Enabled = false;
+
+            //Klocka och datum
+            timer1.Interval = 1000;
+            timer1.Tick += new EventHandler(this.timer1_Tick);
+            timer1.Start();
+        }
+        private void btnBack_Click(object sender, EventArgs e)//Till huvudmenyn
+        {
+            this.Hide();
+            MainMenu huvudmeny = new MainMenu();
+            huvudmeny.ShowDialog();
+        }
+        private void btnShowUpdateDiagram_Click(object sender, EventArgs e)//Updatera/visa diagrammet
+        {
+            List<MonitorByWeek> newListMember = new List<MonitorByWeek>();
+            string customergroup = comboBoxCustomerGroup.Text;
+            string analysis = comboBoxAnalysis.Text;
+            string prioritygroup = comboBoxPriorityGroup.Text;
+            string timeinterval = comboBoxTimeInterval.Text;
+
+            if (timeinterval == "DAGSVIS")
+            {
+                string dayfrom = dateTimePickerDayFrom.Value.ToShortDateString();
+                string dayto = dateTimePickerDayTo.Value.ToShortDateString();
+            }
+            else if (timeinterval == "VECKOVIS")
+            {
+                string yearfrom = comboBoxYearFrom.Text;
+                string weekfrom = comboBoxWeekFrom.Text;
+                string yearto = comboBoxYearTo.Text;
+                string weekto = comboBoxWeekTo.Text;
+
+                newListMember = getWeekValues(customergroup, analysis, prioritygroup, timeinterval, yearfrom, yearto, weekfrom, weekto);
+            }
+            else if (timeinterval == "MÅNADSVIS")
+            {
+                string monthfrom = dateTimePickerMonthFrom.Value.ToShortDateString();
+                string monthto = dateTimePickerMonthTo.Value.ToShortDateString();
+            }
+
+            chart1.Titles.Clear();
+            chart1.Series.Clear();
+
+            // Titel ovanför diagramet  
+            chart1.Titles.Add("Enhet");
+            chart1.Series.Add("Series1");
+
+            chart1.Series["Series1"].ChartType = SeriesChartType.Line;
+            chart1.Series["Series1"].LegendText = "Medel värde";
+
+            chart1.Series.Add("Series2");
+            chart1.Series["Series2"].ChartType = SeriesChartType.Line;
+            chart1.Series["Series2"].LegendText = "Minsta värde";
+
+            chart1.Series.Add("Series3");
+            chart1.Series["Series3"].ChartType = SeriesChartType.Line;
+            chart1.Series["Series3"].LegendText = "Högsta värde";
+
+            foreach (MonitorByWeek item in newListMember)
+            {
+
+                DataPoint newAveragePoint = new DataPoint();
+
+                newAveragePoint.SetValueY(item.medelrawr);
+                newAveragePoint.AxisLabel = item.week;
+                chart1.Series["Series1"].Points.Add(newAveragePoint);
+
+                DataPoint newMinPoint = new DataPoint();
+                newMinPoint.SetValueY(item.minrawr);
+                chart1.Series["Series2"].Points.Add(newMinPoint);
+
+                DataPoint newMaxPoint = new DataPoint();
+                newMaxPoint.SetValueY(item.maxrawr);
+                chart1.Series["Series3"].Points.Add(newMaxPoint);
+            }
+            chart1.Show();
+
+        }
+
+        //Metoder
         public void LoadCustomerGroups()//Metod för att LADDA kundgrupper i comboboxen
         {
             string sql = "SELECT cuco FROM cuco_sub2 ORDER BY cuco";
@@ -87,9 +179,7 @@ namespace IK075G
                     }
                 }
             }
-            
-            // comboBoxWeekFrom.Items.Clear();
-            // comboBoxWeekTo.Items.Clear();
+
             for (int i = 1; i <= 52; i++)
             {
                 comboBoxWeekFrom.Items.Add(i.ToString());
@@ -97,9 +187,9 @@ namespace IK075G
             }
             
         }      
-        public void LoadYears()// Metod för att LADDA in årtal i comboboxar -från och till
+        public void LoadYears()// Metod för att LADDA in årtal i comboboxar från och till
         {
-            // rensar båda boxar på grund av dubletter.
+            // Rensar båda comboboxar på grund av dubletter.
             if (comboBoxYearFrom.Items.Count > 0)
             {
                comboBoxYearFrom.Items.Clear(); 
@@ -147,13 +237,10 @@ namespace IK075G
             //Månadsvis
             dateTimePickerMonthFrom.Visible = false;
             dateTimePickerMonthTo.Visible = false;
-        }       
-        public List<MonitorByWeek> getWeekValues(string customergroup, string analysis, string prioritygroup, 
-            string timeinterval, string yearfrom, string yearto, string weekfrom, string weekto)
-        {
-            
+        }
+        public List<MonitorByWeek> getWeekValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string yearfrom, string yearto, string weekfrom, string weekto)//Metod för att visa veckovis
+        {          
             List<MonitorByWeek> newListMember = new List<MonitorByWeek>();
-            
             conn.Open();
 
             weekfrom = weekfrom.PadLeft(2, '0');
@@ -203,7 +290,6 @@ namespace IK075G
             while (dr1.Read())
             {
                 MonitorByWeek newMonitorByWeek = new MonitorByWeek();
-                // newMonitorByWeek.year = dr1["year"].ToString();
                 newMonitorByWeek.week = dr1["week"].ToString();
                 newMonitorByWeek.prio = dr1["prio"].ToString();
                 newMonitorByWeek.analysis = dr1["anco"].ToString();
@@ -215,101 +301,10 @@ namespace IK075G
             }
             conn.Close();
             return newListMember;
-        }     
-        private void MonitoringMeasurements_Load(object sender, EventArgs e)
-        {
-            DisableDatePick();
-            LoadTimeInterval();
-            LoadCustomerGroups();
-            LoadAnalysis();
-            LoadPriorityGroup();
-            
-            
-            comboBoxPriorityGroup.Enabled = false;
-            comboBoxAnalysis.Enabled = false;
-            comboBoxTimeInterval.Enabled = false;
-
-
-            //Klocka och datum
-            timer1.Interval = 1000;  //in milliseconds
-            timer1.Tick += new EventHandler(this.timer1_Tick);
-            timer1.Start();
-        }
-        private void btnBack_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            MainMenu huvudmeny = new MainMenu();
-            huvudmeny.ShowDialog();
-        }
-        private void btnShowUpdateDiagram_Click(object sender, EventArgs e)
-        {
-            //Knapp för att updatera/visa diagrammet
-            List<MonitorByWeek> newListMember = new List<MonitorByWeek>();
-            string customergroup = comboBoxCustomerGroup.Text;
-            string analysis = comboBoxAnalysis.Text;
-            string prioritygroup = comboBoxPriorityGroup.Text;
-            string timeinterval = comboBoxTimeInterval.Text;
-
-            if (timeinterval=="DAGSVIS")
-            {
-                string dayfrom = dateTimePickerDayFrom.Value.ToShortDateString();
-                string dayto = dateTimePickerDayTo.Value.ToShortDateString();
-            }
-            else if (timeinterval== "VECKOVIS")
-            {
-                string yearfrom = comboBoxYearFrom.Text;
-                string weekfrom = comboBoxWeekFrom.Text;
-                string yearto = comboBoxYearTo.Text;
-                string weekto = comboBoxWeekTo.Text;
-                
-                newListMember = getWeekValues(customergroup, analysis, prioritygroup, timeinterval, yearfrom, yearto, weekfrom, weekto);
-            }
-            else if (timeinterval=="MÅNADSVIS")
-            {
-                string monthfrom = dateTimePickerMonthFrom.Value.ToShortDateString();
-                string monthto = dateTimePickerMonthTo.Value.ToShortDateString();
-            }
-
-            chart1.Titles.Clear();
-            chart1.Series.Clear();
-
-            // titel ovanför diagramet  
-            chart1.Titles.Add("Enhet");
-            chart1.Series.Add("Series1");
-
-            chart1.Series["Series1"].ChartType = SeriesChartType.Line;
-            chart1.Series["Series1"].LegendText = "Medel värde";
-
-            chart1.Series.Add("Series2");
-            chart1.Series["Series2"].ChartType = SeriesChartType.Line;
-            chart1.Series["Series2"].LegendText = "Minsta värde";
-
-            chart1.Series.Add("Series3");
-            chart1.Series["Series3"].ChartType = SeriesChartType.Line;
-            chart1.Series["Series3"].LegendText = "Högsta värde";
-
-            foreach (MonitorByWeek item in newListMember)
-            {
-                
-                DataPoint newAveragePoint = new DataPoint();
-
-                newAveragePoint.SetValueY(item.medelrawr);
-                newAveragePoint.AxisLabel = item.week;
-                chart1.Series["Series1"].Points.Add(newAveragePoint);
-
-                DataPoint newMinPoint = new DataPoint();
-                newMinPoint.SetValueY(item.minrawr);
-                chart1.Series["Series2"].Points.Add(newMinPoint);
-
-                DataPoint newMaxPoint = new DataPoint();
-                newMaxPoint.SetValueY(item.maxrawr);
-                chart1.Series["Series3"].Points.Add(newMaxPoint);
-            } 
-            chart1.Show();
-
         }
 
-        private void comboBoxCustomerGroup_SelectedIndexChanged(object sender, EventArgs e)
+        //Comboboxar & Klocka
+        private void comboBoxCustomerGroup_SelectedIndexChanged(object sender, EventArgs e)//Kundgrupp
         {
             if (comboBoxCustomerGroup.SelectedItem.ToString().Equals(""))
             {
@@ -320,8 +315,9 @@ namespace IK075G
                 comboBoxAnalysis.Enabled = true;
             }
         }
-        private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e)//Tidsintervall
         {
+            btnShowUpdateDiagram.Enabled = false;
             if (comboBoxTimeInterval.SelectedIndex<0)
             {
                 DisableDatePick();
@@ -368,19 +364,23 @@ namespace IK075G
             }
 
         }
-        private void comboBoxYearFrom_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxYearFrom_SelectedIndexChanged(object sender, EventArgs e)//Startår
         {
             LoadWeekNumbers();
         }
-        private void comboBoxYearTo_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxYearTo_SelectedIndexChanged(object sender, EventArgs e)//Slutår
         {
             LoadWeekNumbers();
         }
-        private void comboBoxWeekFrom_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxWeekFrom_SelectedIndexChanged(object sender, EventArgs e)//Startvecka
         {
             LoadWeekNumbers();
         }
-        private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxWeekTo_SelectedIndexChanged(object sender, EventArgs e)//Slutvecka
+        {
+            btnShowUpdateDiagram.Enabled = true;
+        }
+        private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e)//Analys
         {
             if (comboBoxAnalysis.SelectedItem.ToString().Equals(""))
             {
@@ -391,7 +391,7 @@ namespace IK075G
                 comboBoxPriorityGroup.Enabled = true;
             }
         }
-        private void comboBoxPriorityGroup_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxPriorityGroup_SelectedIndexChanged(object sender, EventArgs e)//Prioritetsgrupp
         {
             if (comboBoxPriorityGroup.SelectedItem.ToString().Equals(""))
             {
@@ -404,25 +404,6 @@ namespace IK075G
                 dateTimePickerDayTo.Enabled = true;
             }
         }
-
-
-        //Keypress events
-        private void comboBoxCustomerGroup_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            {
-                if (e.KeyChar >= 'a' && e.KeyChar <= 'z')
-                    e.KeyChar = Convert.ToChar(e.KeyChar.ToString().ToUpper());
-            }
-        }
-
-        private void comboBoxAnalysis_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            {
-                if (e.KeyChar >= 'a' && e.KeyChar <= 'z')
-                    e.KeyChar = Convert.ToChar(e.KeyChar.ToString().ToUpper());
-            }
-        }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
             int hh = DateTime.Now.Hour;
@@ -459,18 +440,50 @@ namespace IK075G
             {
                 time += ss;
             }
-            lblTodaysDateAndTime.Text = DateTime.Now.ToShortDateString()+"  "+ DateTime.Now.DayOfWeek+"  " +time;
+            lblTodaysDateAndTime.Text = DateTime.Now.ToShortDateString() + "  " + DateTime.Now.DayOfWeek + "  " + time;
 
-           
-        }//Klocka
 
+        }//Klocka och datum
+
+        //Datetimepickers
+        private void dateTimePickerDayFrom_ValueChanged(object sender, EventArgs e)//Dag från
+        {
+
+        }
+        private void dateTimePickerDayTo_ValueChanged(object sender, EventArgs e)//Dag till
+        {
+            btnShowUpdateDiagram.Enabled = true;
+        }
+        private void dateTimePickerMonthFrom_ValueChanged(object sender, EventArgs e)//Månad från
+        {
+
+        }
+        private void dateTimePickerMonthTo_ValueChanged(object sender, EventArgs e)//Månad till
+        {
+            btnShowUpdateDiagram.Enabled = true;
+        }
+
+        //Keypress events
+        private void comboBoxCustomerGroup_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            {
+                if (e.KeyChar >= 'a' && e.KeyChar <= 'z')
+                    e.KeyChar = Convert.ToChar(e.KeyChar.ToString().ToUpper());
+            }
+        }
+        private void comboBoxAnalysis_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            {
+                if (e.KeyChar >= 'a' && e.KeyChar <= 'z')
+                    e.KeyChar = Convert.ToChar(e.KeyChar.ToString().ToUpper());
+            }
+        }
         private void comboBoxPriorityGroup_KeyPress(object sender, KeyPressEventArgs e)
         {
             {
                 e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
             }
         }
-
         private void comboBoxTimeInterval_KeyPress(object sender, KeyPressEventArgs e)
         {
             {

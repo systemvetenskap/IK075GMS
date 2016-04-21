@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ResponseTime));
             this.btnBack = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
             this.comboBoxAnalysis = new System.Windows.Forms.ComboBox();
@@ -58,16 +58,6 @@
             this.btnBack.Text = "Till huvudmenyn";
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(12, 20);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(102, 24);
-            this.label8.TabIndex = 21;
-            this.label8.Text = "Svarstider";
             // 
             // dateTimePickerTo
             // 
@@ -209,10 +199,11 @@
             this.label2.TabIndex = 40;
             this.label2.Text = "Välj personer:";
             // 
-            // Choice2
+            // ResponseTime
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(1184, 561);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnShowUpdateDiagram);
@@ -229,13 +220,13 @@
             this.Controls.Add(this.lblPriorityGrp);
             this.Controls.Add(this.lblDateTo);
             this.Controls.Add(this.lblCustomerGrp);
-            this.Controls.Add(this.label8);
             this.Controls.Add(this.btnBack);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "Choice2";
+            this.Name = "ResponseTime";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Svarstider";
+            this.Text = "IK075G - Svarstider";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -245,7 +236,6 @@
         #endregion
 
         private System.Windows.Forms.Button btnBack;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DateTimePicker dateTimePickerTo;
         private System.Windows.Forms.DateTimePicker dateTimePickerFrom;
         private System.Windows.Forms.ComboBox comboBoxAnalysis;

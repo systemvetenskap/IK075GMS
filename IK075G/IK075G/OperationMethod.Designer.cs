@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Choice1));
             this.lblCustomerGrp = new System.Windows.Forms.Label();
             this.lblDateTo = new System.Windows.Forms.Label();
             this.lblHH = new System.Windows.Forms.Label();
@@ -42,7 +43,6 @@
             this.comboBoxTimeHH = new System.Windows.Forms.ComboBox();
             this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
-            this.lblMainHeader = new System.Windows.Forms.Label();
             this.textBoxTrunkHighest = new System.Windows.Forms.TextBox();
             this.textBoxTrunkLowest = new System.Windows.Forms.TextBox();
             this.lblTrunkLowest = new System.Windows.Forms.Label();
@@ -184,16 +184,6 @@
             this.dateTimePickerTo.Size = new System.Drawing.Size(121, 22);
             this.dateTimePickerTo.TabIndex = 13;
             // 
-            // lblMainHeader
-            // 
-            this.lblMainHeader.AutoSize = true;
-            this.lblMainHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMainHeader.Location = new System.Drawing.Point(26, 20);
-            this.lblMainHeader.Name = "lblMainHeader";
-            this.lblMainHeader.Size = new System.Drawing.Size(223, 24);
-            this.lblMainHeader.TabIndex = 14;
-            this.lblMainHeader.Text = "Kontroll av drift i metod";
-            // 
             // textBoxTrunkHighest
             // 
             this.textBoxTrunkHighest.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -273,6 +263,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(1184, 561);
             this.Controls.Add(this.btnShowUpdateDiagram);
             this.Controls.Add(this.label1);
@@ -282,7 +273,6 @@
             this.Controls.Add(this.lblTrunkLowest);
             this.Controls.Add(this.textBoxTrunkLowest);
             this.Controls.Add(this.textBoxTrunkHighest);
-            this.Controls.Add(this.lblMainHeader);
             this.Controls.Add(this.dateTimePickerTo);
             this.Controls.Add(this.dateTimePickerFrom);
             this.Controls.Add(this.comboBoxTimeHH);
@@ -298,10 +288,11 @@
             this.Controls.Add(this.lblDateTo);
             this.Controls.Add(this.lblCustomerGrp);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Choice1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Kontroll av drift i metod";
+            this.Text = "IK075G - Kontroll av drift i metod";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -323,7 +314,6 @@
         private System.Windows.Forms.ComboBox comboBoxTimeHH;
         private System.Windows.Forms.DateTimePicker dateTimePickerFrom;
         private System.Windows.Forms.DateTimePicker dateTimePickerTo;
-        private System.Windows.Forms.Label lblMainHeader;
         private System.Windows.Forms.TextBox textBoxTrunkHighest;
         private System.Windows.Forms.TextBox textBoxTrunkLowest;
         private System.Windows.Forms.Label lblTrunkLowest;
