@@ -50,7 +50,7 @@ namespace IK075G
         }
         private void btnShowUpdateDiagram_Click(object sender, EventArgs e) //Updatera/visa diagram
         {
-            List<MonitorByWeek> newListMember = new List<MonitorByWeek>();
+            List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
             string customergroup = comboBoxCustomerGroup.Text;
             string analysis = comboBoxAnalysis.Text;
             string prioritygroup = comboBoxPriorityGroup.Text;
@@ -58,8 +58,12 @@ namespace IK075G
 
             if (timeinterval == "DAGSVIS")
             {
+                string yearfrom = dateTimePickerDayFrom.Value.Year.ToString();
+                string yearto = dateTimePickerDayTo.Value.Year.ToString();
                 string dayfrom = dateTimePickerDayFrom.Value.ToShortDateString();
                 string dayto = dateTimePickerDayTo.Value.ToShortDateString();
+
+                newListMember = getDayValues(customergroup, analysis, prioritygroup, timeinterval, yearfrom, yearto, dayfrom, dayto);
             }
             else if (timeinterval == "VECKOVIS")
             {
@@ -100,7 +104,7 @@ namespace IK075G
             chart1.Series["Series3"].LegendText = "Högsta värde";
             //chart1.Series["Series3"].YValueType = ChartValueType.Double;
 
-            foreach (MonitorByWeek item in newListMember)
+            foreach (MeasurementMonitoring item in newListMember)
             {
                 //Ritar ut diagrammet punkt för punkt
                 DataPoint newAveragePoint = new DataPoint();
@@ -255,9 +259,9 @@ namespace IK075G
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
-        public List<MonitorByWeek> getWeekValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string yearfrom, string yearto, string weekfrom, string weekto) //Metod för att visa veckovis
+        public List<MeasurementMonitoring> getWeekValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string yearfrom, string yearto, string weekfrom, string weekto) //Metod för att visa veckovis
         {          
-            List<MonitorByWeek> newListMember = new List<MonitorByWeek>();
+            List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
             conn.Open();
 
             weekfrom = weekfrom.PadLeft(2, '0');
@@ -306,7 +310,7 @@ namespace IK075G
             NpgsqlDataReader dr1 = cmd.ExecuteReader();
             while (dr1.Read())
             {
-                MonitorByWeek newMonitorByWeek = new MonitorByWeek();
+                MeasurementMonitoring newMonitorByWeek = new MeasurementMonitoring();
                 newMonitorByWeek.week = dr1["week"].ToString();
                 newMonitorByWeek.prio = dr1["prio"].ToString();
                 newMonitorByWeek.analysis = dr1["anco"].ToString();
@@ -315,6 +319,71 @@ namespace IK075G
                 newMonitorByWeek.medelrawr = dr1["medelrawr"].ToString();
 
                 newListMember.Add(newMonitorByWeek);
+            }
+            conn.Close();
+            return newListMember;
+        }
+        public List<MeasurementMonitoring> getDayValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string yearfrom, string yearto, string dayfrom, string dayto) //Metod för att visa dagvis
+        {
+            List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
+            conn.Open();
+
+            dayfrom = dayfrom.PadLeft(2, '0');
+            dayto = dayto.PadLeft(2, '0');
+
+            string sql = string.Empty;
+
+            sql = sql + "SELECT '' cuco, ";
+            sql = sql + "anco, ";
+            sql = sql + "prio, ";
+            sql = sql + "to_char(to_timestamp(altm, 'yymmddhh24mi'), 'YYYYDD') myday, ";
+            sql = sql + "count(anco), ";
+            sql = sql + "min(cast(replace(rawr, ',', '.') AS numeric)) minrawr, ";
+            sql = sql + "max(cast(replace(rawr, ',', '.') AS numeric)) maxrawr, ";
+            sql = sql + "avg(cast(replace(rawr, ',', '.') AS numeric)) medelrawr ";
+            sql = sql + "FROM a_ana_tab ";
+            sql = sql + "WHERE length(replace(altm, ' ', '')) > 0 ";
+            sql = sql + "AND prio = :newPrio ";
+            sql = sql + "AND anco = :newFirstanco ";
+            sql = sql + "AND to_char(to_date(altm, 'yymmddhh24mi'), 'YYYY') BETWEEN :newyearFrom AND :newyearTo ";
+            sql = sql + "AND to_char(to_date(altm, 'yymmddhh24mi'), 'YYYY-MM-DD') BETWEEN :newdayFrom AND :newdayTo ";
+            sql = sql + "GROUP BY prio, anco, to_char(to_timestamp(altm, 'yymmddhh24mi'), 'YYYYDD') ";
+            sql = sql + "ORDER BY prio, anco, to_char(to_timestamp(altm, 'yymmddhh24mi'), 'YYYYDD') ";
+            NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
+
+            cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
+            cmd.Parameters["newFirstanco"].Value = analysis;
+
+            cmd.Parameters.Add(new NpgsqlParameter("newyearFrom", NpgsqlDbType.Varchar));
+            cmd.Parameters["newyearFrom"].Value = yearfrom;
+
+            cmd.Parameters.Add(new NpgsqlParameter("newyearTo", NpgsqlDbType.Varchar));
+            cmd.Parameters["newyearTo"].Value = yearto;
+
+            cmd.Parameters.Add(new NpgsqlParameter("newdayFrom", NpgsqlDbType.Varchar));
+            cmd.Parameters["newdayFrom"].Value = dayfrom;
+
+            cmd.Parameters.Add(new NpgsqlParameter("newdayTo", NpgsqlDbType.Varchar));
+            cmd.Parameters["newdayTo"].Value = dayto;
+
+            cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
+            cmd.Parameters["newPrio"].Value = prioritygroup;
+
+            cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
+            cmd.Parameters["newcustomerGroup"].Value = customergroup;
+
+            NpgsqlDataReader dr1 = cmd.ExecuteReader();
+            while (dr1.Read())
+            {
+                MeasurementMonitoring newMonitorByDay = new MeasurementMonitoring();
+                newMonitorByDay.day = dr1["myday"].ToString();
+                newMonitorByDay.prio = dr1["prio"].ToString();
+                newMonitorByDay.analysis = dr1["anco"].ToString();
+                newMonitorByDay.minrawr = dr1["minrawr"].ToString();
+                newMonitorByDay.maxrawr = dr1["maxrawr"].ToString();
+                newMonitorByDay.medelrawr = dr1["medelrawr"].ToString();
+
+                newListMember.Add(newMonitorByDay);
             }
             conn.Close();
             return newListMember;
