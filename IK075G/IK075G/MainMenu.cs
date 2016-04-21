@@ -28,7 +28,7 @@ namespace IK075G
         private void btnChoice2_Click(object sender, EventArgs e)
         {
             this.Hide();
-            ResponseTime val2 = new ResponseTime();
+            TimeMonitoring val2 = new TimeMonitoring();
             val2.ShowDialog();
         }
 
