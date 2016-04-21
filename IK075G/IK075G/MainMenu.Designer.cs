@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
             this.btnChoice1 = new System.Windows.Forms.Button();
             this.btnChoice2 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.btnChoice3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
@@ -92,7 +92,6 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(720, 394);
             this.Controls.Add(this.btnChoice3);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnChoice2);
             this.Controls.Add(this.btnChoice1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -104,7 +103,6 @@
             this.Load += new System.EventHandler(this.MainMenu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -112,7 +110,6 @@
 
         private System.Windows.Forms.Button btnChoice1;
         private System.Windows.Forms.Button btnChoice2;
-        private System.Windows.Forms.Label label1;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
         private System.Windows.Forms.Button btnChoice3;
     }
