@@ -215,7 +215,7 @@
             this.btnShowUpdateDiagram.Location = new System.Drawing.Point(34, 261);
             this.btnShowUpdateDiagram.Margin = new System.Windows.Forms.Padding(4);
             this.btnShowUpdateDiagram.Name = "btnShowUpdateDiagram";
-            this.btnShowUpdateDiagram.Size = new System.Drawing.Size(161, 37);
+            this.btnShowUpdateDiagram.Size = new System.Drawing.Size(190, 37);
             this.btnShowUpdateDiagram.TabIndex = 39;
             this.btnShowUpdateDiagram.Text = "Updatera/visa";
             this.btnShowUpdateDiagram.UseVisualStyleBackColor = true;

@@ -28,7 +28,7 @@ namespace IK075G
         private void btnChoice2_Click(object sender, EventArgs e)
         {
             this.Hide();
-            ResponseTime val2 = new ResponseTime();
+            TimeMonitoring val2 = new TimeMonitoring();
             val2.ShowDialog();
         }
 
@@ -37,6 +37,11 @@ namespace IK075G
             this.Hide();
             MonitoringMeasurements val3 = new MonitoringMeasurements();
             val3.ShowDialog();
+        }
+
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

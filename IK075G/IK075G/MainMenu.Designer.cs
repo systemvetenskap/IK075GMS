@@ -38,9 +38,10 @@
             // 
             // btnChoice1
             // 
-            this.btnChoice1.Location = new System.Drawing.Point(35, 77);
+            this.btnChoice1.Location = new System.Drawing.Point(47, 95);
+            this.btnChoice1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnChoice1.Name = "btnChoice1";
-            this.btnChoice1.Size = new System.Drawing.Size(195, 87);
+            this.btnChoice1.Size = new System.Drawing.Size(260, 107);
             this.btnChoice1.TabIndex = 0;
             this.btnChoice1.Text = "Kontroll av drift i en metod";
             this.btnChoice1.UseVisualStyleBackColor = true;
@@ -48,9 +49,10 @@
             // 
             // btnChoice2
             // 
-            this.btnChoice2.Location = new System.Drawing.Point(272, 77);
+            this.btnChoice2.Location = new System.Drawing.Point(363, 95);
+            this.btnChoice2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnChoice2.Name = "btnChoice2";
-            this.btnChoice2.Size = new System.Drawing.Size(195, 87);
+            this.btnChoice2.Size = new System.Drawing.Size(260, 107);
             this.btnChoice2.TabIndex = 1;
             this.btnChoice2.Text = "Se svarstider";
             this.btnChoice2.UseVisualStyleBackColor = true;
@@ -60,9 +62,10 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(193, 25);
+            this.label1.Location = new System.Drawing.Point(257, 31);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(122, 24);
+            this.label1.Size = new System.Drawing.Size(148, 29);
             this.label1.TabIndex = 2;
             this.label1.Text = "Huvudmeny";
             // 
@@ -73,9 +76,10 @@
             // 
             // btnChoice3
             // 
-            this.btnChoice3.Location = new System.Drawing.Point(35, 191);
+            this.btnChoice3.Location = new System.Drawing.Point(47, 235);
+            this.btnChoice3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnChoice3.Name = "btnChoice3";
-            this.btnChoice3.Size = new System.Drawing.Size(195, 87);
+            this.btnChoice3.Size = new System.Drawing.Size(260, 107);
             this.btnChoice3.TabIndex = 3;
             this.btnChoice3.Text = "Uppföljning av mätvärden";
             this.btnChoice3.UseVisualStyleBackColor = true;
@@ -83,19 +87,21 @@
             // 
             // MainMenu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(540, 320);
+            this.ClientSize = new System.Drawing.Size(720, 394);
             this.Controls.Add(this.btnChoice3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnChoice2);
             this.Controls.Add(this.btnChoice1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "MainMenu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "IK075G";
+            this.Load += new System.EventHandler(this.MainMenu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
