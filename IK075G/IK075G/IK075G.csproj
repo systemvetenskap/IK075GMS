@@ -58,11 +58,12 @@
     <Compile Include="OperationMethod.Designer.cs">
       <DependentUpon>OperationMethod.cs</DependentUpon>
     </Compile>
-    <Compile Include="ResponseTime.cs">
+    <Compile Include="ResponseTimes.cs" />
+    <Compile Include="TimeMonitoring.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ResponseTime.Designer.cs">
-      <DependentUpon>ResponseTime.cs</DependentUpon>
+    <Compile Include="TimeMonitoring.Designer.cs">
+      <DependentUpon>TimeMonitoring.cs</DependentUpon>
     </Compile>
     <Compile Include="MonitoringMeasurements.cs">
       <SubType>Form</SubType>
@@ -81,8 +82,8 @@
     <EmbeddedResource Include="OperationMethod.resx">
       <DependentUpon>OperationMethod.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ResponseTime.resx">
-      <DependentUpon>ResponseTime.cs</DependentUpon>
+    <EmbeddedResource Include="TimeMonitoring.resx">
+      <DependentUpon>TimeMonitoring.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MonitoringMeasurements.resx">
       <DependentUpon>MonitoringMeasurements.cs</DependentUpon>
