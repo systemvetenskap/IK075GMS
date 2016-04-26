@@ -163,6 +163,7 @@
             this.dateTimePickerDayFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePickerDayFrom.Location = new System.Drawing.Point(235, 83);
             this.dateTimePickerDayFrom.Name = "dateTimePickerDayFrom";
+            this.dateTimePickerDayFrom.ShowUpDown = true;
             this.dateTimePickerDayFrom.Size = new System.Drawing.Size(177, 22);
             this.dateTimePickerDayFrom.TabIndex = 9;
             this.dateTimePickerDayFrom.Value = new System.DateTime(2009, 1, 1, 0, 0, 0, 0);
@@ -173,6 +174,7 @@
             this.dateTimePickerDayTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePickerDayTo.Location = new System.Drawing.Point(431, 83);
             this.dateTimePickerDayTo.Name = "dateTimePickerDayTo";
+            this.dateTimePickerDayTo.ShowUpDown = true;
             this.dateTimePickerDayTo.Size = new System.Drawing.Size(177, 22);
             this.dateTimePickerDayTo.TabIndex = 10;
             this.dateTimePickerDayTo.ValueChanged += new System.EventHandler(this.dateTimePickerDayTo_ValueChanged);
@@ -249,6 +251,7 @@
             this.dateTimePickerMonthFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePickerMonthFrom.Location = new System.Drawing.Point(235, 132);
             this.dateTimePickerMonthFrom.Name = "dateTimePickerMonthFrom";
+            this.dateTimePickerMonthFrom.ShowUpDown = true;
             this.dateTimePickerMonthFrom.Size = new System.Drawing.Size(177, 22);
             this.dateTimePickerMonthFrom.TabIndex = 11;
             this.dateTimePickerMonthFrom.Value = new System.DateTime(2009, 1, 1, 0, 0, 0, 0);
@@ -261,6 +264,7 @@
             this.dateTimePickerMonthTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePickerMonthTo.Location = new System.Drawing.Point(431, 132);
             this.dateTimePickerMonthTo.Name = "dateTimePickerMonthTo";
+            this.dateTimePickerMonthTo.ShowUpDown = true;
             this.dateTimePickerMonthTo.Size = new System.Drawing.Size(177, 22);
             this.dateTimePickerMonthTo.TabIndex = 12;
             this.dateTimePickerMonthTo.Value = new System.DateTime(2016, 4, 1, 0, 0, 0, 0);
