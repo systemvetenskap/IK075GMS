@@ -42,7 +42,7 @@ namespace IK075G
             timer1.Tick += new EventHandler(this.timer1_Tick);
             timer1.Start();
         }
-        private void btnBack_Click(object sender, EventArgs e) //Till huvudmenyn
+        private void btnBack_Click_1(object sender, EventArgs e) //Till huvudmenyn
         {
             this.Hide();
             MainMenu huvudmeny = new MainMenu();
@@ -182,10 +182,10 @@ namespace IK075G
             while (dr.Read())
             {
                 string prio = dr["prio"].ToString();
-                checkedListBox1.Items.Add(prio);
                 comboBoxPriorityGroup.Items.Add(prio);
             }
             conn.Close();
+            comboBoxPriorityGroup.Items.Add("ALLA");
         }
         public void LoadTimeInterval() //Metod för att FYLLA comboboxen med tidsintervall
         {
@@ -354,6 +354,11 @@ namespace IK075G
             dayfrom = dayfrom.PadLeft(2, '0');
             dayto = dayto.PadLeft(2, '0');
 
+            if (comboBoxPriorityGroup.Text=="ALLA")
+            {
+                MessageBox.Show("Kod för alla prioritetsgrupper, dagvis");
+            }
+
             string sql = string.Empty;
             sql = sql + "SELECT '' cuco, ";
             sql = sql + "    prio AS prio,";
@@ -489,7 +494,6 @@ namespace IK075G
         }
         private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e) //Tidsintervall
         {
-            btnShowUpdateDiagram.Enabled = false;
             if (comboBoxTimeInterval.SelectedIndex<0)
             {
                 DisableDatePick();
@@ -508,6 +512,8 @@ namespace IK075G
                     dateTimePickerMonthTo.Visible = false;
                     dateTimePickerDayFrom.Visible = true;
                     dateTimePickerDayTo.Visible = true;
+
+                    btnShowUpdateDiagram.Enabled = true;
                 }
                 else if (comboBoxTimeInterval.Text == "VECKOVIS")
                 {
@@ -519,6 +525,8 @@ namespace IK075G
                     dateTimePickerMonthTo.Visible = false;
                     dateTimePickerDayFrom.Visible = false;
                     dateTimePickerDayTo.Visible = false;
+
+                    btnShowUpdateDiagram.Enabled = true;
                     LoadYears();
                     LoadWeekNumbers();
                 }
@@ -532,6 +540,8 @@ namespace IK075G
                     dateTimePickerMonthTo.Visible = true;
                     dateTimePickerDayFrom.Visible = false;
                     dateTimePickerDayTo.Visible = false;
+
+                    btnShowUpdateDiagram.Enabled = true;
                 }
             }
 
