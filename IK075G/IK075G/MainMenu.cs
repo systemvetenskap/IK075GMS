@@ -38,5 +38,10 @@ namespace IK075G
             MonitoringMeasurements val3 = new MonitoringMeasurements();
             val3.ShowDialog();
         }
+
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
