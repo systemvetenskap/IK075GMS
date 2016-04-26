@@ -41,6 +41,9 @@ namespace IK075G
             LoadAnalysis();
             LoadPriorityGroup();
             LoadTimeInterval();
+            LoadYears();
+            LoadMonthNumbers();
+            LoadWeekNumbers();
         }
 
         //Egna metoder        
@@ -94,6 +97,50 @@ namespace IK075G
             comboBoxTimeInterval.Items.Add("Månadsvis");
             comboBoxTimeInterval.Items.Add("Årsvis");
         }
+
+        public void LoadYears() // Metod för att LADDA in årtal i comboboxar från och till
+        {
+            // Från år
+            string sql1 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) >0 ORDER BY altm";
+            conn.Open();
+            cmd = new NpgsqlCommand(sql1, conn);
+            NpgsqlDataReader dr1 = cmd.ExecuteReader();
+            while (dr1.Read())
+            {
+                string yearOrderedbyLowest = dr1["altm"].ToString();
+                comboBoxYearFrom.Items.Add(yearOrderedbyLowest);
+            }
+            conn.Close();
+            //Till år
+            string sql2 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) >0 ORDER BY altm";
+            conn.Open();
+            cmd = new NpgsqlCommand(sql2, conn);
+            NpgsqlDataReader dr2 = cmd.ExecuteReader();
+            while (dr2.Read())
+            {
+                string yearOrderedbyLowest = dr2["altm"].ToString();
+                comboBoxYearTo.Items.Add(yearOrderedbyLowest);
+            }
+            conn.Close();
+        }
+
+        public void LoadMonthNumbers() //Metod för att FYLLA comboboxarna med veckonummer
+        {
+            for (int i = 1; i <= 12; i++)
+            {
+                comboBoxMonthFrom.Items.Add(i.ToString());
+                comboBoxMonthTo.Items.Add(i.ToString());
+            }
+        }  
+
+        public void LoadWeekNumbers() //Metod för att FYLLA comboboxarna med veckonummer
+        {            
+            for (int i = 1; i <= 53; i++)
+            {
+                comboBoxWeekFrom.Items.Add(i.ToString());
+                comboBoxWeekTo.Items.Add(i.ToString());
+            }
+        }      
 
         public void SetCustomMinMaxDate() // Används för att sätta start och stop år i kalender beroende på minsta 
         {
@@ -276,8 +323,7 @@ namespace IK075G
             return newListMember;
         }
 
-        // Metod för att hitta högsta värdet
-        public double FindMaxValue(List<ResponseTimes> newListMember)
+        public double FindMaxValue(List<ResponseTimes> newListMember) // Metod för att hitta högsta värdet
         {
             double maxValue = double.MinValue;
             foreach (ResponseTimes item in newListMember)
@@ -334,47 +380,93 @@ namespace IK075G
             string analys = comboBoxAnalysis.Text;
             string prio = comboBoxPriority.Text;
             string timeInterval = comboBoxTimeInterval.Text;
+            DateTime dateFrom;
+            DateTime dateTo;
+            string yearFrom;
+            string yearTo;
+            string weekFrom;
+            string monthFrom;
+            string monthTo;
+            string weekTo;
+            string dayFrom;
+            string dayTo;
+            string hoursFrom;
+            string hoursTo;
+            // string minutesFrom;
+            // string minutesTo;
 
-            DateTime dateFrom = dateTimePickerFrom.Value;
-            DateTime dateTo = dateTimePickerTo.Value;
+            // DateTime dateFrom = dateTimePickerFrom.Value;
+            // DateTime dateTo = dateTimePickerTo.Value;
 
-            string yearFrom = dateFrom.Year.ToString();
-            string monthFrom = dateFrom.Month.ToString();
-            var cal1 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
-            string weekFrom = cal1.GetWeekOfYear(dateFrom, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
-            string dayFrom = dateFrom.ToShortDateString();
-            dateFrom.Day.ToString();
-            string hoursFrom = dateFrom.Hour.ToString();
-            string minutesFrom = dateFrom.Minute.ToString();
+            // string yearFrom = dateFrom.Year.ToString();
+            // string monthFrom = dateFrom.Month.ToString();
+            // var cal1 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+            // string weekFrom = cal1.GetWeekOfYear(dateFrom, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();            
+            // dayFrom = dateFrom.ToShortDateString();
+            // dateFrom.Day.ToString();
+            // hoursFrom = dateFrom.Hour.ToString();
+            // minutesFrom = dateFrom.Minute.ToString();
 
-            string yearTo = dateTo.Year.ToString();
-            string monthTo = dateTo.Month.ToString();
-            var cal2 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
-            string weekTo = cal2.GetWeekOfYear(dateTo, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
-            string dayTo = dateTo.ToShortDateString();
-            dateTo.Day.ToString();
-            string hoursTo = dateTo.Hour.ToString();
-            string minutesTo = dateTo.Minute.ToString();
+            // yearTo = dateTo.Year.ToString();
+            // monthTo = dateTo.Month.ToString();
+            // var cal2 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+            // string weekTo = cal2.GetWeekOfYear(dateTo, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
+            // dayTo = dateTo.ToShortDateString();
+            // dateTo.Day.ToString();
+            // hoursTo = dateTo.Hour.ToString();
+            // minutesTo = dateTo.Minute.ToString();
 
             if (timeInterval == "Timvis")
             {
-                // newListMember = GetResponseByWeek(customerGroup, analys, prio, yearFrom, yearTo, weekFrom, weekTo);
+                // från kallender
+                dateFrom = dateTimePickerFrom.Value;
+                dateTo = dateTimePickerTo.Value;
+
+                dayFrom = dateFrom.ToShortDateString();
+                dateFrom.Day.ToString();
+                
+                dayTo = dateTo.ToShortDateString();
+                dateTo.Day.ToString();
+                
+                hoursFrom = dateFrom.Hour.ToString();
+                hoursTo = dateTo.Hour.ToString();
+                // newListMember = GetResponseByWeek(customerGroup, analys, prio, yearFrom, yearTo, hoursFrom, hoursTo);
             }
             else if (timeInterval == "Dagsvis")
             {
+                // från kallender
+                dateFrom = dateTimePickerFrom.Value;
+                dateTo = dateTimePickerTo.Value;
+
+                dayFrom = dateFrom.ToShortDateString();
+                dayTo = dateTo.ToShortDateString();
+
                 newListMember = GetResponseByDay(customerGroup, analys, prio, dayFrom, dayTo);
             }
             else if (timeInterval == "Veckovis")
             {
+                // från listbox
+                yearFrom = comboBoxYearFrom.Text;
+                weekFrom = comboBoxWeekFrom.Text;
+                yearTo = comboBoxYearTo.Text;
+                weekTo = comboBoxWeekTo.Text;
                 newListMember = GetResponseByWeek(customerGroup, analys, prio, yearFrom, yearTo, weekFrom, weekTo);
             }
             else if (timeInterval == "Månadsvis")
             {
-                // newListMember = GetResponseByWeek(customerGroup, analys, prio, yearFrom, yearTo, weekFrom, weekTo);
+                // från listbox
+                yearFrom = comboBoxYearFrom.Text;
+                yearTo = comboBoxYearTo.Text;
+                // monthFrom = dateFrom.Month.ToString();
+                // monthTo = dateTo.Month.ToString();
+                // newListMember = GetResponseByMonth(customerGroup, analys, prio, yearFrom, yearTo, monthFrom, monthTo);
             }
             else if (timeInterval == "Årsvis")
             {
-                // newListMember = GetResponseByWeek(customerGroup, analys, prio, yearFrom, yearTo, weekFrom, weekTo);
+                // från listbox
+                yearFrom = comboBoxYearFrom.Text;
+                yearTo = comboBoxYearTo.Text;
+                // newListMember = GetResponseByWeek(customerGroup, analys, prio, yearFrom, yearTo);
             }
 
             // Diagrammet 
@@ -383,7 +475,7 @@ namespace IK075G
             chartResponseTime.Series.Clear();
 
             // Titel ovanför diagramet  
-            chartResponseTime.Titles.Add("Response Time");
+            // chartResponseTime.Titles.Add("Response Time");
 
             chartResponseTime.ChartAreas.Add("");
             chartResponseTime.ChartAreas[0].AxisY.Title = "AxisY Title";
