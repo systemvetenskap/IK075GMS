@@ -193,7 +193,7 @@
             this.comboBoxTimeInterval.Name = "comboBoxTimeInterval";
             this.comboBoxTimeInterval.Size = new System.Drawing.Size(176, 24);
             this.comboBoxTimeInterval.TabIndex = 37;
-            this.comboBoxTimeInterval.SelectedIndexChanged += new System.EventHandler(this.comboBoxTimeInterval_SelectedIndexChanged_1);
+            //this.comboBoxTimeInterval.SelectedIndexChanged += new System.EventHandler(this.comboBoxTimeInterval_SelectedIndexChanged_1);
             // 
             // btnShowUpdateDiagram
             // 
