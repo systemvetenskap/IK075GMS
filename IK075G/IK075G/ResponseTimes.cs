@@ -18,8 +18,11 @@ namespace IK075G
         public string hour { get; set; }
         public string minute { get; set; }
         public string quantity { get; set; }
-        public string avgTime { get; set; }
         public string minTime { get; set; }
-        public string maxtime { get; set; }
+        public string maxTime { get; set; }
+        public string avgTime { get; set; }
+        public string minValue { get; set; }
+        public string maxValue { get; set; }
+        public string avgValue { get; set; }
     }
 }

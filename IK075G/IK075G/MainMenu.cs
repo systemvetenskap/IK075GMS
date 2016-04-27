@@ -17,26 +17,23 @@ namespace IK075G
             InitializeComponent();
         }
 
-        private void btnChoice1_Click(object sender, EventArgs e)
+        private void btnMonitoringMeasurements_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Choice1 val1 = new Choice1();
-            val1.ShowDialog();
-            
+            MonitoringMeasurements GotoMonitoringM = new MonitoringMeasurements();
+            GotoMonitoringM.ShowDialog();
         }
 
-        private void btnChoice2_Click(object sender, EventArgs e)
+        private void btnTimeMonitoring_Click(object sender, EventArgs e)
         {
             this.Hide();
-            TimeMonitoring val2 = new TimeMonitoring();
-            val2.ShowDialog();
+            groupBoxFrom GotoTimeM = new groupBoxFrom();
+            GotoTimeM.ShowDialog();
         }
 
-        private void btnChoice3_Click(object sender, EventArgs e)
+        private void btnOperationMethod_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            MonitoringMeasurements val3 = new MonitoringMeasurements();
-            val3.ShowDialog();
+           
         }
     }
 }

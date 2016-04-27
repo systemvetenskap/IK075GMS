@@ -28,60 +28,63 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
-            this.btnChoice1 = new System.Windows.Forms.Button();
-            this.btnChoice2 = new System.Windows.Forms.Button();
+            this.btnOperationMethod = new System.Windows.Forms.Button();
+            this.btnTimeMonitoring = new System.Windows.Forms.Button();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
-            this.btnChoice3 = new System.Windows.Forms.Button();
+            this.btnMonitoringMeasurements = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnChoice1
+            // btnOperationMethod
             // 
-            this.btnChoice1.Location = new System.Drawing.Point(36, 45);
-            this.btnChoice1.Name = "btnChoice1";
-            this.btnChoice1.Size = new System.Drawing.Size(195, 87);
-            this.btnChoice1.TabIndex = 0;
-            this.btnChoice1.Text = "Kontroll av drift i en metod";
-            this.btnChoice1.UseVisualStyleBackColor = true;
-            this.btnChoice1.Click += new System.EventHandler(this.btnChoice1_Click);
+            this.btnOperationMethod.Location = new System.Drawing.Point(242, 192);
+            this.btnOperationMethod.Margin = new System.Windows.Forms.Padding(4);
+            this.btnOperationMethod.Name = "btnOperationMethod";
+            this.btnOperationMethod.Size = new System.Drawing.Size(236, 87);
+            this.btnOperationMethod.TabIndex = 2;
+            this.btnOperationMethod.Text = "Kontroll av drift i en metod";
+            this.btnOperationMethod.UseVisualStyleBackColor = true;
+            this.btnOperationMethod.Click += new System.EventHandler(this.btnOperationMethod_Click);
             // 
-            // btnChoice2
+            // btnTimeMonitoring
             // 
-            this.btnChoice2.Location = new System.Drawing.Point(273, 45);
-            this.btnChoice2.Name = "btnChoice2";
-            this.btnChoice2.Size = new System.Drawing.Size(195, 87);
-            this.btnChoice2.TabIndex = 1;
-            this.btnChoice2.Text = "Se svarstider";
-            this.btnChoice2.UseVisualStyleBackColor = true;
-            this.btnChoice2.Click += new System.EventHandler(this.btnChoice2_Click);
+            this.btnTimeMonitoring.Location = new System.Drawing.Point(406, 62);
+            this.btnTimeMonitoring.Margin = new System.Windows.Forms.Padding(4);
+            this.btnTimeMonitoring.Name = "btnTimeMonitoring";
+            this.btnTimeMonitoring.Size = new System.Drawing.Size(236, 87);
+            this.btnTimeMonitoring.TabIndex = 1;
+            this.btnTimeMonitoring.Text = "Se svarstider";
+            this.btnTimeMonitoring.UseVisualStyleBackColor = true;
+            this.btnTimeMonitoring.Click += new System.EventHandler(this.btnTimeMonitoring_Click);
             // 
             // fileSystemWatcher1
             // 
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
-            // btnChoice3
+            // btnMonitoringMeasurements
             // 
-            this.btnChoice3.Location = new System.Drawing.Point(153, 161);
-            this.btnChoice3.Name = "btnChoice3";
-            this.btnChoice3.Size = new System.Drawing.Size(195, 87);
-            this.btnChoice3.TabIndex = 3;
-            this.btnChoice3.Text = "Uppföljning av mätvärden";
-            this.btnChoice3.UseVisualStyleBackColor = true;
-            this.btnChoice3.Click += new System.EventHandler(this.btnChoice3_Click);
+            this.btnMonitoringMeasurements.Location = new System.Drawing.Point(79, 62);
+            this.btnMonitoringMeasurements.Margin = new System.Windows.Forms.Padding(4);
+            this.btnMonitoringMeasurements.Name = "btnMonitoringMeasurements";
+            this.btnMonitoringMeasurements.Size = new System.Drawing.Size(236, 87);
+            this.btnMonitoringMeasurements.TabIndex = 0;
+            this.btnMonitoringMeasurements.Text = "Uppföljning av mätvärden";
+            this.btnMonitoringMeasurements.UseVisualStyleBackColor = true;
+            this.btnMonitoringMeasurements.Click += new System.EventHandler(this.btnMonitoringMeasurements_Click);
             // 
             // MainMenu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(540, 320);
-            this.Controls.Add(this.btnChoice3);
-            this.Controls.Add(this.btnChoice2);
-            this.Controls.Add(this.btnChoice1);
+            this.ClientSize = new System.Drawing.Size(720, 336);
+            this.Controls.Add(this.btnMonitoringMeasurements);
+            this.Controls.Add(this.btnTimeMonitoring);
+            this.Controls.Add(this.btnOperationMethod);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "MainMenu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -93,10 +96,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnChoice1;
-        private System.Windows.Forms.Button btnChoice2;
+        private System.Windows.Forms.Button btnOperationMethod;
+        private System.Windows.Forms.Button btnTimeMonitoring;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
-        private System.Windows.Forms.Button btnChoice3;
+        private System.Windows.Forms.Button btnMonitoringMeasurements;
     }
 }
 
