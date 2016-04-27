@@ -37,10 +37,10 @@ namespace IK075G
             comboBoxTimeInterval.Enabled = false;
             btnShowUpdateDiagram.Enabled = false;
 
-            //Klocka och datum
-            timer1.Interval = 1000;
-            timer1.Tick += new EventHandler(this.timer1_Tick);
-            timer1.Start();
+            //Datum
+            //lblTodaysDateAndTime.Text = "Dagens datum: "+DateTime.Today.ToShortDateString()+"\n "+"Veckodag: "+DateTime.Now.ToString("dddd").ToUpper();
+            lblTodaysDateAndTime.Text = DateTime.Now.ToString("ddddd, M MMMM, yyyy");
+  
         }
         private void btnBack_Click_1(object sender, EventArgs e) //Till huvudmenyn
         {
@@ -58,37 +58,30 @@ namespace IK075G
 
             if (timeinterval == "DAGVIS")
             {
-                string yearfrom = dateTimePickerDayFrom.Value.Year.ToString();
-                string yearto = dateTimePickerDayTo.Value.Year.ToString();
+                string dayfrom = dateTimePickerDayFrom.Value.ToShortDateString();
+                string dayto = dateTimePickerDayTo.Value.ToShortDateString();
 
-                string dayfrom = dateTimePickerDayFrom.Value.Day.ToString();
-                string dayto = dateTimePickerDayTo.Value.Day.ToString();
-
-                newListMember = getDayValues(customergroup, analysis, prioritygroup, timeinterval, yearfrom, yearto, dayfrom, dayto);
+                newListMember = getDayValues(customergroup, analysis, prioritygroup, timeinterval, dayfrom, dayto);
             }
             else if (timeinterval == "VECKOVIS")
             {
-                string yearfrom = comboBoxYearFrom.Text;
-                string weekfrom = comboBoxWeekFrom.Text;
+                string weekfrom = comboBoxYearFrom.Text+comboBoxWeekFrom.Text.PadLeft(2, '0');
+                string weekto = comboBoxYearTo.Text+comboBoxWeekTo.Text.PadLeft(2, '0');
 
-                string yearto = comboBoxYearTo.Text;
-                string weekto = comboBoxWeekTo.Text;
-
-                newListMember = getWeekValues(customergroup, analysis, prioritygroup, timeinterval, yearfrom, yearto, weekfrom, weekto);
+                newListMember = getWeekValues(customergroup, analysis, prioritygroup, timeinterval, weekfrom, weekto);
             }
             else if (timeinterval == "MÅNADSVIS")
             {
-                string yearfrom = dateTimePickerMonthFrom.Value.Year.ToString();
-                string yearto = dateTimePickerMonthTo.Value.Year.ToString();
+                string monthfrom = dateTimePickerMonthFrom.Value.ToShortDateString();
+                string monthto = dateTimePickerMonthTo.Value.ToShortDateString();
 
-                string monthfrom = dateTimePickerMonthFrom.Value.Month.ToString();
-                string monthto = dateTimePickerMonthTo.Value.Month.ToString();
-
-                newListMember = getMonthValues(customergroup, analysis, prioritygroup, timeinterval, yearfrom, yearto, monthfrom, monthto);
+                newListMember = getMonthValues(customergroup, analysis, prioritygroup, timeinterval, monthfrom, monthto);
             }
 
             chart1.Titles.Clear();
             chart1.Series.Clear();
+            chart1.ChartAreas.Clear();
+            chart1.ChartAreas.Add("");
 
             // Titel ovanför diagramet  
             chart1.Titles.Add("Enhet");
@@ -282,7 +275,7 @@ namespace IK075G
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
-        public List<MeasurementMonitoring> getWeekValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string yearfrom, string yearto, string weekfrom, string weekto) //Metod för att visa veckovis
+        public List<MeasurementMonitoring> getWeekValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string weekfrom, string weekto) //Metod för att visa veckovis
         {          
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
             conn.Open();
@@ -303,20 +296,13 @@ namespace IK075G
             sql = sql + " WHERE 1 = 1";
             sql = sql + " AND prio = :newPrio";
             sql = sql + " AND anco = :newFirstanco";
-            sql = sql + " AND to_char(tetm_date,'YY') BETWEEN :newyearFrom AND :newyearTo";
-            sql = sql + " AND to_char(tetm_date,'WW') BETWEEN :newweekFrom AND :newweekTo";
+            sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newweekFrom AND :newweekTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYWW')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYWW')";
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
             cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
             cmd.Parameters["newFirstanco"].Value = analysis;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newyearFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearFrom"].Value = yearfrom;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newyearTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearTo"].Value = yearto;
 
             cmd.Parameters.Add(new NpgsqlParameter("newweekFrom", NpgsqlDbType.Varchar));
             cmd.Parameters["newweekFrom"].Value = weekfrom;
@@ -346,7 +332,7 @@ namespace IK075G
             conn.Close();
             return newListMember;
         }
-        public List<MeasurementMonitoring> getDayValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string yearfrom, string yearto, string dayfrom, string dayto) //Metod för att visa dagvis
+        public List<MeasurementMonitoring> getDayValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string dayfrom, string dayto) //Metod för att visa dagvis
         {
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
             conn.Open();
@@ -372,19 +358,13 @@ namespace IK075G
             sql = sql + " WHERE 1 = 1";
             sql = sql + " AND prio = :newPrio";
             sql = sql + " AND anco = :newFirstanco";
-            sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD HH24') BETWEEN :newdayFrom AND :newdayTo";
+            sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newdayFrom AND :newdayTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
             cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
             cmd.Parameters["newFirstanco"].Value = analysis;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newyearFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearFrom"].Value = yearfrom;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newyearTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearTo"].Value = yearto;
 
             cmd.Parameters.Add(new NpgsqlParameter("newdayFrom", NpgsqlDbType.Varchar));
             cmd.Parameters["newdayFrom"].Value = dayfrom;
@@ -414,7 +394,7 @@ namespace IK075G
             conn.Close();
             return newListMember;
         }
-        public List<MeasurementMonitoring> getMonthValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string yearfrom, string yearto, string monthfrom, string monthto) //Metod för att visa månadsvis
+        public List<MeasurementMonitoring> getMonthValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string monthfrom, string monthto) //Metod för att visa månadsvis
         {
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
             conn.Open();
@@ -436,8 +416,7 @@ namespace IK075G
             sql = sql + " WHERE 1 = 1";
             sql = sql + " AND prio = :newPrio";
             sql = sql + " AND anco = :newFirstanco";
-            sql = sql + " AND to_char(tetm_date,'YYYY') BETWEEN :newyearFrom AND :newyearTo";
-            sql = sql + " AND to_char(tetm_date,'MM') BETWEEN :newmonthFrom AND :newmonthTo";
+            sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newmonthFrom AND :newmonthTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMM')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMM')";
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
@@ -445,15 +424,11 @@ namespace IK075G
             cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
             cmd.Parameters["newFirstanco"].Value = analysis;
 
-            cmd.Parameters.Add(new NpgsqlParameter("newyearFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearFrom"].Value = yearfrom;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newyearTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearTo"].Value = yearto;
-
+            monthfrom = monthfrom.Substring(0, 7);
             cmd.Parameters.Add(new NpgsqlParameter("newmonthFrom", NpgsqlDbType.Varchar));
             cmd.Parameters["newmonthFrom"].Value = monthfrom;
 
+            monthto = monthto.Substring(0, 7);
             cmd.Parameters.Add(new NpgsqlParameter("newmonthTo", NpgsqlDbType.Varchar));
             cmd.Parameters["newmonthTo"].Value = monthto;
 
@@ -586,48 +561,6 @@ namespace IK075G
                 dateTimePickerDayTo.Enabled = true;
             }
         }
-
-        //Klocka
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            int hh = DateTime.Now.Hour;
-            int mm = DateTime.Now.Minute;
-            int ss = DateTime.Now.Second;
-
-            string time = "";
-
-            if (hh < 10)
-            {
-                time += "0" + hh;
-            }
-            else
-            {
-                time += hh;
-            }
-            time += ":";
-
-            if (mm < 10)
-            {
-                time += "0" + mm;
-            }
-            else
-            {
-                time += mm;
-            }
-            time += ":";
-
-            if (ss < 10)
-            {
-                time += "0" + ss;
-            }
-            else
-            {
-                time += ss;
-            }
-            lblTodaysDateAndTime.Text = DateTime.Now.ToShortDateString() + "  " + DateTime.Now.DayOfWeek + "  " + time;
-
-
-        } //Klocka och datum
 
         //Datetimepickers
         private void dateTimePickerDayFrom_ValueChanged(object sender, EventArgs e) //Dag från

@@ -300,21 +300,15 @@
             this.chart1.TabIndex = 61;
             this.chart1.Text = "chart1";
             // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // lblTodaysDateAndTime
             // 
             this.lblTodaysDateAndTime.AutoSize = true;
             this.lblTodaysDateAndTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTodaysDateAndTime.Location = new System.Drawing.Point(988, 63);
+            this.lblTodaysDateAndTime.Location = new System.Drawing.Point(991, 57);
             this.lblTodaysDateAndTime.Name = "lblTodaysDateAndTime";
-            this.lblTodaysDateAndTime.Size = new System.Drawing.Size(151, 16);
+            this.lblTodaysDateAndTime.Size = new System.Drawing.Size(123, 16);
             this.lblTodaysDateAndTime.TabIndex = 63;
-            this.lblTodaysDateAndTime.Text = "DatumVeckodagKlocka";
+            this.lblTodaysDateAndTime.Text = "yearmmdayofweek";
             // 
             // btnBack
             // 
