@@ -17,7 +17,6 @@ namespace IK075G
         public string day { get; set; }
         public string hour { get; set; }
         public string minute { get; set; }
-        public string current_date { get; set; }
         public string quantity { get; set; }
         public string minTime { get; set; }
         public string maxTime { get; set; }

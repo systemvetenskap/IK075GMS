@@ -27,7 +27,7 @@ namespace IK075G
         private void btnTimeMonitoring_Click(object sender, EventArgs e)
         {
             this.Hide();
-            TimeMonitoring GotoTimeM = new TimeMonitoring();
+            groupBoxFrom GotoTimeM = new groupBoxFrom();
             GotoTimeM.ShowDialog();
         }
 
