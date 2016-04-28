@@ -180,9 +180,6 @@ namespace IK075G
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
 
-            yearFrom = yearFrom.PadLeft(2, '0');
-            yearTo = yearTo.PadLeft(2, '0');
-
             conn.Open();
 
             string sql = string.Empty;
@@ -199,17 +196,17 @@ namespace IK075G
             sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
+            sql = sql + " AND cuco = :newCuco";
             sql = sql + " AND prio = :newPrio";
             sql = sql + " AND anco = :newAnco";
-            sql = sql + " AND ( (diff_days * 24) + (diff_hours*60)+diff_minutes ) > 0 AND ( (diff_days * 24) + (diff_hours*60)+diff_minutes ) < (1440*3)";
-            sql = sql + " AND to_char(tetm_date,'YYYY') BETWEEN :newFrom AND :newTo";
+            sql = sql + " AND to_char(tetm_date,'YY') BETWEEN :newFrom AND :newTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYY')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYY')";
 
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
-            cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
-            cmd.Parameters["newcustomerGroup"].Value = customerGroup;
+            cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
+            cmd.Parameters["newCuco"].Value = customerGroup;
             cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
             cmd.Parameters["newPrio"].Value = prio;
             cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -253,7 +250,6 @@ namespace IK075G
 
             string sql = string.Empty;
             sql = sql + "SELECT ";
-            // sql = sql + "    cuco AS cuco,";
             sql = sql + "    prio AS prio,";
             sql = sql + "    anco AS anco,";
             sql = sql + "    to_char(tetm_date,'YYYYMM') AS month,";
@@ -266,10 +262,9 @@ namespace IK075G
             sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
-            // sql = sql + " AND cuco = :newCuco";
+            sql = sql + " AND cuco = :newCuco";
             sql = sql + " AND prio = :newPrio";
             sql = sql + " AND anco = :newAnco";
-            sql = sql + " AND ( (diff_days * 24) + (diff_hours*60)+diff_minutes ) > 0 AND ( (diff_days * 24) + (diff_hours*60)+diff_minutes ) < (1440*3)";
             sql = sql + " AND to_char(tetm_date,'YYYYMM') BETWEEN :newFrom AND :newTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMM')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMM')";
@@ -330,19 +325,19 @@ namespace IK075G
             sql = sql + "    round(min( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS min_value,";
             sql = sql + "    round(max( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS max_value,";
             sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
-            sql = sql + " FROM xxx_time_monitoring_vw";
+            sql = sql + " FROM xxx_time_monitoring_vw";            
             sql = sql + " WHERE 1 = 1";
+            sql = sql + " AND cuco = :newCuco";
             sql = sql + " AND prio = :newPrio";
             sql = sql + " AND anco = :newAnco";
-            sql = sql + " AND ( (diff_days * 24) + (diff_hours*60)+diff_minutes ) > 0 AND ( (diff_days * 24) + (diff_hours*60)+diff_minutes ) < (1440*3)";
-            sql = sql + " AND to_char(tetm_date,'YYYYMM') BETWEEN :newFrom AND :newTo";
+            sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newFrom AND :newTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYWW')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYWW')";
 
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
-            cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
-            cmd.Parameters["newcustomerGroup"].Value = customerGroup;
+            cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
+            cmd.Parameters["newCuco"].Value = customerGroup;
             cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
             cmd.Parameters["newPrio"].Value = prio;
             cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -394,17 +389,17 @@ namespace IK075G
             sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
+            sql = sql + " AND cuco = :newCuco";
             sql = sql + " AND prio = :newPrio";
             sql = sql + " AND anco = :newAnco";
-            sql = sql + " AND ( (diff_days * 24) + (diff_hours*60)+diff_minutes ) > 0 AND ( (diff_days * 24) + (diff_hours*60)+diff_minutes ) < (1440*3)";
             sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newFrom AND :newTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
 
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
-            cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
-            cmd.Parameters["newcustomerGroup"].Value = customerGroup;
+            cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
+            cmd.Parameters["newCuco"].Value = customerGroup;
             cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
             cmd.Parameters["newPrio"].Value = prio;
             cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -469,8 +464,6 @@ namespace IK075G
             string dayTo;
             // string hoursFrom;
             // string hoursTo;
-            // string minutesFrom;
-            // string minutesTo;
 
             if (timeInterval == "TIMVIS")
             {
@@ -528,13 +521,13 @@ namespace IK075G
                 newListMember = GetResponseByYear(customerGroup, analys, prio, yearFrom, yearTo);
             }
 
-            // Diagrammet ********************************************************************* START
+            // Diagrammet START
             chartResponseTime.ChartAreas.Clear();
             chartResponseTime.Titles.Clear();
             chartResponseTime.Series.Clear();
 
             // Titel ovanför diagramet  
-            // chartResponseTime.Titles.Add("Response Time");
+            // chartResponseTime.Titles.Add("Response Time");            
 
             chartResponseTime.ChartAreas.Add("");
             chartResponseTime.ChartAreas[0].AxisY.Title = "AxisY Title";
@@ -647,7 +640,7 @@ namespace IK075G
             }
             chartResponseTime.ChartAreas[0].RecalculateAxesScale();
             chartResponseTime.Show();
-            // Diagrammet ********************************************************************* STOP
+            // Diagrammet STOP
         }
 
         private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e)
