@@ -23,6 +23,10 @@ namespace IK075G
         {
             InitializeComponent();
 
+            //Backgroundworker
+            backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.WorkerSupportsCancellation = true;
+
         }
         private void MonitoringMeasurements_Load(object sender, EventArgs e) //Formuläret laddas
         {
@@ -37,10 +41,15 @@ namespace IK075G
             comboBoxTimeInterval.Enabled = false;
             btnShowUpdateDiagram.Enabled = false;
 
-            //Klocka och datum
-            timer1.Interval = 1000;
-            timer1.Tick += new EventHandler(this.timer1_Tick);
-            timer1.Start();
+            lblFrom.Visible = false;
+            lblTo.Visible = false;
+
+            resultLabel.Visible = false;
+            progressBar1.Visible = false;
+
+            //Datum
+            lblTodaysDateAndTime.Text = DateTime.Now.ToString("ddddd, M MMMM, yyyy");
+  
         }
         private void btnBack_Click_1(object sender, EventArgs e) //Till huvudmenyn
         {
@@ -50,6 +59,27 @@ namespace IK075G
         }
         private void btnShowUpdateDiagram_Click(object sender, EventArgs e) //Updatera/visa diagram
         {
+            if (comboBoxTimeInterval.Text=="VECKOVIS")
+            {
+                if (comboBoxYearFrom.Text.Equals("") || comboBoxYearTo.Text.Equals("") || comboBoxWeekFrom.Text.Equals("") || comboBoxYearTo.Text.Equals(""))
+                {
+                    resultLabel.Visible = true;
+                    resultLabel.ForeColor = Color.Tomato;
+                    resultLabel.Text = "Vänligen välj år samt vecka";
+                    return;
+                }
+
+            }
+            progressBar1.Visible = true;
+            progressBar1.Value = 0;
+            resultLabel.Visible = true;
+            resultLabel.ForeColor = Color.Tomato;
+            resultLabel.Text = "Laddar diagrammet";
+            if (backgroundWorker1.IsBusy != true)
+            {
+                // Start the asynchronous operation.
+                backgroundWorker1.RunWorkerAsync();
+            }
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
             string customergroup = comboBoxCustomerGroup.Text;
             string analysis = comboBoxAnalysis.Text;
@@ -58,37 +88,30 @@ namespace IK075G
 
             if (timeinterval == "DAGVIS")
             {
-                string yearfrom = dateTimePickerDayFrom.Value.Year.ToString();
-                string yearto = dateTimePickerDayTo.Value.Year.ToString();
+                string dayfrom = dateTimePickerDayFrom.Value.ToShortDateString();
+                string dayto = dateTimePickerDayTo.Value.ToShortDateString();
 
-                string dayfrom = dateTimePickerDayFrom.Value.Day.ToString();
-                string dayto = dateTimePickerDayTo.Value.Day.ToString();
-
-                newListMember = getDayValues(customergroup, analysis, prioritygroup, timeinterval, yearfrom, yearto, dayfrom, dayto);
+                newListMember = getDayValues(customergroup, analysis, prioritygroup, timeinterval, dayfrom, dayto);
             }
             else if (timeinterval == "VECKOVIS")
             {
-                string yearfrom = comboBoxYearFrom.Text;
-                string weekfrom = comboBoxWeekFrom.Text;
+                string weekfrom = comboBoxYearFrom.Text+comboBoxWeekFrom.Text.PadLeft(2, '0');
+                string weekto = comboBoxYearTo.Text+comboBoxWeekTo.Text.PadLeft(2, '0');
 
-                string yearto = comboBoxYearTo.Text;
-                string weekto = comboBoxWeekTo.Text;
-
-                newListMember = getWeekValues(customergroup, analysis, prioritygroup, timeinterval, yearfrom, yearto, weekfrom, weekto);
+                newListMember = getWeekValues(customergroup, analysis, prioritygroup, timeinterval, weekfrom, weekto);
             }
             else if (timeinterval == "MÅNADSVIS")
             {
-                string yearfrom = dateTimePickerMonthFrom.Value.Year.ToString();
-                string yearto = dateTimePickerMonthTo.Value.Year.ToString();
+                string monthfrom = dateTimePickerMonthFrom.Value.ToShortDateString();
+                string monthto = dateTimePickerMonthTo.Value.ToShortDateString();
 
-                string monthfrom = dateTimePickerMonthFrom.Value.Month.ToString();
-                string monthto = dateTimePickerMonthTo.Value.Month.ToString();
-
-                newListMember = getMonthValues(customergroup, analysis, prioritygroup, timeinterval, yearfrom, yearto, monthfrom, monthto);
+                newListMember = getMonthValues(customergroup, analysis, prioritygroup, timeinterval, monthfrom, monthto);
             }
 
             chart1.Titles.Clear();
             chart1.Series.Clear();
+            chart1.ChartAreas.Clear();
+            chart1.ChartAreas.Add("");
 
             // Titel ovanför diagramet  
             chart1.Titles.Add("Enhet");
@@ -195,24 +218,8 @@ namespace IK075G
         }       
         public void LoadWeekNumbers() //Metod för att FYLLA comboboxarna med veckonummer
         {
-            comboBoxYearFrom.Enabled = true;
-            comboBoxWeekFrom.Enabled = false;
-            comboBoxYearTo.Enabled = false;
-            comboBoxWeekTo.Enabled = false;
-
-            if (comboBoxYearFrom.Text!="Startår")
-            {
-                comboBoxWeekFrom.Enabled = true;
-                if (comboBoxWeekFrom.Text!="Startvecka")
-                {
-                    comboBoxYearTo.Enabled = true;
-                    if (comboBoxYearTo.Text!="Slutår")
-                    {
-                        comboBoxWeekTo.Enabled = true;
-                    }
-                }
-            }
-
+            comboBoxWeekFrom.Items.Clear();
+            comboBoxWeekTo.Items.Clear();
             for (int i = 1; i <= 52; i++)
             {
                 comboBoxWeekFrom.Items.Add(i.ToString());
@@ -260,8 +267,8 @@ namespace IK075G
             //Dagvis
             dateTimePickerDayFrom.Visible = false;
             dateTimePickerDayTo.Visible = false;
-            dateTimePickerDayFrom.Enabled = false;
-            dateTimePickerDayTo.Enabled = false;
+            dateTimePickerDayFrom.Visible = false;
+            dateTimePickerDayTo.Visible = false;
             //Veckovis
             comboBoxYearFrom.Visible = false;
             comboBoxWeekFrom.Visible = false;
@@ -282,7 +289,7 @@ namespace IK075G
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
-        public List<MeasurementMonitoring> getWeekValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string yearfrom, string yearto, string weekfrom, string weekto) //Metod för att visa veckovis
+        public List<MeasurementMonitoring> getWeekValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string weekfrom, string weekto) //Metod för att visa veckovis
         {          
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
             conn.Open();
@@ -303,20 +310,13 @@ namespace IK075G
             sql = sql + " WHERE 1 = 1";
             sql = sql + " AND prio = :newPrio";
             sql = sql + " AND anco = :newFirstanco";
-            sql = sql + " AND to_char(tetm_date,'YY') BETWEEN :newyearFrom AND :newyearTo";
-            sql = sql + " AND to_char(tetm_date,'WW') BETWEEN :newweekFrom AND :newweekTo";
+            sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newweekFrom AND :newweekTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYWW')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYWW')";
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
             cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
             cmd.Parameters["newFirstanco"].Value = analysis;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newyearFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearFrom"].Value = yearfrom;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newyearTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearTo"].Value = yearto;
 
             cmd.Parameters.Add(new NpgsqlParameter("newweekFrom", NpgsqlDbType.Varchar));
             cmd.Parameters["newweekFrom"].Value = weekfrom;
@@ -346,7 +346,7 @@ namespace IK075G
             conn.Close();
             return newListMember;
         }
-        public List<MeasurementMonitoring> getDayValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string yearfrom, string yearto, string dayfrom, string dayto) //Metod för att visa dagvis
+        public List<MeasurementMonitoring> getDayValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string dayfrom, string dayto) //Metod för att visa dagvis
         {
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
             conn.Open();
@@ -372,19 +372,13 @@ namespace IK075G
             sql = sql + " WHERE 1 = 1";
             sql = sql + " AND prio = :newPrio";
             sql = sql + " AND anco = :newFirstanco";
-            sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD HH24') BETWEEN :newdayFrom AND :newdayTo";
+            sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newdayFrom AND :newdayTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
             cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
             cmd.Parameters["newFirstanco"].Value = analysis;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newyearFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearFrom"].Value = yearfrom;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newyearTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearTo"].Value = yearto;
 
             cmd.Parameters.Add(new NpgsqlParameter("newdayFrom", NpgsqlDbType.Varchar));
             cmd.Parameters["newdayFrom"].Value = dayfrom;
@@ -414,7 +408,7 @@ namespace IK075G
             conn.Close();
             return newListMember;
         }
-        public List<MeasurementMonitoring> getMonthValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string yearfrom, string yearto, string monthfrom, string monthto) //Metod för att visa månadsvis
+        public List<MeasurementMonitoring> getMonthValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string monthfrom, string monthto) //Metod för att visa månadsvis
         {
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
             conn.Open();
@@ -436,8 +430,7 @@ namespace IK075G
             sql = sql + " WHERE 1 = 1";
             sql = sql + " AND prio = :newPrio";
             sql = sql + " AND anco = :newFirstanco";
-            sql = sql + " AND to_char(tetm_date,'YYYY') BETWEEN :newyearFrom AND :newyearTo";
-            sql = sql + " AND to_char(tetm_date,'MM') BETWEEN :newmonthFrom AND :newmonthTo";
+            sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newmonthFrom AND :newmonthTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMM')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMM')";
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
@@ -445,15 +438,11 @@ namespace IK075G
             cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
             cmd.Parameters["newFirstanco"].Value = analysis;
 
-            cmd.Parameters.Add(new NpgsqlParameter("newyearFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearFrom"].Value = yearfrom;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newyearTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newyearTo"].Value = yearto;
-
+            monthfrom = monthfrom.Substring(0, 7);
             cmd.Parameters.Add(new NpgsqlParameter("newmonthFrom", NpgsqlDbType.Varchar));
             cmd.Parameters["newmonthFrom"].Value = monthfrom;
 
+            monthto = monthto.Substring(0, 7);
             cmd.Parameters.Add(new NpgsqlParameter("newmonthTo", NpgsqlDbType.Varchar));
             cmd.Parameters["newmonthTo"].Value = monthto;
 
@@ -494,13 +483,6 @@ namespace IK075G
         }
         private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e) //Tidsintervall
         {
-            if (comboBoxTimeInterval.SelectedIndex<0)
-            {
-                DisableDatePick();
-            }
-
-            else if (comboBoxTimeInterval.SelectedIndex>=0)
-            {
 
                 if (comboBoxTimeInterval.Text == "DAGVIS")
                 {
@@ -513,7 +495,14 @@ namespace IK075G
                     dateTimePickerDayFrom.Visible = true;
                     dateTimePickerDayTo.Visible = true;
 
-                    btnShowUpdateDiagram.Enabled = true;
+                    lblFrom.Visible = true;
+                    lblFrom.Text = "Från:";
+                    lblTo.Visible = true;
+                    lblTo.Text = "Till";
+                    lblFromWeek.Visible = false;
+                    lblToWeek.Visible = false;
+
+                btnShowUpdateDiagram.Enabled = true;
                 }
                 else if (comboBoxTimeInterval.Text == "VECKOVIS")
                 {
@@ -525,6 +514,17 @@ namespace IK075G
                     dateTimePickerMonthTo.Visible = false;
                     dateTimePickerDayFrom.Visible = false;
                     dateTimePickerDayTo.Visible = false;
+
+                    lblFrom.Visible = true;
+                    lblFrom.Text = "Från år:";
+                    lblTo.Visible = true;
+                    lblTo.Text = "Till år:";
+
+                    lblFromWeek.Visible = true;
+                    lblFromWeek.Text = "Vecka:";
+                    lblToWeek.Visible = true;
+                    lblToWeek.Text = "Vecka:";
+
 
                     btnShowUpdateDiagram.Enabled = true;
                     LoadYears();
@@ -541,26 +541,15 @@ namespace IK075G
                     dateTimePickerDayFrom.Visible = false;
                     dateTimePickerDayTo.Visible = false;
 
-                    btnShowUpdateDiagram.Enabled = true;
-                }
-            }
+                    lblFrom.Visible = true;
+                    lblFrom.Text = "Från:";
+                    lblTo.Visible = true;
+                    lblTo.Text = "Till";
+                    lblFromWeek.Visible = false;
+                    lblToWeek.Visible = false;
 
-        }
-        private void comboBoxYearFrom_SelectedIndexChanged(object sender, EventArgs e) //Startår
-        {
-            LoadWeekNumbers();
-        }
-        private void comboBoxYearTo_SelectedIndexChanged(object sender, EventArgs e) //Slutår
-        {
-            LoadWeekNumbers();
-        }
-        private void comboBoxWeekFrom_SelectedIndexChanged(object sender, EventArgs e) //Startvecka
-        {
-            LoadWeekNumbers();
-        }
-        private void comboBoxWeekTo_SelectedIndexChanged(object sender, EventArgs e) //Slutvecka
-        {
-            btnShowUpdateDiagram.Enabled = true;
+                btnShowUpdateDiagram.Enabled = true;
+                }
         }
         private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e) //Analys
         {
@@ -582,69 +571,7 @@ namespace IK075G
             else
             {
                 comboBoxTimeInterval.Enabled = true;
-                dateTimePickerDayFrom.Enabled = true;
-                dateTimePickerDayTo.Enabled = true;
             }
-        }
-
-        //Klocka
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            int hh = DateTime.Now.Hour;
-            int mm = DateTime.Now.Minute;
-            int ss = DateTime.Now.Second;
-
-            string time = "";
-
-            if (hh < 10)
-            {
-                time += "0" + hh;
-            }
-            else
-            {
-                time += hh;
-            }
-            time += ":";
-
-            if (mm < 10)
-            {
-                time += "0" + mm;
-            }
-            else
-            {
-                time += mm;
-            }
-            time += ":";
-
-            if (ss < 10)
-            {
-                time += "0" + ss;
-            }
-            else
-            {
-                time += ss;
-            }
-            lblTodaysDateAndTime.Text = DateTime.Now.ToShortDateString() + "  " + DateTime.Now.DayOfWeek + "  " + time;
-
-
-        } //Klocka och datum
-
-        //Datetimepickers
-        private void dateTimePickerDayFrom_ValueChanged(object sender, EventArgs e) //Dag från
-        {
-
-        }
-        private void dateTimePickerDayTo_ValueChanged(object sender, EventArgs e) //Dag till
-        {
-            btnShowUpdateDiagram.Enabled = true;
-        }
-        private void dateTimePickerMonthFrom_ValueChanged(object sender, EventArgs e) //Månad från
-        {
-
-        }
-        private void dateTimePickerMonthTo_ValueChanged(object sender, EventArgs e) //Månad till
-        {
-            btnShowUpdateDiagram.Enabled = true;
         }
 
         //Keypress events
@@ -663,6 +590,36 @@ namespace IK075G
         private void comboBoxTimeInterval_KeyPress(object sender, KeyPressEventArgs e)
         {
             OnlyBigLetters(sender, e);
+        }
+
+        //Backgroundworker
+        private void backgroundWorker1_DoWork_1(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+            for (int i = 1; i <= 10; i++)
+            {
+                if (worker.CancellationPending == true)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+                else
+                {
+                    // Perform a time consuming operation and report progress.
+                    System.Threading.Thread.Sleep(500);
+                    worker.ReportProgress(i * 10);
+                }
+            }
+        }
+        private void backgroundWorker1_ProgressChanged_1(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
+        }
+        private void backgroundWorker1_RunWorkerCompleted_1(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressBar1.Value = 100;
+            resultLabel.ForeColor = Color.Green;
+            resultLabel.Text = "Klart";
         }
     }
 }
