@@ -61,7 +61,7 @@ namespace IK075G
         {
             if (comboBoxTimeInterval.Text=="VECKOVIS")
             {
-                if (comboBoxYearFrom.Text.Equals("") || comboBoxYearTo.Text.Equals("") || comboBoxWeekFrom.Text.Equals("") || comboBoxYearTo.Text.Equals(""))
+                if (comboBoxYearFrom.Text.Equals("") || comboBoxYearTo.Text.Equals("") || comboBoxWeekFrom.Text.Equals("") || comboBoxWeekTo.Text.Equals(""))
                 {
                     resultLabel.Visible = true;
                     resultLabel.ForeColor = Color.Tomato;
