@@ -14,14 +14,14 @@ using System.Globalization;
 
 namespace IK075G
 {
-    public partial class groupBoxFrom : Form
+    public partial class TimeMonitoring : Form
     {
-        string allGroups = "SAMTLIGA";
-        string allAnalysis = "SAMTLIGA";
-        string allPriority = "SAMTLIGA";
-        string group = "SAMTLIGA";
-        string analysis = "SAMTLIGA";
-        string priority = "SAMTLIGA";
+        string allGroups = "";
+        string allAnalysis = "";
+        string allPriority = "";
+        //string group = "";
+        //string analysis = "";
+        //string priority = "";
 
         string timeInterval = string.Empty;
         string hourly = "Timvis";
@@ -34,7 +34,7 @@ namespace IK075G
         NpgsqlConnection conn = new NpgsqlConnection("Server=localhost;Port=5432;UserId=postgres;Password=carlo;Database=IK075G;");
         NpgsqlCommand cmd;
 
-        public groupBoxFrom()
+        public TimeMonitoring()
         {
             InitializeComponent();
         }
@@ -48,6 +48,11 @@ namespace IK075G
 
         private void TimeMonitoring_Load(object sender, EventArgs e)
         {
+            // Hantering av samtliga
+            comboBoxCustomerGrp.Items.Add(allGroups);
+            comboBoxAnalysis.Items.Add(allAnalysis);
+            comboBoxPriority.Items.Add(allPriority);
+
             LoadCustomerGroups();
             LoadAnalysis();
             LoadPriorityGroup();
@@ -61,13 +66,13 @@ namespace IK075G
             comboBoxWeekTo.Visible = false;
 
             // Hantering av samtliga
-            comboBoxCustomerGrp.Items.Add(allGroups);
+            // comboBoxCustomerGrp.Items.Add(allGroups);
             comboBoxCustomerGrp.SelectedItem = allGroups;
 
-            comboBoxAnalysis.Items.Add(allAnalysis);
+            // comboBoxAnalysis.Items.Add(allAnalysis);
             comboBoxAnalysis.SelectedItem = allGroups;
 
-            comboBoxPriority.Items.Add(allPriority);
+            // comboBoxPriority.Items.Add(allPriority);
             comboBoxPriority.SelectedItem = allGroups;
         }
 
@@ -208,8 +213,6 @@ namespace IK075G
 
             string sql = string.Empty;
             sql = sql + "SELECT ";
-            sql = sql + "    prio AS prio,";
-            sql = sql + "    anco AS anco,";
             sql = sql + "    to_char(tetm_date,'YYYY') AS year,";
             sql = sql + "    count(anco) AS quantity,";
             sql = sql + "    to_char(min(diff_interval),'HH24:MI') AS min_time,";
@@ -221,21 +224,12 @@ namespace IK075G
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
             // Hantering av "LIKE" tillfäligt lösning START
-            if (group != allGroups)
-            {
-                sql = sql + " AND upper(cuco) = :newCuco";
-            }
-            if (analysis != allAnalysis)
-            {
-                sql = sql + " AND upper(anco) = :newAnco";
-            }
-            if (priority != allPriority)
-            {
-                sql = sql + " AND upper(prio) = :newPrio";
-            }
+            sql = sql + " AND upper(cuco) LIKE :newCuco";
+            sql = sql + " AND upper(anco) LIKE :newAnco";
+            sql = sql + " AND upper(prio) LIKE :newPrio";
             // Hantering av "LIKE" tillfäligt lösning STOP
             sql = sql + " AND to_char(tetm_date,'YY') BETWEEN :newFrom AND :newTo";
-            sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYY')";
+            sql = sql + " GROUP BY to_char(tetm_date,'YYYY')";
             sql = sql + " ORDER BY to_char(tetm_date,'YYYY')";
 
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
@@ -285,8 +279,6 @@ namespace IK075G
 
             string sql = string.Empty;
             sql = sql + "SELECT ";
-            sql = sql + "    prio AS prio,";
-            sql = sql + "    anco AS anco,";
             sql = sql + "    to_char(tetm_date,'YYYYMM') AS month,";
             sql = sql + "    count(anco) AS quantity,";
             sql = sql + "    to_char(min(diff_interval),'HH24:MI') AS min_time,";
@@ -298,21 +290,12 @@ namespace IK075G
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
             // Hantering av "LIKE" tillfäligt lösning START
-            if (group != allGroups)
-            {
-                sql = sql + " AND upper(cuco) = :newCuco";
-            }
-            if (analysis != allAnalysis)
-            {
-                sql = sql + " AND upper(anco) = :newAnco";
-            }
-            if (priority != allPriority)
-            {
-                sql = sql + " AND upper(prio) = :newPrio";
-            }
+            sql = sql + " AND upper(cuco) LIKE :newCuco";
+            sql = sql + " AND upper(anco) LIKE :newAnco";
+            sql = sql + " AND upper(prio) LIKE :newPrio";
             // Hantering av "LIKE" tillfäligt lösning STOP
             sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newFrom AND :newTo";
-            sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMM')";
+            sql = sql + " GROUP BY to_char(tetm_date,'YYYYMM')";
             sql = sql + " ORDER BY to_char(tetm_date,'YYYYMM')";
 
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
@@ -365,9 +348,7 @@ namespace IK075G
 
             string sql = string.Empty;
             sql = sql + "SELECT ";
-            sql = sql + "    prio AS prio,";
-            sql = sql + "    anco AS anco,";
-            sql = sql + "    to_char(tetm_date,'YYYYWW') AS week,";
+             sql = sql + "   to_char(tetm_date,'YYYYWW') AS week,";
             sql = sql + "    count(anco) AS quantity,";
             sql = sql + "    to_char(min(diff_interval),'HH24:MI') AS min_time,";
             sql = sql + "    to_char(max(diff_interval),'HH24:MI') AS max_time,";
@@ -378,21 +359,12 @@ namespace IK075G
             sql = sql + " FROM xxx_time_monitoring_vw";            
             sql = sql + " WHERE 1 = 1";
             // Hantering av "LIKE" tillfäligt lösning START
-            if (group != allGroups)
-            {
-                sql = sql + " AND upper(cuco) = :newCuco";
-            }
-            if (analysis != allAnalysis)
-            {
-                sql = sql + " AND upper(anco) = :newAnco";
-            }
-            if (priority != allPriority)
-            {
-                sql = sql + " AND upper(prio) = :newPrio";
-            }
+            sql = sql + " AND upper(cuco) LIKE :newCuco";
+            sql = sql + " AND upper(anco) LIKE :newAnco";
+            sql = sql + " AND upper(prio) LIKE :newPrio";
             // Hantering av "LIKE" tillfäligt lösning STOP
             sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newFrom AND :newTo";
-            sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYWW')";
+            sql = sql + " GROUP BY to_char(tetm_date,'YYYYWW')";
             sql = sql + " ORDER BY to_char(tetm_date,'YYYYWW')";
 
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
@@ -438,8 +410,6 @@ namespace IK075G
 
             string sql = string.Empty;
             sql = sql + "SELECT ";
-            sql = sql + "    prio AS prio,";
-            sql = sql + "    anco AS anco,";
             sql = sql + "    to_char(tetm_date,'YYYYMMDD') AS day,";
             sql = sql + "    count(anco) AS quantity,";
             sql = sql + "    to_char(min(diff_interval),'HH24:MI') AS min_time,";
@@ -451,21 +421,12 @@ namespace IK075G
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
             // Hantering av "LIKE" tillfäligt lösning START
-            if (group != allGroups)
-            {
-                sql = sql + " AND upper(cuco) = :newCuco";
-            }
-            if (analysis != allAnalysis)
-            {
-                sql = sql + " AND upper(anco) = :newAnco";
-            }
-            if (priority != allPriority)
-            {
-                sql = sql + " AND upper(prio) = :newPrio";
-            }
+            sql = sql + " AND upper(cuco) LIKE :newCuco";
+            sql = sql + " AND upper(anco) LIKE :newAnco";
+            sql = sql + " AND upper(prio) LIKE :newPrio";
             // Hantering av "LIKE" tillfäligt lösning STOP
             sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newFrom AND :newTo";
-            sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
+            sql = sql + " GROUP BY to_char(tetm_date,'YYYYMMDD')";
             sql = sql + " ORDER BY to_char(tetm_date,'YYYYMMDD')";
 
             NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
@@ -519,10 +480,22 @@ namespace IK075G
         private void btnShowUpdateDiagram_Click(object sender, EventArgs e)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
-
-            string customerGroup = comboBoxCustomerGrp.SelectedItem.ToString().ToUpper();
-            string analys = comboBoxAnalysis.SelectedItem.ToString().ToUpper();
-            string prio = comboBoxPriority.SelectedItem.ToString().ToUpper();
+            
+            string customerGroup = comboBoxCustomerGrp.Text.ToString().ToUpper();
+            if (customerGroup == string.Empty)
+            {
+                customerGroup = "%";
+            }
+            string analys = comboBoxAnalysis.Text.ToString().ToUpper();
+            if (analys == string.Empty)
+            {
+                analys = "%";
+            }
+            string prio = comboBoxPriority.Text.ToString().ToUpper();
+            if (prio == string.Empty)
+            {
+                prio = "%";
+            }
             
             DateTime dateFrom;
             DateTime dateTo;
@@ -730,21 +703,6 @@ namespace IK075G
                 comboBoxWeekFrom.Visible = false;
                 comboBoxWeekTo.Visible = false;
             }
-        }
-
-        private void comboBoxCustomerGrp_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            group = comboBoxCustomerGrp.SelectedItem.ToString().ToUpper();
-        }
-
-        private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            analysis = comboBoxAnalysis.SelectedItem.ToString().ToUpper();
-        }
-
-        private void comboBoxPriority_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            priority = comboBoxPriority.SelectedItem.ToString().ToUpper();
         }
     }
 }

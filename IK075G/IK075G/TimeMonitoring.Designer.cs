@@ -1,6 +1,6 @@
 ﻿namespace IK075G
 {
-    partial class groupBoxFrom
+    partial class TimeMonitoring
     {
         /// <summary>
         /// Required designer variable.
@@ -28,11 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel1 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
             System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel2 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
             System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(groupBoxFrom));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TimeMonitoring));
             this.btnBack = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
@@ -53,6 +54,7 @@
             this.comboBoxWeekTo = new System.Windows.Forms.ComboBox();
             this.comboBoxWeekFrom = new System.Windows.Forms.ComboBox();
             this.comboBoxYearFrom = new System.Windows.Forms.ComboBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.chartResponseTime)).BeginInit();
             this.SuspendLayout();
             // 
@@ -108,7 +110,6 @@
             this.comboBoxAnalysis.Name = "comboBoxAnalysis";
             this.comboBoxAnalysis.Size = new System.Drawing.Size(230, 28);
             this.comboBoxAnalysis.TabIndex = 31;
-            this.comboBoxAnalysis.SelectedIndexChanged += new System.EventHandler(this.comboBoxAnalysis_SelectedIndexChanged);
             // 
             // comboBoxPriority
             // 
@@ -116,12 +117,11 @@
             this.comboBoxPriority.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxPriority.FormattingEnabled = true;
-            this.comboBoxPriority.Location = new System.Drawing.Point(539, 64);
+            this.comboBoxPriority.Location = new System.Drawing.Point(539, 62);
             this.comboBoxPriority.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxPriority.Name = "comboBoxPriority";
             this.comboBoxPriority.Size = new System.Drawing.Size(230, 28);
             this.comboBoxPriority.TabIndex = 30;
-            this.comboBoxPriority.SelectedIndexChanged += new System.EventHandler(this.comboBoxPriority_SelectedIndexChanged);
             // 
             // comboBoxCustomerGrp
             // 
@@ -134,7 +134,6 @@
             this.comboBoxCustomerGrp.Name = "comboBoxCustomerGrp";
             this.comboBoxCustomerGrp.Size = new System.Drawing.Size(230, 28);
             this.comboBoxCustomerGrp.TabIndex = 29;
-            this.comboBoxCustomerGrp.SelectedIndexChanged += new System.EventHandler(this.comboBoxCustomerGrp_SelectedIndexChanged);
             // 
             // lblDateFrom
             // 
@@ -235,10 +234,10 @@
             chartArea1.AxisY2.CustomLabels.Add(customLabel2);
             chartArea1.Name = "ChartArea1";
             this.chartResponseTime.ChartAreas.Add(chartArea1);
-            this.chartResponseTime.Location = new System.Drawing.Point(47, 206);
+            this.chartResponseTime.Location = new System.Drawing.Point(47, 201);
             this.chartResponseTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chartResponseTime.Name = "chartResponseTime";
-            this.chartResponseTime.Size = new System.Drawing.Size(1248, 460);
+            this.chartResponseTime.Size = new System.Drawing.Size(1273, 500);
             this.chartResponseTime.TabIndex = 41;
             this.chartResponseTime.Text = "chart1";
             title1.Name = "Test Titel1";
@@ -292,7 +291,7 @@
             this.comboBoxYearFrom.TabIndex = 42;
             this.comboBoxYearFrom.Text = "Startår";
             // 
-            // groupBoxFrom
+            // TimeMonitoring
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -322,7 +321,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
-            this.Name = "groupBoxFrom";
+            this.Name = "TimeMonitoring";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "IK075G - Svarstider";
             this.Load += new System.EventHandler(this.TimeMonitoring_Load);
@@ -354,5 +353,6 @@
         private System.Windows.Forms.ComboBox comboBoxWeekTo;
         private System.Windows.Forms.ComboBox comboBoxWeekFrom;
         private System.Windows.Forms.ComboBox comboBoxYearFrom;
+        private System.Windows.Forms.Timer timer1;
     }
 }
