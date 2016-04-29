@@ -115,6 +115,7 @@
             // 
             this.comboBoxPriority.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.comboBoxPriority.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxPriority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxPriority.FormattingEnabled = true;
             this.comboBoxPriority.Location = new System.Drawing.Point(539, 62);
@@ -205,6 +206,7 @@
             // 
             this.comboBoxTimeInterval.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.comboBoxTimeInterval.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxTimeInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTimeInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.comboBoxTimeInterval.FormattingEnabled = true;
             this.comboBoxTimeInterval.Location = new System.Drawing.Point(47, 127);
@@ -247,49 +249,49 @@
             // 
             this.comboBoxYearTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.comboBoxYearTo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxYearTo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxYearTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxYearTo.FormattingEnabled = true;
             this.comboBoxYearTo.Location = new System.Drawing.Point(539, 162);
             this.comboBoxYearTo.Name = "comboBoxYearTo";
             this.comboBoxYearTo.Size = new System.Drawing.Size(102, 28);
             this.comboBoxYearTo.TabIndex = 44;
-            this.comboBoxYearTo.Text = "Slutår";
             // 
             // comboBoxWeekTo
             // 
             this.comboBoxWeekTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.comboBoxWeekTo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxWeekTo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxWeekTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxWeekTo.FormattingEnabled = true;
             this.comboBoxWeekTo.Location = new System.Drawing.Point(647, 162);
             this.comboBoxWeekTo.Name = "comboBoxWeekTo";
             this.comboBoxWeekTo.Size = new System.Drawing.Size(120, 28);
             this.comboBoxWeekTo.TabIndex = 45;
-            this.comboBoxWeekTo.Text = "Slutvecka";
             // 
             // comboBoxWeekFrom
             // 
             this.comboBoxWeekFrom.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.comboBoxWeekFrom.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxWeekFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxWeekFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxWeekFrom.FormattingEnabled = true;
             this.comboBoxWeekFrom.Location = new System.Drawing.Point(398, 162);
             this.comboBoxWeekFrom.Name = "comboBoxWeekFrom";
             this.comboBoxWeekFrom.Size = new System.Drawing.Size(124, 28);
             this.comboBoxWeekFrom.TabIndex = 43;
-            this.comboBoxWeekFrom.Text = "Startvecka";
             // 
             // comboBoxYearFrom
             // 
             this.comboBoxYearFrom.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.comboBoxYearFrom.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxYearFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxYearFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxYearFrom.FormattingEnabled = true;
             this.comboBoxYearFrom.Location = new System.Drawing.Point(294, 162);
             this.comboBoxYearFrom.Name = "comboBoxYearFrom";
             this.comboBoxYearFrom.Size = new System.Drawing.Size(97, 28);
             this.comboBoxYearFrom.TabIndex = 42;
-            this.comboBoxYearFrom.Text = "Startår";
             // 
             // TimeMonitoring
             // 
