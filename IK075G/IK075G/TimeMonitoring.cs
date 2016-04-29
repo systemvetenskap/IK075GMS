@@ -16,12 +16,9 @@ namespace IK075G
 {
     public partial class TimeMonitoring : Form
     {
-        string allGroups = "";
-        string allAnalysis = "";
-        string allPriority = "";
-        //string group = "";
-        //string analysis = "";
-        //string priority = "";
+        string allGroups = "ALLA";
+        string allAnalysis = "ALLA";
+        string allPriority = "ALLA";
 
         string timeInterval = string.Empty;
         string hourly = "Timvis";
@@ -65,14 +62,8 @@ namespace IK075G
             comboBoxWeekFrom.Visible = false;
             comboBoxWeekTo.Visible = false;
 
-            // Hantering av samtliga
-            // comboBoxCustomerGrp.Items.Add(allGroups);
             comboBoxCustomerGrp.SelectedItem = allGroups;
-
-            // comboBoxAnalysis.Items.Add(allAnalysis);
             comboBoxAnalysis.SelectedItem = allGroups;
-
-            // comboBoxPriority.Items.Add(allPriority);
             comboBoxPriority.SelectedItem = allGroups;
         }
 
@@ -223,11 +214,9 @@ namespace IK075G
             sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
-            // Hantering av "LIKE" tillfäligt lösning START
             sql = sql + " AND upper(cuco) LIKE :newCuco";
             sql = sql + " AND upper(anco) LIKE :newAnco";
             sql = sql + " AND upper(prio) LIKE :newPrio";
-            // Hantering av "LIKE" tillfäligt lösning STOP
             sql = sql + " AND to_char(tetm_date,'YY') BETWEEN :newFrom AND :newTo";
             sql = sql + " GROUP BY to_char(tetm_date,'YYYY')";
             sql = sql + " ORDER BY to_char(tetm_date,'YYYY')";
@@ -267,7 +256,6 @@ namespace IK075G
             return newListMember;
         }
 
-        // Metod för att hämta matris        
         public List<ResponseTimes> GetResponseByMonth(string customerGroup, string analys, string prio, string monthFrom, string monthTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
@@ -289,11 +277,9 @@ namespace IK075G
             sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
-            // Hantering av "LIKE" tillfäligt lösning START
             sql = sql + " AND upper(cuco) LIKE :newCuco";
             sql = sql + " AND upper(anco) LIKE :newAnco";
             sql = sql + " AND upper(prio) LIKE :newPrio";
-            // Hantering av "LIKE" tillfäligt lösning STOP
             sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newFrom AND :newTo";
             sql = sql + " GROUP BY to_char(tetm_date,'YYYYMM')";
             sql = sql + " ORDER BY to_char(tetm_date,'YYYYMM')";
@@ -336,7 +322,6 @@ namespace IK075G
             return newListMember;
         }
 
-        // Metod för att hämta matris
         public List<ResponseTimes> GetResponseByWeek(string customerGroup, string analys, string prio, string yearFrom, string yearTo, string weekFrom, string weekTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
@@ -358,11 +343,9 @@ namespace IK075G
             sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
             sql = sql + " FROM xxx_time_monitoring_vw";            
             sql = sql + " WHERE 1 = 1";
-            // Hantering av "LIKE" tillfäligt lösning START
             sql = sql + " AND upper(cuco) LIKE :newCuco";
             sql = sql + " AND upper(anco) LIKE :newAnco";
             sql = sql + " AND upper(prio) LIKE :newPrio";
-            // Hantering av "LIKE" tillfäligt lösning STOP
             sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newFrom AND :newTo";
             sql = sql + " GROUP BY to_char(tetm_date,'YYYYWW')";
             sql = sql + " ORDER BY to_char(tetm_date,'YYYYWW')";
@@ -401,7 +384,6 @@ namespace IK075G
             return newListMember;
         }
 
-        // Metod för att hämta matris
         public List<ResponseTimes> GetResponseByDay(string customerGroup, string analys, string prio, string dayFrom, string dayTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
@@ -420,11 +402,9 @@ namespace IK075G
             sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
-            // Hantering av "LIKE" tillfäligt lösning START
             sql = sql + " AND upper(cuco) LIKE :newCuco";
             sql = sql + " AND upper(anco) LIKE :newAnco";
             sql = sql + " AND upper(prio) LIKE :newPrio";
-            // Hantering av "LIKE" tillfäligt lösning STOP
             sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newFrom AND :newTo";
             sql = sql + " GROUP BY to_char(tetm_date,'YYYYMMDD')";
             sql = sql + " ORDER BY to_char(tetm_date,'YYYYMMDD')";
@@ -480,19 +460,18 @@ namespace IK075G
         private void btnShowUpdateDiagram_Click(object sender, EventArgs e)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
-            
             string customerGroup = comboBoxCustomerGrp.Text.ToString().ToUpper();
-            if (customerGroup == string.Empty)
+            if (customerGroup == allGroups)
             {
                 customerGroup = "%";
             }
             string analys = comboBoxAnalysis.Text.ToString().ToUpper();
-            if (analys == string.Empty)
+            if (analys == allAnalysis)
             {
                 analys = "%";
             }
             string prio = comboBoxPriority.Text.ToString().ToUpper();
-            if (prio == string.Empty)
+            if (prio == allPriority)
             {
                 prio = "%";
             }
@@ -565,7 +544,7 @@ namespace IK075G
             chartResponseTime.Titles.Clear();
             chartResponseTime.Series.Clear();
 
-            // titel ovanför diagramet  
+            // diagram titel 
             chartResponseTime.Titles.Add("Svarstider " );
             chartResponseTime.ChartAreas[0].AxisX.Title = "Svarstider " + timeInterval;
             
@@ -596,11 +575,10 @@ namespace IK075G
 
             chartResponseTime.ChartAreas[0].AxisX.Interval = 1;
             chartResponseTime.ChartAreas[0].AxisY.IntervalOffsetType = DateTimeIntervalType.Minutes;
-            // chartResponseTime.ChartAreas[0].AxisY.Interval = 2;
 
             foreach (ResponseTimes item in newListMember)
             {
-                // ritar ut diagrammet punkt för punkt
+                // ritar diagrammet
                 DataPoint newAveragePoint = new DataPoint();
                 if (timeInterval == daily.ToUpper())
                 {

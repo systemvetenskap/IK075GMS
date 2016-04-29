@@ -15,6 +15,12 @@ namespace IK075G
 {
     public partial class MonitoringMeasurements : Form
     {
+        // Suad start
+        string allGroups = "ALLA";
+        string allAnalysis = "ALLA";
+        string allPriority = "ALLA";
+        // Suad stop
+         
         //Upprättar koppling mot databas
         NpgsqlConnection conn = new NpgsqlConnection("Server=localhost;Port=5432;UserId=postgres;Password=carlo;Database=IK075G;");
         NpgsqlCommand cmd;
@@ -30,11 +36,24 @@ namespace IK075G
         }
         private void MonitoringMeasurements_Load(object sender, EventArgs e) //Formuläret laddas
         {
+            // Suad start
+            // Hantering av samtliga
+            comboBoxCustomerGroup.Items.Add(allGroups);
+            comboBoxAnalysis.Items.Add(allAnalysis);
+            comboBoxPriorityGroup.Items.Add(allPriority);
+            // Suad stop
             DisableDatePick();
             LoadTimeInterval();
             LoadCustomerGroups();
             LoadAnalysis();
             LoadPriorityGroup();
+
+            // Suad start
+            // Hantering av samtliga
+            comboBoxCustomerGroup.SelectedItem = allGroups;
+            comboBoxAnalysis.SelectedItem = allGroups;
+            comboBoxPriorityGroup.SelectedItem = allGroups;
+            // Suad stop
 
             comboBoxPriorityGroup.Enabled = false;
             comboBoxAnalysis.Enabled = false;
@@ -80,11 +99,26 @@ namespace IK075G
                 // Start the asynchronous operation.
                 backgroundWorker1.RunWorkerAsync();
             }
+                        
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
-            string customergroup = comboBoxCustomerGroup.Text;
-            string analysis = comboBoxAnalysis.Text;
-            string prioritygroup = comboBoxPriorityGroup.Text;
+            // Suad start
             string timeinterval = comboBoxTimeInterval.Text;
+            string customergroup = comboBoxCustomerGroup.Text.ToString().ToUpper();
+            if (customergroup == allGroups)
+            {
+                customergroup = "%";
+            }
+            string analysis = comboBoxAnalysis.Text.ToString().ToUpper();
+            if (analysis == allAnalysis)
+            {
+                analysis = "%";
+            }
+            string prioritygroup = comboBoxPriorityGroup.Text.ToString().ToUpper();
+            if (prioritygroup == allPriority)
+            {
+                prioritygroup = "%";
+            }
+            // Suad stop
 
             if (timeinterval == "DAGVIS")
             {
@@ -172,7 +206,9 @@ namespace IK075G
         //Egna metoder
         public void LoadCustomerGroups() //Metod för att LADDA kundgrupper i comboboxen
         {
-            string sql = "SELECT cuco FROM cuco_sub2 ORDER BY cuco";
+            // Suad start
+            string sql = "SELECT cuco AS cuco FROM cuco_sub2 WHERE LENGTH(REPLACE(cuco, ' ','')) > 0 ORDER BY cuco";
+            // Suad stop
             conn.Open();
             cmd = new NpgsqlCommand(sql, conn);
             NpgsqlDataReader dr = cmd.ExecuteReader();
@@ -220,7 +256,7 @@ namespace IK075G
         {
             comboBoxWeekFrom.Items.Clear();
             comboBoxWeekTo.Items.Clear();
-            for (int i = 1; i <= 52; i++)
+            for (int i = 1; i <= 53; i++)
             {
                 comboBoxWeekFrom.Items.Add(i.ToString());
                 comboBoxWeekTo.Items.Add(i.ToString());
@@ -298,8 +334,7 @@ namespace IK075G
             weekto = weekto.PadLeft(2, '0');
             
             string sql = string.Empty;
-            sql = sql + "SELECT '' cuco, ";
-            sql = sql + "    prio AS prio,";
+            sql = sql + "SELECT prio AS prio,";
             sql = sql + "    anco AS anco,";
             sql = sql + "    to_char(tetm_date,'YYYYWW') AS myweek,";
             sql = sql + "    count(anco) AS quantity,";
@@ -308,8 +343,11 @@ namespace IK075G
             sql = sql + "   avg(rawr) medelrawr ";
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
-            sql = sql + " AND prio = :newPrio";
-            sql = sql + " AND anco = :newFirstanco";
+            // Suad start 
+            sql = sql + " AND upper(cuco) LIKE :newcustomerGroup";
+            sql = sql + " AND upper(anco) LIKE :newFirstanco";
+            sql = sql + " AND upper(prio) LIKE :newPrio";
+            // Suad stop
             sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newweekFrom AND :newweekTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYWW')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYWW')";
@@ -360,8 +398,7 @@ namespace IK075G
             }
 
             string sql = string.Empty;
-            sql = sql + "SELECT '' cuco, ";
-            sql = sql + "    prio AS prio,";
+            sql = sql + "SELECT prio AS prio,";
             sql = sql + "    anco AS anco,";
             sql = sql + "    to_char(tetm_date,'YYYYMMDD') AS myday,";
             sql = sql + "    count(anco) AS quantity,";
@@ -370,8 +407,11 @@ namespace IK075G
             sql = sql + "   avg(rawr) medelrawr ";
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
-            sql = sql + " AND prio = :newPrio";
-            sql = sql + " AND anco = :newFirstanco";
+            // Suad start
+            sql = sql + " AND upper(cuco) LIKE :newcustomerGroup";
+            sql = sql + " AND upper(anco) LIKE :newFirstanco";
+            sql = sql + " AND upper(prio) LIKE :newPrio";
+            // Suad stop
             sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newdayFrom AND :newdayTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
@@ -418,8 +458,7 @@ namespace IK075G
 
             string sql = string.Empty;
 
-            sql = sql + "SELECT '' cuco, ";
-            sql = sql + "    prio AS prio,";
+            sql = sql + "SELECT prio AS prio,";
             sql = sql + "    anco AS anco,";
             sql = sql + "    to_char(tetm_date,'YYYYMM') AS mymonth,";
             sql = sql + "    count(anco) AS quantity,";
@@ -428,8 +467,11 @@ namespace IK075G
             sql = sql + "   avg(rawr) medelrawr ";
             sql = sql + " FROM xxx_time_monitoring_vw";
             sql = sql + " WHERE 1 = 1";
-            sql = sql + " AND prio = :newPrio";
-            sql = sql + " AND anco = :newFirstanco";
+            // Suad start
+            sql = sql + " AND upper(cuco) LIKE :newcustomerGroup";
+            sql = sql + " AND upper(anco) LIKE :newFirstanco";
+            sql = sql + " AND upper(prio) LIKE :newPrio";
+            // Suad stop
             sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newmonthFrom AND :newmonthTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMM')";
             sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMM')";
