@@ -244,7 +244,6 @@ namespace IK075G
                 comboBoxPriorityGroup.Items.Add(prio);
             }
             conn.Close();
-            comboBoxPriorityGroup.Items.Add("ALLA");
         }
         public void LoadTimeInterval() //Metod för att FYLLA comboboxen med tidsintervall
         {
