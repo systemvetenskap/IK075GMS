@@ -17,7 +17,6 @@ namespace IK075G
     public partial class MonitoringMeasurements : Form
     {
         string allGroups = "ALLA";
-        string allAnalysis = "ALLA";
         string allPriority = "ALLA";
          
         //Upprättar koppling mot databas
@@ -37,7 +36,6 @@ namespace IK075G
         {
             // Hantering av samtliga
             comboBoxCustomerGroup.Items.Add(allGroups);
-            comboBoxAnalysis.Items.Add(allAnalysis);
             comboBoxPriorityGroup.Items.Add(allPriority);
             DisableDatePick();
             LoadTimeInterval();
@@ -103,10 +101,7 @@ namespace IK075G
                 customergroup = "%";
             }
             string analysis = comboBoxAnalysis.Text.ToString().ToUpper();
-            if (analysis == allAnalysis)
-            {
-                analysis = "%";
-            }
+
             string prioritygroup = comboBoxPriorityGroup.Text.ToString().ToUpper();
             if (prioritygroup == allPriority)
             {
