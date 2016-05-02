@@ -11,6 +11,7 @@ using Npgsql;
 using NpgsqlTypes;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Globalization;
+using System.Configuration;
 
 namespace IK075G
 {
@@ -28,7 +29,8 @@ namespace IK075G
         string byyear = "Årsvis";
         
         // Upprättar koppling mot databas
-        NpgsqlConnection conn = new NpgsqlConnection("Server=localhost;Port=5432;UserId=postgres;Password=carlo;Database=IK075G;");
+        NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["IK075G"].ConnectionString);
+
         NpgsqlCommand cmd;
 
         public TimeMonitoring()
@@ -45,6 +47,7 @@ namespace IK075G
 
         private void TimeMonitoring_Load(object sender, EventArgs e)
         {
+
             // Hantering av samtliga
             comboBoxCustomerGrp.Items.Add(allGroups);
             comboBoxAnalysis.Items.Add(allAnalysis);

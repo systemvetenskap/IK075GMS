@@ -10,19 +10,18 @@ using System.Windows.Forms;
 using Npgsql;
 using NpgsqlTypes;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Configuration;
 
 namespace IK075G
 {
     public partial class MonitoringMeasurements : Form
     {
-        // Suad start
         string allGroups = "ALLA";
         string allAnalysis = "ALLA";
         string allPriority = "ALLA";
-        // Suad stop
          
         //Upprättar koppling mot databas
-        NpgsqlConnection conn = new NpgsqlConnection("Server=localhost;Port=5432;UserId=postgres;Password=carlo;Database=IK075G;");
+        NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["IK075G"].ConnectionString);
         NpgsqlCommand cmd;
 
         public MonitoringMeasurements()
@@ -36,24 +35,20 @@ namespace IK075G
         }
         private void MonitoringMeasurements_Load(object sender, EventArgs e) //Formuläret laddas
         {
-            // Suad start
             // Hantering av samtliga
             comboBoxCustomerGroup.Items.Add(allGroups);
             comboBoxAnalysis.Items.Add(allAnalysis);
             comboBoxPriorityGroup.Items.Add(allPriority);
-            // Suad stop
             DisableDatePick();
             LoadTimeInterval();
             LoadCustomerGroups();
             LoadAnalysis();
             LoadPriorityGroup();
 
-            // Suad start
             // Hantering av samtliga
             comboBoxCustomerGroup.SelectedItem = allGroups;
             comboBoxAnalysis.SelectedItem = allGroups;
             comboBoxPriorityGroup.SelectedItem = allGroups;
-            // Suad stop
 
             comboBoxPriorityGroup.Enabled = false;
             comboBoxAnalysis.Enabled = false;
@@ -101,7 +96,6 @@ namespace IK075G
             }
                         
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
-            // Suad start
             string timeinterval = comboBoxTimeInterval.Text;
             string customergroup = comboBoxCustomerGroup.Text.ToString().ToUpper();
             if (customergroup == allGroups)
@@ -118,7 +112,6 @@ namespace IK075G
             {
                 prioritygroup = "%";
             }
-            // Suad stop
 
             if (timeinterval == "DAGVIS")
             {
@@ -206,9 +199,7 @@ namespace IK075G
         //Egna metoder
         public void LoadCustomerGroups() //Metod för att LADDA kundgrupper i comboboxen
         {
-            // Suad start
             string sql = "SELECT cuco AS cuco FROM cuco_sub2 WHERE LENGTH(REPLACE(cuco, ' ','')) > 0 ORDER BY cuco";
-            // Suad stop
             conn.Open();
             cmd = new NpgsqlCommand(sql, conn);
             NpgsqlDataReader dr = cmd.ExecuteReader();
