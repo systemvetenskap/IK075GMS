@@ -179,6 +179,11 @@ namespace IK075G
                 chart1.Series["Series3"].Points.Add(newMaxPoint);
             }
             chart1.Show();
+            progressBar1.Visible = true;
+            progressBar1.Value = 100;
+            resultLabel.Visible = true;
+            resultLabel.ForeColor = Color.Green;
+            resultLabel.Text = "Klart";
         }
 
         //Egna metoder
@@ -366,11 +371,6 @@ namespace IK075G
 
             dayfrom = dayfrom.PadLeft(2, '0');
             dayto = dayto.PadLeft(2, '0');
-
-            if (comboBoxPriorityGroup.Text=="ALLA")
-            {
-                MessageBox.Show("Kod för alla prioritetsgrupper, dagvis");
-            }
 
             string sql = string.Empty;
             sql = sql + "SELECT prio AS prio,";
