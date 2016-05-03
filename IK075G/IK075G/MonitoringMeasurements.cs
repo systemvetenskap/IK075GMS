@@ -65,125 +65,133 @@ namespace IK075G
         }
         private void btnShowUpdateDiagram_Click(object sender, EventArgs e) //Updatera/visa diagram
         {
-            resultLabel.Visible = false;
-            if (comboBoxTimeInterval.Text=="VECKOVIS")
+            try
             {
-                if (comboBoxYearFrom.Text.Equals("") || comboBoxYearTo.Text.Equals("") || comboBoxWeekFrom.Text.Equals("") || comboBoxWeekTo.Text.Equals(""))
+                resultLabel.Visible = false;
+                if (comboBoxTimeInterval.Text == "VECKOVIS")
                 {
-                    resultLabel.Visible = true;
-                    resultLabel.ForeColor = Color.Tomato;
-                    resultLabel.Text = "Vänligen välj år samt vecka";
-                    return;
+                    if (comboBoxYearFrom.Text.Equals("") || comboBoxYearTo.Text.Equals("") || comboBoxWeekFrom.Text.Equals("") || comboBoxWeekTo.Text.Equals(""))
+                    {
+                        resultLabel.Visible = true;
+                        resultLabel.ForeColor = Color.Tomato;
+                        resultLabel.Text = "Vänligen välj år samt vecka";
+                        return;
+                    }
+
+                }
+                progressBar1.Visible = true;
+                progressBar1.Value = 0;
+                resultLabel.Visible = true;
+                resultLabel.ForeColor = Color.Tomato;
+                resultLabel.Text = "Laddar diagrammet";
+
+                List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
+                string timeinterval = comboBoxTimeInterval.Text;
+                string customergroup = comboBoxCustomerGroup.Text.ToString().ToUpper();
+                if (customergroup == allGroups)
+                {
+                    customergroup = "%";
+                }
+                string analysis = comboBoxAnalysis.Text.ToString().ToUpper();
+
+                string prioritygroup = comboBoxPriorityGroup.Text.ToString().ToUpper();
+                if (prioritygroup == allPriority)
+                {
+                    prioritygroup = "%";
                 }
 
-            }
-            progressBar1.Visible = true;
-            progressBar1.Value = 0;
-            resultLabel.Visible = true;
-            resultLabel.ForeColor = Color.Tomato;
-            resultLabel.Text = "Laddar diagrammet";
-                        
-            List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
-            string timeinterval = comboBoxTimeInterval.Text;
-            string customergroup = comboBoxCustomerGroup.Text.ToString().ToUpper();
-            if (customergroup == allGroups)
-            {
-                customergroup = "%";
-            }
-            string analysis = comboBoxAnalysis.Text.ToString().ToUpper();
-
-            string prioritygroup = comboBoxPriorityGroup.Text.ToString().ToUpper();
-            if (prioritygroup == allPriority)
-            {
-                prioritygroup = "%";
-            }
-
-            if (timeinterval == "DAGVIS")
-            {
-                string dayfrom = dateTimePickerDayFrom.Value.ToShortDateString();
-                string dayto = dateTimePickerDayTo.Value.ToShortDateString();
-
-                newListMember = getDayValues(customergroup, analysis, prioritygroup, timeinterval, dayfrom, dayto);
-            }
-            else if (timeinterval == "VECKOVIS")
-            {
-                string weekfrom = comboBoxYearFrom.Text+comboBoxWeekFrom.Text.PadLeft(2, '0');
-                string weekto = comboBoxYearTo.Text+comboBoxWeekTo.Text.PadLeft(2, '0');
-
-                newListMember = getWeekValues(customergroup, analysis, prioritygroup, timeinterval, weekfrom, weekto);
-            }
-            else if (timeinterval == "MÅNADSVIS")
-            {
-                string monthfrom = dateTimePickerMonthFrom.Value.ToShortDateString();
-                string monthto = dateTimePickerMonthTo.Value.ToShortDateString();
-
-                newListMember = getMonthValues(customergroup, analysis, prioritygroup, timeinterval, monthfrom, monthto);
-            }
-
-            chart1.Titles.Clear();
-            chart1.Series.Clear();
-            chart1.ChartAreas.Clear();
-            chart1.ChartAreas.Add("");
-
-            // Titel ovanför diagramet  
-            chart1.Titles.Add("Enhet");
-
-            //Kurva för medelvärde
-            chart1.Series.Add("Series1");
-            chart1.Series["Series1"].ChartType = SeriesChartType.Line;
-            chart1.Series["Series1"].LegendText = "Medel värde";
-            chart1.Series["Series1"].XValueType = ChartValueType.DateTime;
-            chart1.Series["Series1"].YValueType = ChartValueType.Double;
-
-            //Kurva för minsta värde
-            chart1.Series.Add("Series2");
-            chart1.Series["Series2"].ChartType = SeriesChartType.Line;
-            chart1.Series["Series2"].LegendText = "Minsta värde";
-            chart1.Series["Series2"].XValueType = ChartValueType.DateTime;
-            chart1.Series["Series2"].YValueType = ChartValueType.Double;
-
-            //Kurva för högsta värde
-            chart1.Series.Add("Series3");
-            chart1.Series["Series3"].ChartType = SeriesChartType.Line;
-            chart1.Series["Series3"].LegendText = "Högsta värde";
-            chart1.Series["Series3"].XValueType = ChartValueType.DateTime;
-            chart1.Series["Series3"].YValueType = ChartValueType.Double;
-
-            foreach (MeasurementMonitoring item in newListMember)
-            {
-                //Ritar ut diagrammet punkt för punkt
-                DataPoint newAveragePoint = new DataPoint();
-                if (timeinterval== "DAGVIS")
+                if (timeinterval == "DAGVIS")
                 {
-                    newAveragePoint.AxisLabel = item.day;
+                    string dayfrom = dateTimePickerDayFrom.Value.ToShortDateString();
+                    string dayto = dateTimePickerDayTo.Value.ToShortDateString();
+
+                    newListMember = getDayValues(customergroup, analysis, prioritygroup, timeinterval, dayfrom, dayto);
                 }
-                else if (timeinterval=="VECKOVIS")
+                else if (timeinterval == "VECKOVIS")
                 {
-                    newAveragePoint.AxisLabel = item.week;
+                    string weekfrom = comboBoxYearFrom.Text + comboBoxWeekFrom.Text.PadLeft(2, '0');
+                    string weekto = comboBoxYearTo.Text + comboBoxWeekTo.Text.PadLeft(2, '0');
+
+                    newListMember = getWeekValues(customergroup, analysis, prioritygroup, timeinterval, weekfrom, weekto);
                 }
-                else if (timeinterval=="MÅNADSVIS")
+                else if (timeinterval == "MÅNADSVIS")
                 {
-                    newAveragePoint.AxisLabel = item.month;
+                    string monthfrom = dateTimePickerMonthFrom.Value.ToShortDateString();
+                    string monthto = dateTimePickerMonthTo.Value.ToShortDateString();
+
+                    newListMember = getMonthValues(customergroup, analysis, prioritygroup, timeinterval, monthfrom, monthto);
                 }
 
-                //newAveragePoint.SetValueY(Convert.ToDouble(item.medelrawr));
-                newAveragePoint.SetValueY(Convert.ToDouble(item.medelrawr));
-                chart1.Series["Series1"].Points.Add(newAveragePoint);
+                chart1.Titles.Clear();
+                chart1.Series.Clear();
+                chart1.ChartAreas.Clear();
+                chart1.ChartAreas.Add("");
 
-                DataPoint newMinPoint = new DataPoint();
-                newMinPoint.SetValueY(Convert.ToDouble(item.minrawr));
-                chart1.Series["Series2"].Points.Add(newMinPoint);
+                // Titel ovanför diagramet  
+                chart1.Titles.Add("Enhet");
 
-                DataPoint newMaxPoint = new DataPoint();
-                newMaxPoint.SetValueY(Convert.ToDouble(item.maxrawr));
-                chart1.Series["Series3"].Points.Add(newMaxPoint);
+                //Kurva för medelvärde
+                chart1.Series.Add("Series1");
+                chart1.Series["Series1"].ChartType = SeriesChartType.Line;
+                chart1.Series["Series1"].LegendText = "Medel värde";
+                chart1.Series["Series1"].XValueType = ChartValueType.DateTime;
+                chart1.Series["Series1"].YValueType = ChartValueType.Double;
+
+                //Kurva för minsta värde
+                chart1.Series.Add("Series2");
+                chart1.Series["Series2"].ChartType = SeriesChartType.Line;
+                chart1.Series["Series2"].LegendText = "Minsta värde";
+                chart1.Series["Series2"].XValueType = ChartValueType.DateTime;
+                chart1.Series["Series2"].YValueType = ChartValueType.Double;
+
+                //Kurva för högsta värde
+                chart1.Series.Add("Series3");
+                chart1.Series["Series3"].ChartType = SeriesChartType.Line;
+                chart1.Series["Series3"].LegendText = "Högsta värde";
+                chart1.Series["Series3"].XValueType = ChartValueType.DateTime;
+                chart1.Series["Series3"].YValueType = ChartValueType.Double;
+
+                foreach (MeasurementMonitoring item in newListMember)
+                {
+                    //Ritar ut diagrammet punkt för punkt
+                    DataPoint newAveragePoint = new DataPoint();
+                    if (timeinterval == "DAGVIS")
+                    {
+                        newAveragePoint.AxisLabel = item.day;
+                    }
+                    else if (timeinterval == "VECKOVIS")
+                    {
+                        newAveragePoint.AxisLabel = item.week;
+                    }
+                    else if (timeinterval == "MÅNADSVIS")
+                    {
+                        newAveragePoint.AxisLabel = item.month;
+                    }
+
+                    newAveragePoint.SetValueY(Convert.ToDouble(item.medelrawr));
+                    chart1.Series["Series1"].Points.Add(newAveragePoint);
+
+                    DataPoint newMinPoint = new DataPoint();
+                    newMinPoint.SetValueY(Convert.ToDouble(item.minrawr));
+                    chart1.Series["Series2"].Points.Add(newMinPoint);
+
+                    DataPoint newMaxPoint = new DataPoint();
+                    newMaxPoint.SetValueY(Convert.ToDouble(item.maxrawr));
+                    chart1.Series["Series3"].Points.Add(newMaxPoint);
+                }
+                chart1.Show();
+                progressBar1.Visible = true;
+                progressBar1.Value = 100;
+                resultLabel.Visible = true;
+                resultLabel.ForeColor = Color.Green;
+                resultLabel.Text = "Klart";
             }
-            chart1.Show();
-            progressBar1.Visible = true;
-            progressBar1.Value = 100;
-            resultLabel.Visible = true;
-            resultLabel.ForeColor = Color.Green;
-            resultLabel.Text = "Klart";
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                conn.Close();
+            }
+
         }
 
         //Egna metoder
@@ -306,183 +314,236 @@ namespace IK075G
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
         public List<MeasurementMonitoring> getWeekValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string weekfrom, string weekto) //Metod för att visa veckovis
-        {          
+        {
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
-            conn.Open();
-
-            weekfrom = weekfrom.PadLeft(2, '0');
-            weekto = weekto.PadLeft(2, '0');
-            
-            string sql = string.Empty;
-            sql = sql + "SELECT prio AS prio,";
-            sql = sql + "    anco AS anco,";
-            sql = sql + "    to_char(tetm_date,'YYYYWW') AS myweek,";
-            sql = sql + "    count(anco) AS quantity,";
-            sql = sql + "   min(rawr) minrawr, ";
-            sql = sql + "   max(rawr) maxrawr, ";
-            sql = sql + "   avg(rawr) medelrawr ";
-            // Suad start 
-            sql = sql + " FROM xxx_monitoring_measure_vw";
-            sql = sql + " WHERE 1 = 1";
-            sql = sql + " AND cuco LIKE :newcustomerGroup";
-            sql = sql + " AND anco = :newFirstanco";
-            sql = sql + " AND prio LIKE :newPrio";
-            // Suad stop
-            sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newweekFrom AND :newweekTo";
-            sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYWW')";
-            sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYWW')";
-            NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
-
-            cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
-            cmd.Parameters["newFirstanco"].Value = analysis;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newweekFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newweekFrom"].Value = weekfrom;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newweekTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newweekTo"].Value = weekto;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
-            cmd.Parameters["newPrio"].Value = prioritygroup;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
-            cmd.Parameters["newcustomerGroup"].Value = customergroup;
-
-            NpgsqlDataReader dr1 = cmd.ExecuteReader();
-            while (dr1.Read())
+            try
             {
-                MeasurementMonitoring newMonitorByWeek = new MeasurementMonitoring();
-                newMonitorByWeek.week = dr1["myweek"].ToString();
-                newMonitorByWeek.prio = dr1["prio"].ToString();
-                newMonitorByWeek.analysis = dr1["anco"].ToString();
-                newMonitorByWeek.minrawr = dr1["minrawr"].ToString();
-                newMonitorByWeek.maxrawr = dr1["maxrawr"].ToString();
-                newMonitorByWeek.medelrawr = dr1["medelrawr"].ToString();
+                conn.Open();
 
-                newListMember.Add(newMonitorByWeek);
+                weekfrom = weekfrom.PadLeft(2, '0');
+                weekto = weekto.PadLeft(2, '0');
+
+                string sql = string.Empty;
+                sql = sql + "SELECT prio AS prio,";
+                sql = sql + "    anco AS anco,";
+                sql = sql + "    to_char(tetm_date,'YYYYWW') AS myweek,";
+                sql = sql + "    count(anco) AS quantity,";
+                sql = sql + "   min(rawr) minrawr, ";
+                sql = sql + "   max(rawr) maxrawr, ";
+                sql = sql + "   avg(rawr) medelrawr ";
+                // Suad start 
+                sql = sql + " FROM xxx_monitoring_measure_vw";
+                sql = sql + " WHERE 1 = 1";
+                sql = sql + " AND cuco LIKE :newcustomerGroup";
+                sql = sql + " AND anco = :newFirstanco";
+                sql = sql + " AND prio LIKE :newPrio";
+                // Suad stop
+                sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newweekFrom AND :newweekTo";
+                sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYWW')";
+                sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYWW')";
+                NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
+
+                cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
+                cmd.Parameters["newFirstanco"].Value = analysis;
+
+                cmd.Parameters.Add(new NpgsqlParameter("newweekFrom", NpgsqlDbType.Varchar));
+                cmd.Parameters["newweekFrom"].Value = weekfrom;
+
+                cmd.Parameters.Add(new NpgsqlParameter("newweekTo", NpgsqlDbType.Varchar));
+                cmd.Parameters["newweekTo"].Value = weekto;
+
+                cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
+                cmd.Parameters["newPrio"].Value = prioritygroup;
+
+                cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
+                cmd.Parameters["newcustomerGroup"].Value = customergroup;
+
+                NpgsqlDataReader dr1 = cmd.ExecuteReader();
+                while (dr1.Read())
+                {
+                    MeasurementMonitoring newMonitorByWeek = new MeasurementMonitoring();
+                    newMonitorByWeek.week = dr1["myweek"].ToString();
+                    newMonitorByWeek.prio = dr1["prio"].ToString();
+                    newMonitorByWeek.analysis = dr1["anco"].ToString();
+                    newMonitorByWeek.minrawr = dr1["minrawr"].ToString();
+                    newMonitorByWeek.maxrawr = dr1["maxrawr"].ToString();
+                    newMonitorByWeek.medelrawr = dr1["medelrawr"].ToString();
+
+                    newListMember.Add(newMonitorByWeek);
+                }
+                conn.Close();
             }
-            conn.Close();
+            catch (NpgsqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                conn.Close();
+            }
+            finally
+            {
+                conn.Close();
+            }
+
             return newListMember;
         }
         public List<MeasurementMonitoring> getDayValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string dayfrom, string dayto) //Metod för att visa dagvis
         {
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
-            conn.Open();
-
-            dayfrom = dayfrom.PadLeft(2, '0');
-            dayto = dayto.PadLeft(2, '0');
-
-            string sql = string.Empty;
-            sql = sql + "SELECT prio AS prio,";
-            sql = sql + "    anco AS anco,";
-            sql = sql + "    to_char(tetm_date,'YYYYMMDD') AS myday,";
-            sql = sql + "    count(anco) AS quantity,";
-            sql = sql + "   min(rawr) minrawr, ";
-            sql = sql + "   max(rawr) maxrawr, ";
-            sql = sql + "   avg(rawr) medelrawr ";
-            // Suad start
-            sql = sql + " FROM xxx_monitoring_measure_vw";
-            sql = sql + " WHERE 1 = 1";
-            sql = sql + " AND cuco LIKE :newcustomerGroup";
-            sql = sql + " AND anco = :newFirstanco";
-            sql = sql + " AND prio LIKE :newPrio";
-            // Suad stop
-            sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newdayFrom AND :newdayTo";
-            sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
-            sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
-            NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
-
-            cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
-            cmd.Parameters["newFirstanco"].Value = analysis;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newdayFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newdayFrom"].Value = dayfrom;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newdayTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newdayTo"].Value = dayto;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
-            cmd.Parameters["newPrio"].Value = prioritygroup;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
-            cmd.Parameters["newcustomerGroup"].Value = customergroup;
-
-            NpgsqlDataReader dr1 = cmd.ExecuteReader();
-            while (dr1.Read())
+            try
             {
-                MeasurementMonitoring newMonitorByDay = new MeasurementMonitoring();
-                newMonitorByDay.day = dr1["myday"].ToString();
-                newMonitorByDay.prio = dr1["prio"].ToString();
-                newMonitorByDay.analysis = dr1["anco"].ToString();
-                newMonitorByDay.minrawr = dr1["minrawr"].ToString();
-                newMonitorByDay.maxrawr = dr1["maxrawr"].ToString();
-                newMonitorByDay.medelrawr = dr1["medelrawr"].ToString();
+                conn.Open();
 
-                newListMember.Add(newMonitorByDay);
+                dayfrom = dayfrom.PadLeft(2, '0');
+                dayto = dayto.PadLeft(2, '0');
+
+                string sql = string.Empty;
+                sql = sql + "SELECT prio AS prio,";
+                sql = sql + "    anco AS anco,";
+                sql = sql + "    to_char(tetm_date,'YYYYMMDD') AS myday,";
+                sql = sql + "    count(anco) AS quantity,";
+                sql = sql + "   min(rawr) minrawr, ";
+                sql = sql + "   max(rawr) maxrawr, ";
+                sql = sql + "   avg(rawr) medelrawr ";
+                // Suad start
+                sql = sql + " FROM xxx_monitoring_measure_vw";
+                sql = sql + " WHERE 1 = 1";
+                sql = sql + " AND cuco LIKE :newcustomerGroup";
+                sql = sql + " AND anco = :newFirstanco";
+                sql = sql + " AND prio LIKE :newPrio";
+                // Suad stop
+                sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newdayFrom AND :newdayTo";
+                sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
+                sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
+                NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
+
+                cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
+                cmd.Parameters["newFirstanco"].Value = analysis;
+
+                cmd.Parameters.Add(new NpgsqlParameter("newdayFrom", NpgsqlDbType.Varchar));
+                cmd.Parameters["newdayFrom"].Value = dayfrom;
+
+                cmd.Parameters.Add(new NpgsqlParameter("newdayTo", NpgsqlDbType.Varchar));
+                cmd.Parameters["newdayTo"].Value = dayto;
+
+                cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
+                cmd.Parameters["newPrio"].Value = prioritygroup;
+
+                cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
+                cmd.Parameters["newcustomerGroup"].Value = customergroup;
+
+                NpgsqlDataReader dr1 = cmd.ExecuteReader();
+                while (dr1.Read())
+                {
+                    MeasurementMonitoring newMonitorByDay = new MeasurementMonitoring();
+                    newMonitorByDay.day = dr1["myday"].ToString();
+                    newMonitorByDay.prio = dr1["prio"].ToString();
+                    newMonitorByDay.analysis = dr1["anco"].ToString();
+                    newMonitorByDay.minrawr = dr1["minrawr"].ToString();
+                    newMonitorByDay.maxrawr = dr1["maxrawr"].ToString();
+                    newMonitorByDay.medelrawr = dr1["medelrawr"].ToString();
+
+                    newListMember.Add(newMonitorByDay);
+                }
+                conn.Close();
             }
-            conn.Close();
+            catch (NpgsqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                conn.Close();
+            }
+            finally
+            {
+                conn.Close();
+            }
+
             return newListMember;
         }
         public List<MeasurementMonitoring> getMonthValues(string customergroup, string analysis, string prioritygroup, string timeinterval, string monthfrom, string monthto) //Metod för att visa månadsvis
         {
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
-            conn.Open();
-
-            monthfrom = monthfrom.PadLeft(2, '0');
-            monthto = monthto.PadLeft(2, '0');
-
-            string sql = string.Empty;
-
-            sql = sql + "SELECT prio AS prio,";
-            sql = sql + "    anco AS anco,";
-            sql = sql + "    to_char(tetm_date,'YYYYMM') AS mymonth,";
-            sql = sql + "    count(anco) AS quantity,";
-            sql = sql + "   min(rawr) minrawr, ";
-            sql = sql + "   max(rawr) maxrawr, ";
-            sql = sql + "   avg(rawr) medelrawr ";
-            // Suad start
-            sql = sql + " FROM xxx_monitoring_measure_vw";
-            sql = sql + " WHERE 1 = 1";
-            sql = sql + " AND cuco LIKE :newcustomerGroup";
-            sql = sql + " AND anco = :newFirstanco";
-            sql = sql + " AND prio LIKE :newPrio";
-            // Suad stop
-            sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newmonthFrom AND :newmonthTo";
-            sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMM')";
-            sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMM')";
-            NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
-
-            cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
-            cmd.Parameters["newFirstanco"].Value = analysis;
-
-            monthfrom = monthfrom.Substring(0, 7);
-            cmd.Parameters.Add(new NpgsqlParameter("newmonthFrom", NpgsqlDbType.Varchar));
-            cmd.Parameters["newmonthFrom"].Value = monthfrom;
-
-            monthto = monthto.Substring(0, 7);
-            cmd.Parameters.Add(new NpgsqlParameter("newmonthTo", NpgsqlDbType.Varchar));
-            cmd.Parameters["newmonthTo"].Value = monthto;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
-            cmd.Parameters["newPrio"].Value = prioritygroup;
-
-            cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
-            cmd.Parameters["newcustomerGroup"].Value = customergroup;
-
-            NpgsqlDataReader dr1 = cmd.ExecuteReader();
-            while (dr1.Read())
+            try
             {
-                MeasurementMonitoring newMonitorByMonth = new MeasurementMonitoring();
-                newMonitorByMonth.month = dr1["mymonth"].ToString();
-                newMonitorByMonth.prio = dr1["prio"].ToString();
-                newMonitorByMonth.analysis = dr1["anco"].ToString();
-                newMonitorByMonth.minrawr = dr1["minrawr"].ToString();
-                newMonitorByMonth.maxrawr = dr1["maxrawr"].ToString();
-                newMonitorByMonth.medelrawr = dr1["medelrawr"].ToString();
+                conn.Open();
 
-                newListMember.Add(newMonitorByMonth);
+                monthfrom = monthfrom.PadLeft(2, '0');
+                monthto = monthto.PadLeft(2, '0');
+
+                string sql = string.Empty;
+
+                sql = sql + "SELECT prio AS prio,";
+                sql = sql + "    anco AS anco,";
+                sql = sql + "    to_char(tetm_date,'YYYYMM') AS mymonth,";
+                sql = sql + "    count(anco) AS quantity,";
+                sql = sql + "   min(rawr) minrawr, ";
+                sql = sql + "   max(rawr) maxrawr, ";
+                sql = sql + "   avg(rawr) medelrawr ";
+                // Suad start
+                sql = sql + " FROM xxx_monitoring_measure_vw";
+                sql = sql + " WHERE 1 = 1";
+                sql = sql + " AND cuco LIKE :newcustomerGroup";
+                sql = sql + " AND anco = :newFirstanco";
+                sql = sql + " AND prio LIKE :newPrio";
+                // Suad stop
+                sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newmonthFrom AND :newmonthTo";
+                sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMM')";
+                sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMM')";
+                NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
+
+                cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
+                cmd.Parameters["newFirstanco"].Value = analysis;
+
+                monthfrom = monthfrom.Substring(0, 7);
+                cmd.Parameters.Add(new NpgsqlParameter("newmonthFrom", NpgsqlDbType.Varchar));
+                cmd.Parameters["newmonthFrom"].Value = monthfrom;
+
+                monthto = monthto.Substring(0, 7);
+                cmd.Parameters.Add(new NpgsqlParameter("newmonthTo", NpgsqlDbType.Varchar));
+                cmd.Parameters["newmonthTo"].Value = monthto;
+
+                cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
+                cmd.Parameters["newPrio"].Value = prioritygroup;
+
+                cmd.Parameters.Add(new NpgsqlParameter("newcustomerGroup", NpgsqlDbType.Varchar));
+                cmd.Parameters["newcustomerGroup"].Value = customergroup;
+
+                NpgsqlDataReader dr1 = cmd.ExecuteReader();
+                while (dr1.Read())
+                {
+                    MeasurementMonitoring newMonitorByMonth = new MeasurementMonitoring();
+                    newMonitorByMonth.month = dr1["mymonth"].ToString();
+                    newMonitorByMonth.prio = dr1["prio"].ToString();
+                    newMonitorByMonth.analysis = dr1["anco"].ToString();
+                    newMonitorByMonth.minrawr = dr1["minrawr"].ToString();
+                    newMonitorByMonth.maxrawr = dr1["maxrawr"].ToString();
+                    newMonitorByMonth.medelrawr = dr1["medelrawr"].ToString();
+
+                    newListMember.Add(newMonitorByMonth);
+                }
+                conn.Close();
             }
-            conn.Close();
+            catch (NpgsqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                conn.Close();
+            }
+            finally
+            {
+                conn.Close();
+            }
             return newListMember;
         }
 
