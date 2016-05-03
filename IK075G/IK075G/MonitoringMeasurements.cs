@@ -45,7 +45,6 @@ namespace IK075G
 
             // Hantering av samtliga
             comboBoxCustomerGroup.SelectedItem = allGroups;
-            comboBoxAnalysis.SelectedItem = allGroups;
             comboBoxPriorityGroup.SelectedItem = allGroups;
 
             comboBoxPriorityGroup.Enabled = false;
@@ -71,6 +70,7 @@ namespace IK075G
         }
         private void btnShowUpdateDiagram_Click(object sender, EventArgs e) //Updatera/visa diagram
         {
+            resultLabel.Visible = false;
             if (comboBoxTimeInterval.Text=="VECKOVIS")
             {
                 if (comboBoxYearFrom.Text.Equals("") || comboBoxYearTo.Text.Equals("") || comboBoxWeekFrom.Text.Equals("") || comboBoxWeekTo.Text.Equals(""))
@@ -326,12 +326,12 @@ namespace IK075G
             sql = sql + "   min(rawr) minrawr, ";
             sql = sql + "   max(rawr) maxrawr, ";
             sql = sql + "   avg(rawr) medelrawr ";
-            sql = sql + " FROM xxx_time_monitoring_vw";
-            sql = sql + " WHERE 1 = 1";
             // Suad start 
-            sql = sql + " AND upper(cuco) LIKE :newcustomerGroup";
-            sql = sql + " AND upper(anco) LIKE :newFirstanco";
-            sql = sql + " AND upper(prio) LIKE :newPrio";
+            sql = sql + " FROM xxx_monitoring_measure_vw";
+            sql = sql + " WHERE 1 = 1";
+            sql = sql + " AND cuco LIKE :newcustomerGroup";
+            sql = sql + " AND anco = :newFirstanco";
+            sql = sql + " AND prio LIKE :newPrio";
             // Suad stop
             sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newweekFrom AND :newweekTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYWW')";
@@ -390,12 +390,12 @@ namespace IK075G
             sql = sql + "   min(rawr) minrawr, ";
             sql = sql + "   max(rawr) maxrawr, ";
             sql = sql + "   avg(rawr) medelrawr ";
-            sql = sql + " FROM xxx_time_monitoring_vw";
-            sql = sql + " WHERE 1 = 1";
             // Suad start
-            sql = sql + " AND upper(cuco) LIKE :newcustomerGroup";
-            sql = sql + " AND upper(anco) LIKE :newFirstanco";
-            sql = sql + " AND upper(prio) LIKE :newPrio";
+            sql = sql + " FROM xxx_monitoring_measure_vw";
+            sql = sql + " WHERE 1 = 1";
+            sql = sql + " AND cuco LIKE :newcustomerGroup";
+            sql = sql + " AND anco = :newFirstanco";
+            sql = sql + " AND prio LIKE :newPrio";
             // Suad stop
             sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newdayFrom AND :newdayTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
@@ -450,12 +450,12 @@ namespace IK075G
             sql = sql + "   min(rawr) minrawr, ";
             sql = sql + "   max(rawr) maxrawr, ";
             sql = sql + "   avg(rawr) medelrawr ";
-            sql = sql + " FROM xxx_time_monitoring_vw";
-            sql = sql + " WHERE 1 = 1";
             // Suad start
-            sql = sql + " AND upper(cuco) LIKE :newcustomerGroup";
-            sql = sql + " AND upper(anco) LIKE :newFirstanco";
-            sql = sql + " AND upper(prio) LIKE :newPrio";
+            sql = sql + " FROM xxx_monitoring_measure_vw";
+            sql = sql + " WHERE 1 = 1";
+            sql = sql + " AND cuco LIKE :newcustomerGroup";
+            sql = sql + " AND anco = :newFirstanco";
+            sql = sql + " AND prio LIKE :newPrio";
             // Suad stop
             sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newmonthFrom AND :newmonthTo";
             sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMM')";

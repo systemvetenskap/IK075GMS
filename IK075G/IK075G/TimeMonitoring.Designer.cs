@@ -55,6 +55,7 @@
             this.comboBoxWeekFrom = new System.Windows.Forms.ComboBox();
             this.comboBoxYearFrom = new System.Windows.Forms.ComboBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.labelMessage = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chartResponseTime)).BeginInit();
             this.SuspendLayout();
             // 
@@ -89,6 +90,7 @@
             this.dateTimePickerTo.Name = "dateTimePickerTo";
             this.dateTimePickerTo.Size = new System.Drawing.Size(230, 26);
             this.dateTimePickerTo.TabIndex = 35;
+            this.dateTimePickerTo.ValueChanged += new System.EventHandler(this.dateTimePickerTo_ValueChanged);
             // 
             // dateTimePickerFrom
             // 
@@ -98,6 +100,7 @@
             this.dateTimePickerFrom.Name = "dateTimePickerFrom";
             this.dateTimePickerFrom.Size = new System.Drawing.Size(230, 26);
             this.dateTimePickerFrom.TabIndex = 34;
+            this.dateTimePickerFrom.ValueChanged += new System.EventHandler(this.dateTimePickerFrom_ValueChanged);
             // 
             // comboBoxAnalysis
             // 
@@ -110,6 +113,7 @@
             this.comboBoxAnalysis.Name = "comboBoxAnalysis";
             this.comboBoxAnalysis.Size = new System.Drawing.Size(230, 28);
             this.comboBoxAnalysis.TabIndex = 31;
+            this.comboBoxAnalysis.SelectedIndexChanged += new System.EventHandler(this.comboBoxAnalysis_SelectedIndexChanged);
             // 
             // comboBoxPriority
             // 
@@ -123,6 +127,7 @@
             this.comboBoxPriority.Name = "comboBoxPriority";
             this.comboBoxPriority.Size = new System.Drawing.Size(230, 28);
             this.comboBoxPriority.TabIndex = 30;
+            this.comboBoxPriority.SelectedIndexChanged += new System.EventHandler(this.comboBoxPriority_SelectedIndexChanged);
             // 
             // comboBoxCustomerGrp
             // 
@@ -135,6 +140,7 @@
             this.comboBoxCustomerGrp.Name = "comboBoxCustomerGrp";
             this.comboBoxCustomerGrp.Size = new System.Drawing.Size(230, 28);
             this.comboBoxCustomerGrp.TabIndex = 29;
+            this.comboBoxCustomerGrp.SelectedIndexChanged += new System.EventHandler(this.comboBoxCustomerGrp_SelectedIndexChanged);
             // 
             // lblDateFrom
             // 
@@ -236,7 +242,7 @@
             chartArea1.AxisY2.CustomLabels.Add(customLabel2);
             chartArea1.Name = "ChartArea1";
             this.chartResponseTime.ChartAreas.Add(chartArea1);
-            this.chartResponseTime.Location = new System.Drawing.Point(47, 201);
+            this.chartResponseTime.Location = new System.Drawing.Point(47, 217);
             this.chartResponseTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chartResponseTime.Name = "chartResponseTime";
             this.chartResponseTime.Size = new System.Drawing.Size(1273, 500);
@@ -256,6 +262,7 @@
             this.comboBoxYearTo.Name = "comboBoxYearTo";
             this.comboBoxYearTo.Size = new System.Drawing.Size(102, 28);
             this.comboBoxYearTo.TabIndex = 44;
+            this.comboBoxYearTo.SelectedIndexChanged += new System.EventHandler(this.comboBoxYearTo_SelectedIndexChanged);
             // 
             // comboBoxWeekTo
             // 
@@ -268,6 +275,7 @@
             this.comboBoxWeekTo.Name = "comboBoxWeekTo";
             this.comboBoxWeekTo.Size = new System.Drawing.Size(120, 28);
             this.comboBoxWeekTo.TabIndex = 45;
+            this.comboBoxWeekTo.SelectedIndexChanged += new System.EventHandler(this.comboBoxWeekTo_SelectedIndexChanged);
             // 
             // comboBoxWeekFrom
             // 
@@ -280,6 +288,7 @@
             this.comboBoxWeekFrom.Name = "comboBoxWeekFrom";
             this.comboBoxWeekFrom.Size = new System.Drawing.Size(124, 28);
             this.comboBoxWeekFrom.TabIndex = 43;
+            this.comboBoxWeekFrom.SelectedIndexChanged += new System.EventHandler(this.comboBoxWeekFrom_SelectedIndexChanged);
             // 
             // comboBoxYearFrom
             // 
@@ -292,6 +301,18 @@
             this.comboBoxYearFrom.Name = "comboBoxYearFrom";
             this.comboBoxYearFrom.Size = new System.Drawing.Size(97, 28);
             this.comboBoxYearFrom.TabIndex = 42;
+            this.comboBoxYearFrom.SelectedIndexChanged += new System.EventHandler(this.comboBoxYearFrom_SelectedIndexChanged);
+            // 
+            // labelMessage
+            // 
+            this.labelMessage.AutoSize = true;
+            this.labelMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMessage.Location = new System.Drawing.Point(855, 170);
+            this.labelMessage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelMessage.Name = "labelMessage";
+            this.labelMessage.Size = new System.Drawing.Size(104, 20);
+            this.labelMessage.TabIndex = 46;
+            this.labelMessage.Text = "Meddelande:";
             // 
             // TimeMonitoring
             // 
@@ -299,6 +320,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(1579, 690);
+            this.Controls.Add(this.labelMessage);
             this.Controls.Add(this.dateTimePickerTo);
             this.Controls.Add(this.comboBoxWeekTo);
             this.Controls.Add(this.dateTimePickerFrom);
@@ -356,5 +378,6 @@
         private System.Windows.Forms.ComboBox comboBoxWeekFrom;
         private System.Windows.Forms.ComboBox comboBoxYearFrom;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label labelMessage;
     }
 }
