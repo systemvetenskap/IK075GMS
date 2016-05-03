@@ -56,7 +56,6 @@
             this.btnBack = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.resultLabel = new System.Windows.Forms.Label();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.lblFromWeek = new System.Windows.Forms.Label();
             this.lblToWeek = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -337,12 +336,6 @@
             this.resultLabel.TabIndex = 66;
             this.resultLabel.Text = "label2";
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork_1);
-            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged_1);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted_1);
-            // 
             // lblFromWeek
             // 
             this.lblFromWeek.AutoSize = true;
@@ -432,7 +425,6 @@
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label resultLabel;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label lblFromWeek;
         private System.Windows.Forms.Label lblToWeek;
     }

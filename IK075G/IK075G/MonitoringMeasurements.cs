@@ -18,7 +18,7 @@ namespace IK075G
     {
         string allGroups = "ALLA";
         string allPriority = "ALLA";
-         
+
         //Upprättar koppling mot databas
         NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["IK075G"].ConnectionString);
         NpgsqlCommand cmd;
@@ -26,11 +26,6 @@ namespace IK075G
         public MonitoringMeasurements()
         {
             InitializeComponent();
-
-            //Backgroundworker
-            backgroundWorker1.WorkerReportsProgress = true;
-            backgroundWorker1.WorkerSupportsCancellation = true;
-
         }
         private void MonitoringMeasurements_Load(object sender, EventArgs e) //Formuläret laddas
         {
@@ -87,11 +82,6 @@ namespace IK075G
             resultLabel.Visible = true;
             resultLabel.ForeColor = Color.Tomato;
             resultLabel.Text = "Laddar diagrammet";
-            if (backgroundWorker1.IsBusy != true)
-            {
-                // Start the asynchronous operation.
-                backgroundWorker1.RunWorkerAsync();
-            }
                         
             List<MeasurementMonitoring> newListMember = new List<MeasurementMonitoring>();
             string timeinterval = comboBoxTimeInterval.Text;
@@ -617,36 +607,6 @@ namespace IK075G
         private void comboBoxTimeInterval_KeyPress(object sender, KeyPressEventArgs e)
         {
             OnlyBigLetters(sender, e);
-        }
-
-        //Backgroundworker
-        private void backgroundWorker1_DoWork_1(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker worker = sender as BackgroundWorker;
-            for (int i = 1; i <= 10; i++)
-            {
-                if (worker.CancellationPending == true)
-                {
-                    e.Cancel = true;
-                    break;
-                }
-                else
-                {
-                    // Perform a time consuming operation and report progress.
-                    System.Threading.Thread.Sleep(500);
-                    worker.ReportProgress(i * 10);
-                }
-            }
-        }
-        private void backgroundWorker1_ProgressChanged_1(object sender, ProgressChangedEventArgs e)
-        {
-            progressBar1.Value = e.ProgressPercentage;
-        }
-        private void backgroundWorker1_RunWorkerCompleted_1(object sender, RunWorkerCompletedEventArgs e)
-        {
-            progressBar1.Value = 100;
-            resultLabel.ForeColor = Color.Green;
-            resultLabel.Text = "Klart";
         }
     }
 }
