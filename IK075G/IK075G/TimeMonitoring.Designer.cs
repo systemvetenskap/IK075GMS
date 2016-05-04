@@ -32,6 +32,7 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel1 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
             System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel2 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TimeMonitoring));
             this.btnBack = new System.Windows.Forms.Button();
@@ -236,16 +237,22 @@
             // 
             // chartResponseTime
             // 
+            this.chartResponseTime.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.chartResponseTime.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.HorizontalCenter;
             customLabel1.Text = "Test 1";
             chartArea1.AxisY.CustomLabels.Add(customLabel1);
             customLabel2.ToolTip = "Test ToolTip Custom Label";
             chartArea1.AxisY2.CustomLabels.Add(customLabel2);
             chartArea1.Name = "ChartArea1";
             this.chartResponseTime.ChartAreas.Add(chartArea1);
-            this.chartResponseTime.Location = new System.Drawing.Point(47, 217);
+            this.chartResponseTime.Location = new System.Drawing.Point(47, 202);
             this.chartResponseTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chartResponseTime.Name = "chartResponseTime";
-            this.chartResponseTime.Size = new System.Drawing.Size(1273, 500);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Name = "Series1";
+            this.chartResponseTime.Series.Add(series1);
+            this.chartResponseTime.Size = new System.Drawing.Size(1273, 477);
             this.chartResponseTime.TabIndex = 41;
             this.chartResponseTime.Text = "chart1";
             title1.Name = "Test Titel1";

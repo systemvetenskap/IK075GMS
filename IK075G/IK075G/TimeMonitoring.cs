@@ -615,13 +615,18 @@ namespace IK075G
                     newListMember = GetResponseByYear(customerGroup, analys, prio, yearFrom, yearTo);
                 }
 
-                // Diagrammet start
+                // diagram
                 chartResponseTime.Titles.Clear();
                 chartResponseTime.Series.Clear();
+                chartResponseTime.ChartAreas.Clear();
+                chartResponseTime.ChartAreas.Add("");
+                chartResponseTime.Legends.Clear();
 
                 // diagram titel 
                 chartResponseTime.Titles.Add("Svarstider ");
-                chartResponseTime.ChartAreas[0].AxisX.Title = "Svarstider " + timeInterval;
+                chartResponseTime.ChartAreas[0].AxisX.Title = "Svarstider (" + timeInterval.ToLower() + ")";
+
+                chartResponseTime.Legends.Add("Legend");
 
                 // medel
                 chartResponseTime.Series.Add("Series1");
@@ -643,13 +648,10 @@ namespace IK075G
                 chartResponseTime.Series["Series3"].LegendText = "Högsta värde";
                 chartResponseTime.Series["Series3"].XValueType = ChartValueType.DateTime;
                 chartResponseTime.Series["Series3"].YValueType = ChartValueType.Double;
-
-                chartResponseTime.Series["Series1"].YValueType = ChartValueType.Time;
-                chartResponseTime.Series["Series2"].YValueType = ChartValueType.Time;
-                chartResponseTime.Series["Series3"].YValueType = ChartValueType.Time;
-
-                chartResponseTime.ChartAreas[0].AxisX.Interval = 1;
-                chartResponseTime.ChartAreas[0].AxisY.IntervalOffsetType = DateTimeIntervalType.Minutes;
+                
+                int i = 0;
+                string serie = string.Empty;
+                string info = string.Empty;
 
                 foreach (ResponseTimes item in newListMember)
                 {
@@ -678,13 +680,43 @@ namespace IK075G
                     newAveragePoint.SetValueY(Convert.ToDouble(item.avgValue));
                     chartResponseTime.Series["Series1"].Points.Add(newAveragePoint);
 
+                    serie = chartResponseTime.Series["Series1"].LegendText;
+                    info = info + "Serie : " + serie + "\n";
+                    info = info + "Värde : " + item.avgValue + "\n";
+                    info = info + "Värde : " + item.avgTime + "\n";
+                    info = info + "Antal : " + item.quantity + "\n";
+                    info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
+                    chartResponseTime.Series["Series1"].Points[i].ToolTip = info;
+                    info = string.Empty;
+
                     DataPoint newMinPoint = new DataPoint();
                     newMinPoint.SetValueY(Convert.ToDouble(item.minValue));
                     chartResponseTime.Series["Series2"].Points.Add(newMinPoint);
 
+                    serie = chartResponseTime.Series["Series2"].LegendText;
+                    info = info + "Serie : " + serie + "\n";
+                    info = info + "Värde : " + item.minValue + "\n";
+                    info = info + "Värde : " + item.minTime + "\n";
+                    info = info + "Antal : " + item.quantity + "\n";
+                    info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
+                    chartResponseTime.Series["Series2"].Points[i].ToolTip = info;
+                    info = string.Empty;
+
                     DataPoint newMaxPoint = new DataPoint();
                     newMaxPoint.SetValueY(Convert.ToDouble(item.maxValue));
                     chartResponseTime.Series["Series3"].Points.Add(newMaxPoint);
+                    
+                    serie = chartResponseTime.Series["Series3"].LegendText;
+                    info = info + "Serie : " + serie + "\n";
+                    info = info + "Värde : " + item.maxValue + "\n";
+                    info = info + "Värde : " + item.maxTime + "\n";
+                    info = info + "Antal : " + item.quantity + "\n";
+                    info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
+                    chartResponseTime.Series["Series3"].Points[i].ToolTip = info;
+                    info = string.Empty;
+                    
+                    // används för att räkna points
+                    i = i + 1;
                 }
                 chartResponseTime.Show();
                 labelMessage.Text = "Klart";
