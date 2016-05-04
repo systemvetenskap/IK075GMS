@@ -134,7 +134,7 @@ namespace IK075G
                 comboBoxYearFrom.Items.Add(yearOrderedbyLowest);
             }
             conn.Close();
-            //Till år
+            // Till år
             string sql2 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0 ORDER BY altm";
             conn.Open();
             cmd = new NpgsqlCommand(sql2, conn);
@@ -183,9 +183,31 @@ namespace IK075G
             dateTimePickerTo.MinDate = newMinDateTime;
             dateTimePickerTo.MaxDate = newMaxDateTime;
             dateTimePickerTo.Value = newMaxDateTime;
-
+            
+            // används för att sätta värdena i komboboxar  
+            SetYearAndWeek();
         }
 
+        public void SetYearAndWeek() // Används för att sätta start och stop år respektive start och stop vecka beroende på värdena i kalender
+        { 
+            DateTime dateFrom = dateTimePickerFrom.Value;
+            DateTime dateTo = dateTimePickerTo.Value;
+
+            string yearFrom = dateFrom.Year.ToString().Substring(2, 2);
+            comboBoxYearFrom.SelectedItem = yearFrom;            
+            
+            var cal1 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+            string weekFrom = cal1.GetWeekOfYear(dateFrom, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
+            comboBoxWeekFrom.SelectedItem = weekFrom;
+
+            string yearTo = dateTo.Year.ToString().Substring(2, 2);
+            comboBoxYearTo.SelectedItem = yearTo;
+            
+            var cal2 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+            string weekTo = cal2.GetWeekOfYear(dateTo, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
+            comboBoxWeekTo.SelectedItem = weekTo;
+        }
+        
         public void SetCustomFormat(string format) // Används för att definera format i kallender 
         {
             dateTimePickerFrom.Format = DateTimePickerFormat.Custom;
@@ -368,7 +390,7 @@ namespace IK075G
 
                 string sql = string.Empty;
                 sql = sql + "SELECT ";
-                sql = sql + "   to_char(tetm_date,'YYYYWW') AS week,";
+                sql = sql + "    to_char(tetm_date,'YYYYWW') AS week,";
                 sql = sql + "    count(anco) AS quantity,";
                 sql = sql + "    to_char(min(diff_interval),'HH24:MI') AS min_time,";
                 sql = sql + "    to_char(max(diff_interval),'HH24:MI') AS max_time,";
@@ -621,9 +643,10 @@ namespace IK075G
                 chartResponseTime.ChartAreas.Clear();
                 chartResponseTime.ChartAreas.Add("");
                 chartResponseTime.Legends.Clear();
-
+                
                 // diagram titel 
-                chartResponseTime.Titles.Add("Svarstider ");
+                string titel = "Visar uppföljning av svarstider " + timeInterval.ToLower() + " för analys: " + analys + ", från kund: " + customerGroup;
+                chartResponseTime.Titles.Add(titel);
                 chartResponseTime.ChartAreas[0].AxisX.Title = "Svarstider (" + timeInterval.ToLower() + ")";
 
                 chartResponseTime.Legends.Add("Legend");
@@ -738,8 +761,8 @@ namespace IK075G
         private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e)
         {
             timeInterval = comboBoxTimeInterval.SelectedItem.ToString().ToUpper();
-            // sätter min och max datum i kallender beroende min oxh max datum för analys (a_ana_tab)
-            SetCustomMinMaxDate();
+            // sätter min och max värde i boxar beroende på värdena i kallender 
+            SetYearAndWeek();
             // sätter format i kallender beroende på vald tids interval    
             if (timeInterval == hourly.ToUpper())
             {
