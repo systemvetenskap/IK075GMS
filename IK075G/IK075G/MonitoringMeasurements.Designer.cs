@@ -269,9 +269,9 @@
             // btnShowUpdateDiagram
             // 
             this.btnShowUpdateDiagram.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowUpdateDiagram.Location = new System.Drawing.Point(635, 89);
+            this.btnShowUpdateDiagram.Location = new System.Drawing.Point(614, 89);
             this.btnShowUpdateDiagram.Name = "btnShowUpdateDiagram";
-            this.btnShowUpdateDiagram.Size = new System.Drawing.Size(180, 24);
+            this.btnShowUpdateDiagram.Size = new System.Drawing.Size(177, 24);
             this.btnShowUpdateDiagram.TabIndex = 8;
             this.btnShowUpdateDiagram.Text = "Updatera/visa";
             this.btnShowUpdateDiagram.UseVisualStyleBackColor = true;
@@ -321,16 +321,16 @@
             // 
             this.progressBar1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.progressBar1.ForeColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.progressBar1.Location = new System.Drawing.Point(635, 117);
+            this.progressBar1.Location = new System.Drawing.Point(797, 89);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(180, 18);
+            this.progressBar1.Size = new System.Drawing.Size(177, 24);
             this.progressBar1.TabIndex = 65;
             // 
             // resultLabel
             // 
             this.resultLabel.AutoSize = true;
             this.resultLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resultLabel.Location = new System.Drawing.Point(635, 141);
+            this.resultLabel.Location = new System.Drawing.Point(797, 119);
             this.resultLabel.Name = "resultLabel";
             this.resultLabel.Size = new System.Drawing.Size(51, 16);
             this.resultLabel.TabIndex = 66;

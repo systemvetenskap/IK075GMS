@@ -49,6 +49,8 @@ namespace IK075G
 
             lblFrom.Visible = false;
             lblTo.Visible = false;
+            lblFromWeek.Visible = false;
+            lblToWeek.Visible = false;
 
             resultLabel.Visible = false;
             progressBar1.Visible = false;
@@ -128,7 +130,7 @@ namespace IK075G
                 chart1.ChartAreas.Add("");
 
                 // Titel ovanför diagramet  
-                chart1.Titles.Add("Enhet");
+                //chart1.Titles.Add("Uppföljning av mätvärden");
 
                 //Kurva för medelvärde
                 chart1.Series.Add("Series1");
@@ -151,6 +153,24 @@ namespace IK075G
                 chart1.Series["Series3"].XValueType = ChartValueType.DateTime;
                 chart1.Series["Series3"].YValueType = ChartValueType.Double;
 
+                //Titeln för charten beroende på sorteringen som valts
+                if (timeinterval == "DAGVIS")
+                {
+                    chart1.Titles.Add("Visar uppföljning av mätvärden dagvis för analys: "+analysis+", från kund: "+customergroup);
+                }
+                else if (timeinterval == "VECKOVIS")
+                {
+                    chart1.Titles.Add("Visar uppföljning av mätvärden veckovis för analys: " + analysis + ", från kund: " + customergroup);
+                }
+                else if (timeinterval == "MÅNADSVIS")
+                {
+                    chart1.Titles.Add("Visar uppföljning av mätvärden månadsvis för analys: " + analysis + ", från kund: " + customergroup);
+                }
+
+                int i = 0;
+                string serie = string.Empty;
+                string info = string.Empty;
+
                 foreach (MeasurementMonitoring item in newListMember)
                 {
                     //Ritar ut diagrammet punkt för punkt
@@ -170,14 +190,39 @@ namespace IK075G
 
                     newAveragePoint.SetValueY(Convert.ToDouble(item.medelrawr));
                     chart1.Series["Series1"].Points.Add(newAveragePoint);
+                    serie = chart1.Series["Series1"].LegendText;
+                    info = info + "Serie : " + serie + "\n";
+                    info = info + "Värde : " + item.medelrawr + "\n";
+                    info = info + "Antal analyser : " + item.quantity + "\n";
+                    info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
+                    chart1.Series["Series1"].Points[i].ToolTip = info;
+                    info = string.Empty;
 
                     DataPoint newMinPoint = new DataPoint();
                     newMinPoint.SetValueY(Convert.ToDouble(item.minrawr));
                     chart1.Series["Series2"].Points.Add(newMinPoint);
+                    serie = chart1.Series["Series2"].LegendText;
+                    info = info + "Serie : " + serie + "\n";
+                    info = info + "Värde : " + item.minrawr + "\n";
+                    info = info + "Antal analyser : " + item.quantity + "\n";
+                    info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
+                    chart1.Series["Series2"].Points[i].ToolTip = info;
+                    info = string.Empty;
 
                     DataPoint newMaxPoint = new DataPoint();
                     newMaxPoint.SetValueY(Convert.ToDouble(item.maxrawr));
                     chart1.Series["Series3"].Points.Add(newMaxPoint);
+                    serie = chart1.Series["Series3"].LegendText;
+                    info = info + "Serie : " + serie + "\n";
+                    info = info + "Värde : " + item.maxrawr + "\n";
+                    info = info + "Antal analyser : " + item.quantity + "\n";
+                    info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
+                    chart1.Series["Series3"].Points[i].ToolTip = info;
+                    info = string.Empty;
+
+                    // används för att räkna points
+                    i = i + 1;
+
                 }
                 chart1.Show();
                 progressBar1.Visible = true;
@@ -331,13 +376,11 @@ namespace IK075G
                 sql = sql + "   min(rawr) minrawr, ";
                 sql = sql + "   max(rawr) maxrawr, ";
                 sql = sql + "   avg(rawr) medelrawr ";
-                // Suad start 
                 sql = sql + " FROM xxx_monitoring_measure_vw";
                 sql = sql + " WHERE 1 = 1";
                 sql = sql + " AND cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
                 sql = sql + " AND prio LIKE :newPrio";
-                // Suad stop
                 sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newweekFrom AND :newweekTo";
                 sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYWW')";
                 sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYWW')";
@@ -368,6 +411,7 @@ namespace IK075G
                     newMonitorByWeek.minrawr = dr1["minrawr"].ToString();
                     newMonitorByWeek.maxrawr = dr1["maxrawr"].ToString();
                     newMonitorByWeek.medelrawr = dr1["medelrawr"].ToString();
+                    newMonitorByWeek.quantity = dr1["quantity"].ToString();
 
                     newListMember.Add(newMonitorByWeek);
                 }
@@ -408,13 +452,11 @@ namespace IK075G
                 sql = sql + "   min(rawr) minrawr, ";
                 sql = sql + "   max(rawr) maxrawr, ";
                 sql = sql + "   avg(rawr) medelrawr ";
-                // Suad start
                 sql = sql + " FROM xxx_monitoring_measure_vw";
                 sql = sql + " WHERE 1 = 1";
                 sql = sql + " AND cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
                 sql = sql + " AND prio LIKE :newPrio";
-                // Suad stop
                 sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newdayFrom AND :newdayTo";
                 sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
                 sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
@@ -445,6 +487,7 @@ namespace IK075G
                     newMonitorByDay.minrawr = dr1["minrawr"].ToString();
                     newMonitorByDay.maxrawr = dr1["maxrawr"].ToString();
                     newMonitorByDay.medelrawr = dr1["medelrawr"].ToString();
+                    newMonitorByDay.quantity = dr1["quantity"].ToString();
 
                     newListMember.Add(newMonitorByDay);
                 }
@@ -486,13 +529,11 @@ namespace IK075G
                 sql = sql + "   min(rawr) minrawr, ";
                 sql = sql + "   max(rawr) maxrawr, ";
                 sql = sql + "   avg(rawr) medelrawr ";
-                // Suad start
                 sql = sql + " FROM xxx_monitoring_measure_vw";
                 sql = sql + " WHERE 1 = 1";
                 sql = sql + " AND cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
                 sql = sql + " AND prio LIKE :newPrio";
-                // Suad stop
                 sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newmonthFrom AND :newmonthTo";
                 sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMM')";
                 sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMM')";
@@ -525,6 +566,7 @@ namespace IK075G
                     newMonitorByMonth.minrawr = dr1["minrawr"].ToString();
                     newMonitorByMonth.maxrawr = dr1["maxrawr"].ToString();
                     newMonitorByMonth.medelrawr = dr1["medelrawr"].ToString();
+                    newMonitorByMonth.quantity = dr1["quantity"].ToString();
 
                     newListMember.Add(newMonitorByMonth);
                 }

@@ -17,5 +17,6 @@ namespace IK075G
         public string minrawr { get; set; }
         public string maxrawr { get; set; }
         public string medelrawr { get; set; }
+        public string quantity { get; set; }
     }
 }
