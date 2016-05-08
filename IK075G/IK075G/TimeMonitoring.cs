@@ -49,10 +49,10 @@ namespace IK075G
         {
 
             // Hantering av samtliga
-            comboBoxCustomerGrp.Items.Add(allGroups);
+            comboBoxCustomer.Items.Add(allGroups);
             comboBoxPriority.Items.Add(allPriority);
 
-            LoadCustomerGroups();
+            LoadCustomers();
             LoadAnalysis();
             LoadPriorityGroup();
             LoadTimeInterval();
@@ -64,7 +64,7 @@ namespace IK075G
             comboBoxWeekFrom.Visible = false;
             comboBoxWeekTo.Visible = false;
 
-            comboBoxCustomerGrp.SelectedItem = allGroups;
+            comboBoxCustomer.SelectedItem = allGroups;
             comboBoxPriority.SelectedItem = allGroups;
 
             int y = 0;
@@ -87,7 +87,7 @@ namespace IK075G
         }
 
         // Egna metoder        
-        public void LoadCustomerGroups() //Metod för att ladda kundgrupper i comboboxen 
+        public void LoadCustomers() //Metod för att ladda kundgrupper i comboboxen 
         {
             try
             {
@@ -99,7 +99,7 @@ namespace IK075G
                 while (dr.Read())
                 {
                     string cuco = dr["cuco"].ToString();
-                    comboBoxCustomerGrp.Items.Add(cuco);
+                    comboBoxCustomer.Items.Add(cuco);
                 }
                 conn.Close();
             }
@@ -336,7 +336,7 @@ namespace IK075G
             dateTimePickerTo.ShowUpDown = true;
         }
 
-        public List<ResponseTimes> GetResponseByYear(string customerGroup, string analys, string prio, string yearFrom, string yearTo)
+        public List<ResponseTimes> GetResponseByYear(string customer, string analys, string prio, string yearFrom, string yearTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
@@ -368,7 +368,7 @@ namespace IK075G
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
-                cmd.Parameters["newCuco"].Value = customerGroup;
+                cmd.Parameters["newCuco"].Value = customer;
                 cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
                 cmd.Parameters["newPrio"].Value = prio;
                 cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -383,7 +383,7 @@ namespace IK075G
                 while (dr.Read())
                 {
                     ResponseTimes newResponseTimes = new ResponseTimes();
-                    newResponseTimes.customerGroup = customerGroup;
+                    newResponseTimes.customer = customer;
                     newResponseTimes.prio = prio;
                     newResponseTimes.analys = analys;
                     newResponseTimes.year = Convert.ToString(dr["year"]);
@@ -415,7 +415,7 @@ namespace IK075G
             return newListMember;
         }
 
-        public List<ResponseTimes> GetResponseByMonth(string customerGroup, string analys, string prio, string monthFrom, string monthTo)
+        public List<ResponseTimes> GetResponseByMonth(string customer, string analys, string prio, string monthFrom, string monthTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
@@ -450,7 +450,7 @@ namespace IK075G
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
-                cmd.Parameters["newCuco"].Value = customerGroup;
+                cmd.Parameters["newCuco"].Value = customer;
                 cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
                 cmd.Parameters["newPrio"].Value = prio;
                 cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -468,7 +468,7 @@ namespace IK075G
                 while (dr.Read())
                 {
                     ResponseTimes newResponseTimes = new ResponseTimes();
-                    newResponseTimes.customerGroup = customerGroup;
+                    newResponseTimes.customer = customer;
                     newResponseTimes.prio = prio;
                     newResponseTimes.analys = analys;
                     newResponseTimes.month = Convert.ToString(dr["month"]);
@@ -500,7 +500,7 @@ namespace IK075G
             return newListMember;
         }
 
-        public List<ResponseTimes> GetResponseByWeek(string customerGroup, string analys, string prio, string yearFrom, string yearTo, string weekFrom, string weekTo)
+        public List<ResponseTimes> GetResponseByWeek(string customer, string analys, string prio, string yearFrom, string yearTo, string weekFrom, string weekTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
@@ -535,7 +535,7 @@ namespace IK075G
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
-                cmd.Parameters["newCuco"].Value = customerGroup;
+                cmd.Parameters["newCuco"].Value = customer;
                 cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
                 cmd.Parameters["newPrio"].Value = prio;
                 cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -549,7 +549,7 @@ namespace IK075G
                 while (dr.Read())
                 {
                     ResponseTimes newResponseTimes = new ResponseTimes();
-                    newResponseTimes.customerGroup = customerGroup;
+                    newResponseTimes.customer = customer;
                     newResponseTimes.prio = prio;
                     newResponseTimes.analys = analys;
                     newResponseTimes.week = Convert.ToString(dr["week"]);
@@ -581,7 +581,7 @@ namespace IK075G
             return newListMember;
         }
 
-        public List<ResponseTimes> GetResponseByDay(string customerGroup, string analys, string prio, string dayFrom, string dayTo)
+        public List<ResponseTimes> GetResponseByDay(string customer, string analys, string prio, string dayFrom, string dayTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
@@ -612,7 +612,7 @@ namespace IK075G
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
-                cmd.Parameters["newCuco"].Value = customerGroup;
+                cmd.Parameters["newCuco"].Value = customer;
                 cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
                 cmd.Parameters["newPrio"].Value = prio;
                 cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -626,7 +626,7 @@ namespace IK075G
                 while (dr.Read())
                 {
                     ResponseTimes newResponseTimes = new ResponseTimes();
-                    newResponseTimes.customerGroup = customerGroup;
+                    newResponseTimes.customer = customer;
                     newResponseTimes.prio = prio;
                     newResponseTimes.analys = analys;
                     newResponseTimes.day = Convert.ToString(dr["day"]);
@@ -677,10 +677,10 @@ namespace IK075G
             try 
 	        {
                 List<ResponseTimes> newListMember = new List<ResponseTimes>();
-                string customerGroup = comboBoxCustomerGrp.Text.ToString().ToUpper();
-                if (customerGroup == allGroups)
+                string customer = comboBoxCustomer.Text.ToString().ToUpper();
+                if (customer == allGroups)
                 {
-                    customerGroup = "%";
+                    customer = "%";
                 }
                 string analys = comboBoxAnalysis.Text.ToString().ToUpper();
                 string prio = comboBoxPriority.Text.ToString().ToUpper();
@@ -716,7 +716,7 @@ namespace IK075G
 
                     // Hämtning av data påbörjas
                     // Cursor = Cursors.WaitCursor;
-                    // newListMember = GetResponseByHours(customerGroup, analys, prio, yearFrom, yearTo, hoursFrom, hoursTo);
+                    // newListMember = GetResponseByHours(customer, analys, prio, yearFrom, yearTo, hoursFrom, hoursTo);
                 }
                 else if (timeInterval == daily.ToUpper())
                 {
@@ -729,7 +729,7 @@ namespace IK075G
 
                     // Hämtning av data påbörjas
                     Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByDay(customerGroup, analys, prio, dayFrom, dayTo);
+                    newListMember = GetResponseByDay(customer, analys, prio, dayFrom, dayTo);
 
                 }
                 else if (timeInterval == weekly.ToUpper())
@@ -742,7 +742,7 @@ namespace IK075G
 
                     // Hämtning av data påbörjas
                     Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByWeek(customerGroup, analys, prio, yearFrom, yearTo, weekFrom, weekTo);
+                    newListMember = GetResponseByWeek(customer, analys, prio, yearFrom, yearTo, weekFrom, weekTo);
                 }
                 else if (timeInterval == monthly.ToUpper())
                 {
@@ -752,7 +752,7 @@ namespace IK075G
 
                     // Hämtning av data påbörjas
                     Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByMonth(customerGroup, analys, prio, monthFrom, monthTo);
+                    newListMember = GetResponseByMonth(customer, analys, prio, monthFrom, monthTo);
                 }
                 else if (timeInterval == byyear.ToUpper())
                 {
@@ -762,7 +762,7 @@ namespace IK075G
 
                     // Hämtning av data påbörjas
                     Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByYear(customerGroup, analys, prio, yearFrom, yearTo);
+                    newListMember = GetResponseByYear(customer, analys, prio, yearFrom, yearTo);
                 }
 
                 // diagram
@@ -773,7 +773,7 @@ namespace IK075G
                 chartResponseTime.Legends.Clear();
                 
                 // diagram titel 
-                string titel = "Visar uppföljning av svarstider " + timeInterval.ToLower() + " för analys: " + analys + ", från kund: " + customerGroup;
+                string titel = "Visar uppföljning av svarstider " + timeInterval.ToLower() + " för analys: " + analys + ", från kund: " + customer;
                 chartResponseTime.Titles.Add(titel);
                 chartResponseTime.ChartAreas[0].AxisX.Title = "Svarstider (" + timeInterval.ToLower() + ")";
 
@@ -996,7 +996,7 @@ namespace IK075G
             chartResponseTime.Titles.Clear();
         }
 
-        private void comboBoxCustomerGrp_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();

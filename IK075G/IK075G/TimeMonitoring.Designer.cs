@@ -41,12 +41,12 @@
             this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
             this.comboBoxAnalysis = new System.Windows.Forms.ComboBox();
             this.comboBoxPriority = new System.Windows.Forms.ComboBox();
-            this.comboBoxCustomerGrp = new System.Windows.Forms.ComboBox();
+            this.comboBoxCustomer = new System.Windows.Forms.ComboBox();
             this.lblDateFrom = new System.Windows.Forms.Label();
             this.lblAnalysis = new System.Windows.Forms.Label();
             this.lblPriority = new System.Windows.Forms.Label();
             this.lblDateTo = new System.Windows.Forms.Label();
-            this.lblCustomerGrp = new System.Windows.Forms.Label();
+            this.lblCustomer = new System.Windows.Forms.Label();
             this.labelTimeInterval = new System.Windows.Forms.Label();
             this.comboBoxTimeInterval = new System.Windows.Forms.ComboBox();
             this.btnShowUpdateDiagram = new System.Windows.Forms.Button();
@@ -130,18 +130,18 @@
             this.comboBoxPriority.TabIndex = 30;
             this.comboBoxPriority.SelectedIndexChanged += new System.EventHandler(this.comboBoxPriority_SelectedIndexChanged);
             // 
-            // comboBoxCustomerGrp
+            // comboBoxCustomer
             // 
-            this.comboBoxCustomerGrp.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
-            this.comboBoxCustomerGrp.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxCustomerGrp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBoxCustomerGrp.FormattingEnabled = true;
-            this.comboBoxCustomerGrp.Location = new System.Drawing.Point(49, 62);
-            this.comboBoxCustomerGrp.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBoxCustomerGrp.Name = "comboBoxCustomerGrp";
-            this.comboBoxCustomerGrp.Size = new System.Drawing.Size(230, 28);
-            this.comboBoxCustomerGrp.TabIndex = 29;
-            this.comboBoxCustomerGrp.SelectedIndexChanged += new System.EventHandler(this.comboBoxCustomerGrp_SelectedIndexChanged);
+            this.comboBoxCustomer.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.comboBoxCustomer.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxCustomer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxCustomer.FormattingEnabled = true;
+            this.comboBoxCustomer.Location = new System.Drawing.Point(49, 62);
+            this.comboBoxCustomer.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxCustomer.Name = "comboBoxCustomer";
+            this.comboBoxCustomer.Size = new System.Drawing.Size(230, 28);
+            this.comboBoxCustomer.TabIndex = 29;
+            this.comboBoxCustomer.SelectedIndexChanged += new System.EventHandler(this.comboBoxCustomer_SelectedIndexChanged);
             // 
             // lblDateFrom
             // 
@@ -187,16 +187,16 @@
             this.lblDateTo.TabIndex = 23;
             this.lblDateTo.Text = "Till:";
             // 
-            // lblCustomerGrp
+            // lblCustomer
             // 
-            this.lblCustomerGrp.AutoSize = true;
-            this.lblCustomerGrp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomerGrp.Location = new System.Drawing.Point(47, 40);
-            this.lblCustomerGrp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblCustomerGrp.Name = "lblCustomerGrp";
-            this.lblCustomerGrp.Size = new System.Drawing.Size(94, 20);
-            this.lblCustomerGrp.TabIndex = 22;
-            this.lblCustomerGrp.Text = "Kundgrupp:";
+            this.lblCustomer.AutoSize = true;
+            this.lblCustomer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCustomer.Location = new System.Drawing.Point(47, 40);
+            this.lblCustomer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCustomer.Name = "lblCustomer";
+            this.lblCustomer.Size = new System.Drawing.Size(52, 20);
+            this.lblCustomer.TabIndex = 22;
+            this.lblCustomer.Text = "Kund:";
             // 
             // labelTimeInterval
             // 
@@ -340,12 +340,12 @@
             this.Controls.Add(this.comboBoxTimeInterval);
             this.Controls.Add(this.comboBoxAnalysis);
             this.Controls.Add(this.comboBoxPriority);
-            this.Controls.Add(this.comboBoxCustomerGrp);
+            this.Controls.Add(this.comboBoxCustomer);
             this.Controls.Add(this.lblDateFrom);
             this.Controls.Add(this.lblAnalysis);
             this.Controls.Add(this.lblPriority);
             this.Controls.Add(this.lblDateTo);
-            this.Controls.Add(this.lblCustomerGrp);
+            this.Controls.Add(this.lblCustomer);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.btnBack);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -370,12 +370,12 @@
         private System.Windows.Forms.DateTimePicker dateTimePickerFrom;
         private System.Windows.Forms.ComboBox comboBoxAnalysis;
         private System.Windows.Forms.ComboBox comboBoxPriority;
-        private System.Windows.Forms.ComboBox comboBoxCustomerGrp;
+        private System.Windows.Forms.ComboBox comboBoxCustomer;
         private System.Windows.Forms.Label lblDateFrom;
         private System.Windows.Forms.Label lblAnalysis;
         private System.Windows.Forms.Label lblPriority;
         private System.Windows.Forms.Label lblDateTo;
-        private System.Windows.Forms.Label lblCustomerGrp;
+        private System.Windows.Forms.Label lblCustomer;
         private System.Windows.Forms.Label labelTimeInterval;
         private System.Windows.Forms.ComboBox comboBoxTimeInterval;
         private System.Windows.Forms.Button btnShowUpdateDiagram;
