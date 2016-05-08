@@ -66,6 +66,24 @@ namespace IK075G
 
             comboBoxCustomerGrp.SelectedItem = allGroups;
             comboBoxPriority.SelectedItem = allGroups;
+
+            int y = 0;
+            int x = 0;
+
+            y = dateTimePickerFrom.Location.Y;
+            x = dateTimePickerTo.Location.X;
+            comboBoxYearTo.Location = new Point(x, y);
+
+            x = comboBoxYearFrom.Location.X;
+            comboBoxYearFrom.Location = new Point(x, y);
+            x = comboBoxWeekFrom.Location.X;
+            comboBoxWeekFrom.Location = new Point(x, y);
+
+            x = comboBoxYearTo.Location.X;
+            comboBoxYearTo.Location = new Point(x, y);
+            x = comboBoxWeekTo.Location.X;
+            comboBoxWeekTo.Location = new Point(x, y);
+
         }
 
         // Egna metoder        
@@ -829,7 +847,7 @@ namespace IK075G
                     serie = chartResponseTime.Series["Series2"].LegendText;
                     info = info + "Serie : " + serie + "\n";
                     info = info + "Värde : " + item.minValue + "\n";
-                    info = info + item.avgTime + "\n";
+                    info = info + item.minTime + "\n";
                     info = info + "Antal analyser: " + item.quantity + "\n";
                     info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
                     chartResponseTime.Series["Series2"].Points[i].ToolTip = info;
@@ -842,7 +860,7 @@ namespace IK075G
                     serie = chartResponseTime.Series["Series3"].LegendText;
                     info = info + "Serie : " + serie + "\n";
                     info = info + "Värde : " + item.maxValue + "\n";
-                    info = info + item.avgTime + "\n";
+                    info = info + item.maxTime + "\n";
                     info = info + "Antal analyser: " + item.quantity + "\n";
                     info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
                     chartResponseTime.Series["Series3"].Points[i].ToolTip = info;
