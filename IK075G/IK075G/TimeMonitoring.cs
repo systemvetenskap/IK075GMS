@@ -67,6 +67,9 @@ namespace IK075G
             comboBoxCustomer.SelectedItem = allGroups;
             comboBoxPriority.SelectedItem = allGroups;
 
+            //Datum
+            lblTodaysDateAndTime.Text = DateTime.Now.ToString("ddddd, M MMMM, yyyy");
+
             int y = 0;
             int x = 0;
 
@@ -775,7 +778,7 @@ namespace IK075G
                 // diagram titel 
                 string titel = "Visar uppföljning av svarstider " + timeInterval.ToLower() + " för analys: " + analys + ", från kund: " + customer;
                 chartResponseTime.Titles.Add(titel);
-                chartResponseTime.ChartAreas[0].AxisX.Title = "Svarstider (" + timeInterval.ToLower() + ")";
+                //chartResponseTime.ChartAreas[0].AxisX.Title = "Svarstider (" + timeInterval.ToLower() + ")";
 
                 chartResponseTime.Legends.Add("Legend");
 
@@ -1006,6 +1009,11 @@ namespace IK075G
         {
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

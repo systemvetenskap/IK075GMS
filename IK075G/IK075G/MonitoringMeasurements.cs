@@ -57,7 +57,62 @@ namespace IK075G
 
             //Datum
             lblTodaysDateAndTime.Text = DateTime.Now.ToString("ddddd, M MMMM, yyyy");
-  
+
+            //int y = 0;
+            //int x = 0;
+
+            //y = dateTimePickerDayFrom.Location.Y;
+            //x = dateTimePickerDayFrom.Location.X;
+            //comboBoxYearTo.Location = new Point(x, y);
+
+            ////Från
+            //comboBoxYearFrom.Location = new Point(x, y);
+            //dateTimePickerMonthFrom.Location = new Point(x, y);
+            //comboBoxYearFrom.Location = new Point(x, y);
+            //comboBoxWeekFrom.Location = new Point(x, y);
+
+            ////Till
+            //x = dateTimePickerDayTo.Location.X;
+            //comboBoxYearTo.Location= new Point(x,y);
+            //comboBoxWeekTo.Location = new Point(x, y);
+            //dateTimePickerMonthTo.Location = new Point(x, y);
+
+            //x = comboBoxYearFrom.Location.X;
+            //comboBoxYearFrom.Location = new Point(x, y);
+            //x = comboBoxWeekFrom.Location.X;
+            //comboBoxWeekFrom.Location = new Point(x, y);
+
+            //x = comboBoxYearTo.Location.X;
+            //comboBoxYearTo.Location = new Point(x, y);
+            //x = comboBoxWeekTo.Location.X;
+            //comboBoxWeekTo.Location = new Point(x, y);
+
+
+            //Från
+            int y = 0;
+            int x = 0;
+
+            y = dateTimePickerDayFrom.Location.Y;
+            x = dateTimePickerDayFrom.Location.X;
+
+            dateTimePickerDayFrom.Location = new Point(x, y);
+            comboBoxYearFrom.Location = new Point(x, y);
+            dateTimePickerMonthFrom.Location = new Point(x, y);
+
+            x = comboBoxWeekFrom.Location.X;
+            comboBoxWeekFrom.Location = new Point(x, y);
+
+            //Till
+            y = dateTimePickerDayTo.Location.Y;
+            x = dateTimePickerDayTo.Location.X;
+
+            dateTimePickerDayTo.Location = new Point(x, y);
+            comboBoxYearTo.Location = new Point(x, y);
+            dateTimePickerMonthTo.Location = new Point(x, y);
+
+            x = comboBoxWeekTo.Location.X;
+            comboBoxWeekTo.Location = new Point(x, y);
+
         }
         private void btnBack_Click_1(object sender, EventArgs e) //Till huvudmenyn
         {
@@ -710,6 +765,11 @@ namespace IK075G
         private void comboBoxTimeInterval_KeyPress(object sender, KeyPressEventArgs e)
         {
             OnlyBigLetters(sender, e);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

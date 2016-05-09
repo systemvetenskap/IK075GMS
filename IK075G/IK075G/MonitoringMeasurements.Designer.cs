@@ -58,6 +58,7 @@
             this.resultLabel = new System.Windows.Forms.Label();
             this.lblFromWeek = new System.Windows.Forms.Label();
             this.lblToWeek = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,9 +68,9 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(42, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(76, 16);
+            this.label1.Size = new System.Drawing.Size(41, 16);
             this.label1.TabIndex = 24;
-            this.label1.Text = "Kundgrupp:";
+            this.label1.Text = "Kund:";
             // 
             // lblFrom
             // 
@@ -300,7 +301,7 @@
             // 
             this.lblTodaysDateAndTime.AutoSize = true;
             this.lblTodaysDateAndTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTodaysDateAndTime.Location = new System.Drawing.Point(991, 57);
+            this.lblTodaysDateAndTime.Location = new System.Drawing.Point(1021, 97);
             this.lblTodaysDateAndTime.Name = "lblTodaysDateAndTime";
             this.lblTodaysDateAndTime.Size = new System.Drawing.Size(123, 16);
             this.lblTodaysDateAndTime.TabIndex = 63;
@@ -309,9 +310,9 @@
             // btnBack
             // 
             this.btnBack.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBack.Location = new System.Drawing.Point(991, 12);
+            this.btnBack.Location = new System.Drawing.Point(1024, 55);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(181, 32);
+            this.btnBack.Size = new System.Drawing.Size(148, 32);
             this.btnBack.TabIndex = 64;
             this.btnBack.Text = "Till huvudmenyn";
             this.btnBack.UseVisualStyleBackColor = true;
@@ -354,12 +355,24 @@
             this.lblToWeek.TabIndex = 68;
             this.lblToWeek.Text = "Vecka:";
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(1024, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(148, 32);
+            this.button1.TabIndex = 69;
+            this.button1.Text = "Avsluta programmet";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MonitoringMeasurements
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(1184, 561);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.lblToWeek);
             this.Controls.Add(this.lblFromWeek);
             this.Controls.Add(this.resultLabel);
@@ -427,5 +440,6 @@
         private System.Windows.Forms.Label resultLabel;
         private System.Windows.Forms.Label lblFromWeek;
         private System.Windows.Forms.Label lblToWeek;
+        private System.Windows.Forms.Button button1;
     }
 }
