@@ -365,7 +365,7 @@ namespace IK075G
                 sql = sql + " AND anco = :newAnco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YY') BETWEEN :newFrom AND :newTo";
-                sql = sql + " GROUP BY cuco, anco, prio, to_char(tetm_date,'YYYY')";
+                sql = sql + " GROUP BY cuco, prio, anco, to_char(tetm_date,'YYYY')";
                 sql = sql + " ORDER BY to_char(tetm_date,'YYYY')";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
@@ -447,7 +447,7 @@ namespace IK075G
                 sql = sql + " AND anco = :newAnco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newFrom AND :newTo";
-                sql = sql + " GROUP BY cuco, anco, prio, to_char(tetm_date,'YYYYMM')";
+                sql = sql + " GROUP BY cuco, prio, anco, to_char(tetm_date,'YYYYMM')";
                 sql = sql + " ORDER BY to_char(tetm_date,'YYYYMM')";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
@@ -532,7 +532,7 @@ namespace IK075G
                 sql = sql + " AND anco = :newAnco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newFrom AND :newTo";
-                sql = sql + " GROUP BY cuco, anco, prio, to_char(tetm_date,'YYYYWW')";
+                sql = sql + " GROUP BY cuco, prio, anco, to_char(tetm_date,'YYYYWW')";
                 sql = sql + " ORDER BY to_char(tetm_date,'YYYYWW')";                
 
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
@@ -609,7 +609,7 @@ namespace IK075G
                 sql = sql + " AND anco = :newAnco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newFrom AND :newTo";
-                sql = sql + " GROUP BY cuco, anco, prio, to_char(tetm_date,'YYYYMMDD')";
+                sql = sql + " GROUP BY cuco, prio, anco, to_char(tetm_date,'YYYYMMDD')";
                 sql = sql + " ORDER BY to_char(tetm_date,'YYYYMMDD')";            
                 
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
