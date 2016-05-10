@@ -8,7 +8,7 @@ namespace IK075G
 {
     public class ResponseTimes
     {
-        public string customerGroup { get; set; }
+        public string customer { get; set; }
         public string prio { get; set; }
         public string analys { get; set; }
         public string year { get; set; }

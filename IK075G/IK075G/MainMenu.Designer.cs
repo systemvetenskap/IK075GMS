@@ -28,16 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
             this.btnOperationMethod = new System.Windows.Forms.Button();
             this.btnTimeMonitoring = new System.Windows.Forms.Button();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.btnMonitoringMeasurements = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOperationMethod
             // 
-            this.btnOperationMethod.Location = new System.Drawing.Point(242, 192);
+            this.btnOperationMethod.Location = new System.Drawing.Point(471, 236);
             this.btnOperationMethod.Margin = new System.Windows.Forms.Padding(4);
             this.btnOperationMethod.Name = "btnOperationMethod";
             this.btnOperationMethod.Size = new System.Drawing.Size(236, 87);
@@ -73,22 +75,35 @@
             this.btnMonitoringMeasurements.UseVisualStyleBackColor = true;
             this.btnMonitoringMeasurements.Click += new System.EventHandler(this.btnMonitoringMeasurements_Click);
             // 
+            // btnExit
+            // 
+            this.btnExit.Location = new System.Drawing.Point(273, 208);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(174, 41);
+            this.btnExit.TabIndex = 3;
+            this.btnExit.Text = "Avsluta programmet";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(720, 336);
+            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnMonitoringMeasurements);
             this.Controls.Add(this.btnTimeMonitoring);
             this.Controls.Add(this.btnOperationMethod);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "MainMenu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "IK075G - Huvudmeny";
+            this.Load += new System.EventHandler(this.MainMenu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);
 
@@ -100,6 +115,7 @@
         private System.Windows.Forms.Button btnTimeMonitoring;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
         private System.Windows.Forms.Button btnMonitoringMeasurements;
+        private System.Windows.Forms.Button btnExit;
     }
 }
 

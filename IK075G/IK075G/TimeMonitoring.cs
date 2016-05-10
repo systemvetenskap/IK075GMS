@@ -28,6 +28,7 @@ namespace IK075G
         string byyear = "Årsvis";
         
         // Upprättar koppling mot databas
+        // CommandTimeout=200000 d.v.s 200 sekunder - 3 minuter;
         NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["IK075G"].ConnectionString);
 
         NpgsqlCommand cmd;
@@ -48,68 +49,152 @@ namespace IK075G
         {
 
             // Hantering av samtliga
-            comboBoxCustomerGrp.Items.Add(allGroups);
+            comboBoxCustomer.Items.Add(allGroups);
             comboBoxPriority.Items.Add(allPriority);
 
-            LoadCustomerGroups();
+            LoadCustomers();
             LoadAnalysis();
             LoadPriorityGroup();
             LoadTimeInterval();
             LoadYears();
             LoadWeekNumbers();
             SetCustomMinMaxDate();
+
             comboBoxYearFrom.Visible = false;
             comboBoxYearTo.Visible = false;
             comboBoxWeekFrom.Visible = false;
             comboBoxWeekTo.Visible = false;
 
-            comboBoxCustomerGrp.SelectedItem = allGroups;
-            comboBoxAnalysis.SelectedItem = allGroups;
-            comboBoxPriority.SelectedItem = allGroups;
+            dateTimePickerFrom.Visible = false;
+            dateTimePickerTo.Visible = false;
+
+            lblFromWeek.Visible = false;
+            lblToWeek.Visible = false;
+            lblDateFrom.Visible = false;
+            lblDateTo.Visible = false;
+
+            comboBoxAnalysis.Enabled = false;
+            comboBoxPriority.Enabled = false;
+            comboBoxTimeInterval.Enabled = false;
+
+            //comboBoxCustomer.SelectedItem = allGroups;
+            //comboBoxPriority.SelectedItem = allGroups;
+
+            //Datum
+            lblTodaysDateAndTime.Text = DateTime.Now.ToString("ddddd, M MMMM, yyyy");
+
+            int y = 0;
+            int x = 0;
+
+            y = dateTimePickerFrom.Location.Y;
+            x = dateTimePickerTo.Location.X;
+            comboBoxYearTo.Location = new Point(x, y);
+
+            x = comboBoxYearFrom.Location.X;
+            comboBoxYearFrom.Location = new Point(x, y);
+            x = comboBoxWeekFrom.Location.X;
+            comboBoxWeekFrom.Location = new Point(x, y);
+
+            x = comboBoxYearTo.Location.X;
+            comboBoxYearTo.Location = new Point(x, y);
+            x = comboBoxWeekTo.Location.X;
+            comboBoxWeekTo.Location = new Point(x, y);
+
         }
 
         // Egna metoder        
-        public void LoadCustomerGroups() //Metod för att ladda kundgrupper i comboboxen 
+        public void LoadCustomers() //Metod för att ladda kundgrupper i comboboxen 
         {
-            string sql = "SELECT cuco AS cuco FROM cuco_sub2 WHERE LENGTH(REPLACE(cuco, ' ','')) > 0 ORDER BY cuco";
-           
-            conn.Open();
-            cmd = new NpgsqlCommand(sql, conn);
-            NpgsqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try
             {
-                string cuco = dr["cuco"].ToString();
-                comboBoxCustomerGrp.Items.Add(cuco);
+                string sql = "SELECT cuco AS cuco FROM cuco_sub2 WHERE LENGTH(REPLACE(cuco, ' ','')) > 0 ORDER BY cuco";
+
+                conn.Open();
+                cmd = new NpgsqlCommand(sql, conn);
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string cuco = dr["cuco"].ToString();
+                    comboBoxCustomer.Items.Add(cuco);
+                }
+                conn.Close();
             }
-            conn.Close();
+            catch (NpgsqlException ex)
+            {
+                conn.Close();
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }       
         }
 
         public void LoadAnalysis() //Metod för att ladda analyser i comboboxen 
         {
-            string sql = "SELECT DISTINCT anco FROM a_ana_tab ORDER BY anco";
-            conn.Open();
-            cmd = new NpgsqlCommand(sql, conn);
-            NpgsqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try 
+	        {
+                string sql = "SELECT DISTINCT anco FROM a_ana_tab ORDER BY anco";
+                conn.Open();
+                cmd = new NpgsqlCommand(sql, conn);
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string anco = dr["anco"].ToString();
+                    comboBoxAnalysis.Items.Add(anco);
+                }
+                conn.Close();		
+	        }	
+            catch (NpgsqlException ex)
             {
-                string anco = dr["anco"].ToString();
-                comboBoxAnalysis.Items.Add(anco);
+                conn.Close();
+                MessageBox.Show(ex.Message);
             }
-            conn.Close();
+            catch (Exception ex)
+            {
+                conn.Close();
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }       
         }
 
         public void LoadPriorityGroup() //Metod för att ladda prioritetsgrupper i comboboxen
         {
-            string sql = "SELECT DISTINCT prio FROM a_ana_tab ORDER BY prio";
-            conn.Open();
-            cmd = new NpgsqlCommand(sql, conn);
-            NpgsqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try 
+	        {
+                string sql = "SELECT DISTINCT prio FROM a_ana_tab ORDER BY prio";
+                conn.Open();
+                cmd = new NpgsqlCommand(sql, conn);
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string prio = dr["prio"].ToString();
+                    comboBoxPriority.Items.Add(prio);
+                }
+                conn.Close();		
+	        }
+            catch (NpgsqlException ex)
             {
-                string prio = dr["prio"].ToString();
-                comboBoxPriority.Items.Add(prio);
+                conn.Close();
+                MessageBox.Show(ex.Message);
             }
-            conn.Close();
+            catch (Exception ex)
+            {
+                conn.Close();
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }       
         }
 
         public void LoadTimeInterval() //Metod för att fylla comboboxen med tidsintervall
@@ -124,27 +209,62 @@ namespace IK075G
         public void LoadYears() // Metod för att LADDA in årtal i comboboxar från och till
         {
             // Från år
-            string sql1 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0 ORDER BY altm";
-            conn.Open();
-            cmd = new NpgsqlCommand(sql1, conn);
-            NpgsqlDataReader dr1 = cmd.ExecuteReader();
-            while (dr1.Read())
+            try
             {
-                string yearOrderedbyLowest = dr1["altm"].ToString();
-                comboBoxYearFrom.Items.Add(yearOrderedbyLowest);
+                string sql1 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0 ORDER BY altm";
+                conn.Open();
+                cmd = new NpgsqlCommand(sql1, conn);
+                NpgsqlDataReader dr1 = cmd.ExecuteReader();
+                while (dr1.Read())
+                {
+                    string yearOrderedbyLowest = dr1["altm"].ToString();
+                    comboBoxYearFrom.Items.Add(yearOrderedbyLowest);
+                }
+                conn.Close();
             }
-            conn.Close();
-            //Till år
-            string sql2 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0 ORDER BY altm";
-            conn.Open();
-            cmd = new NpgsqlCommand(sql2, conn);
-            NpgsqlDataReader dr2 = cmd.ExecuteReader();
-            while (dr2.Read())
+            catch (NpgsqlException ex)
             {
-                string yearOrderedbyLowest = dr2["altm"].ToString();
-                comboBoxYearTo.Items.Add(yearOrderedbyLowest);
+                conn.Close();
+                MessageBox.Show(ex.Message);
             }
-            conn.Close();
+            catch (Exception ex)
+            {
+                conn.Close();
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            
+            // Till år            
+            try
+            {
+                string sql2 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0 ORDER BY altm";
+                conn.Open();
+                cmd = new NpgsqlCommand(sql2, conn);
+                NpgsqlDataReader dr2 = cmd.ExecuteReader();
+                while (dr2.Read())
+                {
+                    string yearOrderedbyLowest = dr2["altm"].ToString();
+                    comboBoxYearTo.Items.Add(yearOrderedbyLowest);
+                }
+                conn.Close();
+            }
+            catch (NpgsqlException ex)
+            {
+                conn.Close();
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         public void LoadWeekNumbers() //Metod för att FYLLA comboboxarna med veckonummer
@@ -158,17 +278,30 @@ namespace IK075G
 
         public void SetCustomMinMaxDate() // Används för att sätta start och stop år i kalender beroende på minsta 
         {
-            DateTime newMinDateTime = new DateTime();
+            DateTime newMinDateTime = new DateTime();            
             // Från år
-            string sql = "SELECT MIN(to_date(altm,'YYDDMMHH24MI')) AS altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0";
-            conn.Open();
-            cmd = new NpgsqlCommand(sql, conn);
-            NpgsqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try
             {
-                newMinDateTime = Convert.ToDateTime(dr["altm"]);
+                string sql = "SELECT MIN(to_date(altm,'YYDDMMHH24MI')) AS altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0";
+                conn.Open();
+                cmd = new NpgsqlCommand(sql, conn);
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    newMinDateTime = Convert.ToDateTime(dr["altm"]);
+                }
+                conn.Close();
             }
-            conn.Close();
+            catch (NpgsqlException ex)
+            {
+                conn.Close();
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            
             dateTimePickerFrom.MinDate = newMinDateTime;
 
             // Till år
@@ -183,9 +316,31 @@ namespace IK075G
             dateTimePickerTo.MinDate = newMinDateTime;
             dateTimePickerTo.MaxDate = newMaxDateTime;
             dateTimePickerTo.Value = newMaxDateTime;
-
+            
+            // används för att sätta värdena i komboboxar  
+            SetYearAndWeek();
         }
 
+        public void SetYearAndWeek() // Används för att sätta start och stop år respektive start och stop vecka beroende på värdena i kalender
+        { 
+            DateTime dateFrom = dateTimePickerFrom.Value;
+            DateTime dateTo = dateTimePickerTo.Value;
+
+            string yearFrom = dateFrom.Year.ToString().Substring(2, 2);
+            comboBoxYearFrom.SelectedItem = yearFrom;            
+            
+            var cal1 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+            string weekFrom = cal1.GetWeekOfYear(dateFrom, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
+            comboBoxWeekFrom.SelectedItem = weekFrom;
+
+            string yearTo = dateTo.Year.ToString().Substring(2, 2);
+            comboBoxYearTo.SelectedItem = yearTo;
+            
+            var cal2 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+            string weekTo = cal2.GetWeekOfYear(dateTo, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
+            comboBoxWeekTo.SelectedItem = weekTo;
+        }
+        
         public void SetCustomFormat(string format) // Används för att definera format i kallender 
         {
             dateTimePickerFrom.Format = DateTimePickerFormat.Custom;
@@ -197,7 +352,7 @@ namespace IK075G
             dateTimePickerTo.ShowUpDown = true;
         }
 
-        public List<ResponseTimes> GetResponseByYear(string customerGroup, string analys, string prio, string yearFrom, string yearTo)
+        public List<ResponseTimes> GetResponseByYear(string customer, string analys, string prio, string yearFrom, string yearTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
@@ -206,27 +361,30 @@ namespace IK075G
 
                 string sql = string.Empty;
                 sql = sql + "SELECT ";
-                sql = sql + "    to_char(tetm_date,'YYYY') AS year,";
-                sql = sql + "    count(anco) AS quantity,";
-                sql = sql + "    to_char(min(diff_interval),'HH24:MI') AS min_time,";
-                sql = sql + "    to_char(max(diff_interval),'HH24:MI') AS max_time,";
-                sql = sql + "    to_char(avg(diff_interval),'HH24:MI') AS avg_time,";
-                sql = sql + "    round(min( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS min_value,";
-                sql = sql + "    round(max( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS max_value,";
-                sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
+                sql = sql + "   cuco,";
+                sql = sql + "   prio,";
+                sql = sql + "   anco,";
+                sql = sql + "   to_char(tetm_date,'YYYY') AS year,";
+                sql = sql + "   count(difference_value) AS quantity,";
+                sql = sql + "   min(difference_interval) AS min_time,";
+                sql = sql + "   max(difference_interval) AS max_time,";
+                sql = sql + "   avg(difference_interval) AS avg_time,";
+                sql = sql + "   round(min(difference_value),2) AS min_value,";
+                sql = sql + "   round(max(difference_value),2) AS max_value,";
+                sql = sql + "   round(avg(difference_value),2) AS avg_value";
                 sql = sql + " FROM xxx_time_control_vw";
                 sql = sql + " WHERE 1 = 1";
                 sql = sql + " AND cuco LIKE :newCuco";
                 sql = sql + " AND anco = :newAnco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YY') BETWEEN :newFrom AND :newTo";
-                sql = sql + " GROUP BY to_char(tetm_date,'YYYY')";
+                sql = sql + " GROUP BY cuco, prio, anco, to_char(tetm_date,'YYYY')";
                 sql = sql + " ORDER BY to_char(tetm_date,'YYYY')";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
-                cmd.Parameters["newCuco"].Value = customerGroup;
+                cmd.Parameters["newCuco"].Value = customer;
                 cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
                 cmd.Parameters["newPrio"].Value = prio;
                 cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -241,7 +399,7 @@ namespace IK075G
                 while (dr.Read())
                 {
                     ResponseTimes newResponseTimes = new ResponseTimes();
-                    newResponseTimes.customerGroup = customerGroup;
+                    newResponseTimes.customer = customer;
                     newResponseTimes.prio = prio;
                     newResponseTimes.analys = analys;
                     newResponseTimes.year = Convert.ToString(dr["year"]);
@@ -258,13 +416,13 @@ namespace IK075G
             }
             catch (NpgsqlException ex)
             {
-                MessageBox.Show(ex.Message);
                 conn.Close();
+                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
                 conn.Close();
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -273,7 +431,7 @@ namespace IK075G
             return newListMember;
         }
 
-        public List<ResponseTimes> GetResponseByMonth(string customerGroup, string analys, string prio, string monthFrom, string monthTo)
+        public List<ResponseTimes> GetResponseByMonth(string customer, string analys, string prio, string monthFrom, string monthTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
@@ -285,27 +443,30 @@ namespace IK075G
 
                 string sql = string.Empty;
                 sql = sql + "SELECT ";
-                sql = sql + "    to_char(tetm_date,'YYYYMM') AS month,";
-                sql = sql + "    count(anco) AS quantity,";
-                sql = sql + "    to_char(min(diff_interval),'HH24:MI') AS min_time,";
-                sql = sql + "    to_char(max(diff_interval),'HH24:MI') AS max_time,";
-                sql = sql + "    to_char(avg(diff_interval),'HH24:MI') AS avg_time,";
-                sql = sql + "    round(min( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS min_value,";
-                sql = sql + "    round(max( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS max_value,";
-                sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
+                sql = sql + "   cuco,";
+                sql = sql + "   prio,";
+                sql = sql + "   anco,";
+                sql = sql + "   to_char(tetm_date,'YYYYMM') AS month,";
+                sql = sql + "   count(difference_value) AS quantity,";
+                sql = sql + "   min(difference_interval) AS min_time,";
+                sql = sql + "   max(difference_interval) AS max_time,";
+                sql = sql + "   avg(difference_interval) AS avg_time,";
+                sql = sql + "   round(min(difference_value),2) AS min_value,";
+                sql = sql + "   round(max(difference_value),2) AS max_value,";
+                sql = sql + "   round(avg(difference_value),2) AS avg_value";
                 sql = sql + " FROM xxx_time_control_vw";
                 sql = sql + " WHERE 1 = 1";
                 sql = sql + " AND cuco LIKE :newCuco";
                 sql = sql + " AND anco = :newAnco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newFrom AND :newTo";
-                sql = sql + " GROUP BY to_char(tetm_date,'YYYYMM')";
+                sql = sql + " GROUP BY cuco, prio, anco, to_char(tetm_date,'YYYYMM')";
                 sql = sql + " ORDER BY to_char(tetm_date,'YYYYMM')";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
-                cmd.Parameters["newCuco"].Value = customerGroup;
+                cmd.Parameters["newCuco"].Value = customer;
                 cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
                 cmd.Parameters["newPrio"].Value = prio;
                 cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -323,7 +484,7 @@ namespace IK075G
                 while (dr.Read())
                 {
                     ResponseTimes newResponseTimes = new ResponseTimes();
-                    newResponseTimes.customerGroup = customerGroup;
+                    newResponseTimes.customer = customer;
                     newResponseTimes.prio = prio;
                     newResponseTimes.analys = analys;
                     newResponseTimes.month = Convert.ToString(dr["month"]);
@@ -340,13 +501,13 @@ namespace IK075G
             }
             catch (NpgsqlException ex)
             {
-                MessageBox.Show(ex.Message);
                 conn.Close();
+                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
                 conn.Close();
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -355,10 +516,9 @@ namespace IK075G
             return newListMember;
         }
 
-        public List<ResponseTimes> GetResponseByWeek(string customerGroup, string analys, string prio, string yearFrom, string yearTo, string weekFrom, string weekTo)
+        public List<ResponseTimes> GetResponseByWeek(string customer, string analys, string prio, string yearFrom, string yearTo, string weekFrom, string weekTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
-
             try
             {
                 weekFrom = weekFrom.PadLeft(2, '0');
@@ -368,27 +528,30 @@ namespace IK075G
 
                 string sql = string.Empty;
                 sql = sql + "SELECT ";
+                sql = sql + "   cuco,";
+                sql = sql + "   prio,";
+                sql = sql + "   anco,";
                 sql = sql + "   to_char(tetm_date,'YYYYWW') AS week,";
-                sql = sql + "    count(anco) AS quantity,";
-                sql = sql + "    to_char(min(diff_interval),'HH24:MI') AS min_time,";
-                sql = sql + "    to_char(max(diff_interval),'HH24:MI') AS max_time,";
-                sql = sql + "    to_char(avg(diff_interval),'HH24:MI') AS avg_time,";
-                sql = sql + "    round(min( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS min_value,";
-                sql = sql + "    round(max( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS max_value,";
-                sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
+                sql = sql + "   count(difference_value) AS quantity,";
+                sql = sql + "   min(difference_interval) AS min_time,";
+                sql = sql + "   max(difference_interval) AS max_time,";
+                sql = sql + "   avg(difference_interval) AS avg_time,";
+                sql = sql + "   round(min(difference_value),2) AS min_value,";
+                sql = sql + "   round(max(difference_value),2) AS max_value,";
+                sql = sql + "   round(avg(difference_value),2) AS avg_value";
                 sql = sql + " FROM xxx_time_control_vw";
                 sql = sql + " WHERE 1 = 1";
                 sql = sql + " AND cuco LIKE :newCuco";
                 sql = sql + " AND anco = :newAnco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newFrom AND :newTo";
-                sql = sql + " GROUP BY to_char(tetm_date,'YYYYWW')";
-                sql = sql + " ORDER BY to_char(tetm_date,'YYYYWW')";
+                sql = sql + " GROUP BY cuco, prio, anco, to_char(tetm_date,'YYYYWW')";
+                sql = sql + " ORDER BY to_char(tetm_date,'YYYYWW')";                
 
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
-                cmd.Parameters["newCuco"].Value = customerGroup;
+                cmd.Parameters["newCuco"].Value = customer;
                 cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
                 cmd.Parameters["newPrio"].Value = prio;
                 cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -402,7 +565,7 @@ namespace IK075G
                 while (dr.Read())
                 {
                     ResponseTimes newResponseTimes = new ResponseTimes();
-                    newResponseTimes.customerGroup = customerGroup;
+                    newResponseTimes.customer = customer;
                     newResponseTimes.prio = prio;
                     newResponseTimes.analys = analys;
                     newResponseTimes.week = Convert.ToString(dr["week"]);
@@ -419,13 +582,13 @@ namespace IK075G
             }
             catch (NpgsqlException ex)
             {
-                MessageBox.Show(ex.Message);
                 conn.Close();
+                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
                 conn.Close();
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -434,7 +597,7 @@ namespace IK075G
             return newListMember;
         }
 
-        public List<ResponseTimes> GetResponseByDay(string customerGroup, string analys, string prio, string dayFrom, string dayTo)
+        public List<ResponseTimes> GetResponseByDay(string customer, string analys, string prio, string dayFrom, string dayTo)
         {
             List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
@@ -442,27 +605,30 @@ namespace IK075G
                 conn.Open();
                 string sql = string.Empty;
                 sql = sql + "SELECT ";
-                sql = sql + "    to_char(tetm_date,'YYYYMMDD') AS day,";
-                sql = sql + "    count(anco) AS quantity,";
-                sql = sql + "    to_char(min(diff_interval),'HH24:MI') AS min_time,";
-                sql = sql + "    to_char(max(diff_interval),'HH24:MI') AS max_time,";
-                sql = sql + "    to_char(avg(diff_interval),'HH24:MI') AS avg_time,";
-                sql = sql + "    round(min( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS min_value,";
-                sql = sql + "    round(max( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS max_value,";
-                sql = sql + "    round(avg( (diff_days * 1440) + (diff_hours * 60) + (diff_minutes) ),2) AS avg_value";
+                sql = sql + "   cuco,";
+                sql = sql + "   prio,";
+                sql = sql + "   anco,";
+                sql = sql + "   to_char(tetm_date,'YYYYMMDD') AS day,";
+                sql = sql + "   count(difference_value) AS quantity,";
+                sql = sql + "   min(difference_interval) AS min_time,";
+                sql = sql + "   max(difference_interval) AS max_time,";
+                sql = sql + "   avg(difference_interval) AS avg_time,";
+                sql = sql + "   round(min(difference_value),2) AS min_value,";
+                sql = sql + "   round(max(difference_value),2) AS max_value,";
+                sql = sql + "   round(avg(difference_value),2) AS avg_value";
                 sql = sql + " FROM xxx_time_control_vw";
                 sql = sql + " WHERE 1 = 1";
                 sql = sql + " AND cuco LIKE :newCuco";
                 sql = sql + " AND anco = :newAnco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newFrom AND :newTo";
-                sql = sql + " GROUP BY to_char(tetm_date,'YYYYMMDD')";
-                sql = sql + " ORDER BY to_char(tetm_date,'YYYYMMDD')";
-
+                sql = sql + " GROUP BY cuco, prio, anco, to_char(tetm_date,'YYYYMMDD')";
+                sql = sql + " ORDER BY to_char(tetm_date,'YYYYMMDD')";            
+                
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newCuco", NpgsqlDbType.Varchar));
-                cmd.Parameters["newCuco"].Value = customerGroup;
+                cmd.Parameters["newCuco"].Value = customer;
                 cmd.Parameters.Add(new NpgsqlParameter("newPrio", NpgsqlDbType.Varchar));
                 cmd.Parameters["newPrio"].Value = prio;
                 cmd.Parameters.Add(new NpgsqlParameter("newAnco", NpgsqlDbType.Varchar));
@@ -476,7 +642,7 @@ namespace IK075G
                 while (dr.Read())
                 {
                     ResponseTimes newResponseTimes = new ResponseTimes();
-                    newResponseTimes.customerGroup = customerGroup;
+                    newResponseTimes.customer = customer;
                     newResponseTimes.prio = prio;
                     newResponseTimes.analys = analys;
                     newResponseTimes.day = Convert.ToString(dr["day"]);
@@ -493,13 +659,13 @@ namespace IK075G
             }
             catch (NpgsqlException ex)
             {
-                MessageBox.Show(ex.Message);
                 conn.Close();
+                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
+                conn.Close();
                 MessageBox.Show(ex.Message);
-                conn.Close();    
             }                
             finally
             {
@@ -527,10 +693,10 @@ namespace IK075G
             try 
 	        {
                 List<ResponseTimes> newListMember = new List<ResponseTimes>();
-                string customerGroup = comboBoxCustomerGrp.Text.ToString().ToUpper();
-                if (customerGroup == allGroups)
+                string customer = comboBoxCustomer.Text.ToString().ToUpper();
+                if (customer == allGroups)
                 {
-                    customerGroup = "%";
+                    customer = "%";
                 }
                 string analys = comboBoxAnalysis.Text.ToString().ToUpper();
                 string prio = comboBoxPriority.Text.ToString().ToUpper();
@@ -566,7 +732,7 @@ namespace IK075G
 
                     // Hämtning av data påbörjas
                     // Cursor = Cursors.WaitCursor;
-                    // newListMember = GetResponseByHours(customerGroup, analys, prio, yearFrom, yearTo, hoursFrom, hoursTo);
+                    // newListMember = GetResponseByHours(customer, analys, prio, yearFrom, yearTo, hoursFrom, hoursTo);
                 }
                 else if (timeInterval == daily.ToUpper())
                 {
@@ -579,7 +745,7 @@ namespace IK075G
 
                     // Hämtning av data påbörjas
                     Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByDay(customerGroup, analys, prio, dayFrom, dayTo);
+                    newListMember = GetResponseByDay(customer, analys, prio, dayFrom, dayTo);
 
                 }
                 else if (timeInterval == weekly.ToUpper())
@@ -592,7 +758,7 @@ namespace IK075G
 
                     // Hämtning av data påbörjas
                     Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByWeek(customerGroup, analys, prio, yearFrom, yearTo, weekFrom, weekTo);
+                    newListMember = GetResponseByWeek(customer, analys, prio, yearFrom, yearTo, weekFrom, weekTo);
                 }
                 else if (timeInterval == monthly.ToUpper())
                 {
@@ -602,7 +768,7 @@ namespace IK075G
 
                     // Hämtning av data påbörjas
                     Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByMonth(customerGroup, analys, prio, monthFrom, monthTo);
+                    newListMember = GetResponseByMonth(customer, analys, prio, monthFrom, monthTo);
                 }
                 else if (timeInterval == byyear.ToUpper())
                 {
@@ -612,7 +778,7 @@ namespace IK075G
 
                     // Hämtning av data påbörjas
                     Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByYear(customerGroup, analys, prio, yearFrom, yearTo);
+                    newListMember = GetResponseByYear(customer, analys, prio, yearFrom, yearTo);
                 }
 
                 // diagram
@@ -621,10 +787,11 @@ namespace IK075G
                 chartResponseTime.ChartAreas.Clear();
                 chartResponseTime.ChartAreas.Add("");
                 chartResponseTime.Legends.Clear();
-
+                
                 // diagram titel 
-                chartResponseTime.Titles.Add("Svarstider ");
-                chartResponseTime.ChartAreas[0].AxisX.Title = "Svarstider (" + timeInterval.ToLower() + ")";
+                string titel = "Visar uppföljning av svarstider " + timeInterval.ToLower() + " för analys: " + analys + ", från kund: " + customer;
+                chartResponseTime.Titles.Add(titel);
+                chartResponseTime.Titles[0].Alignment = ContentAlignment.TopLeft;
 
                 chartResponseTime.Legends.Add("Legend");
 
@@ -683,8 +850,8 @@ namespace IK075G
                     serie = chartResponseTime.Series["Series1"].LegendText;
                     info = info + "Serie : " + serie + "\n";
                     info = info + "Värde : " + item.avgValue + "\n";
-                    info = info + "Värde : " + item.avgTime + "\n";
-                    info = info + "Antal : " + item.quantity + "\n";
+                    info = info + item.avgTime + "\n";
+                    info = info + "Antal analyser: " + item.quantity + "\n";
                     info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
                     chartResponseTime.Series["Series1"].Points[i].ToolTip = info;
                     info = string.Empty;
@@ -696,8 +863,8 @@ namespace IK075G
                     serie = chartResponseTime.Series["Series2"].LegendText;
                     info = info + "Serie : " + serie + "\n";
                     info = info + "Värde : " + item.minValue + "\n";
-                    info = info + "Värde : " + item.minTime + "\n";
-                    info = info + "Antal : " + item.quantity + "\n";
+                    info = info + item.minTime + "\n";
+                    info = info + "Antal analyser: " + item.quantity + "\n";
                     info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
                     chartResponseTime.Series["Series2"].Points[i].ToolTip = info;
                     info = string.Empty;
@@ -709,8 +876,8 @@ namespace IK075G
                     serie = chartResponseTime.Series["Series3"].LegendText;
                     info = info + "Serie : " + serie + "\n";
                     info = info + "Värde : " + item.maxValue + "\n";
-                    info = info + "Värde : " + item.maxTime + "\n";
-                    info = info + "Antal : " + item.quantity + "\n";
+                    info = info + item.maxTime + "\n";
+                    info = info + "Antal analyser: " + item.quantity + "\n";
                     info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
                     chartResponseTime.Series["Series3"].Points[i].ToolTip = info;
                     info = string.Empty;
@@ -724,7 +891,6 @@ namespace IK075G
 	        }
             catch (Exception ex)
             {
-                conn.Close();
                 Cursor = Cursors.Default;
                 MessageBox.Show(ex.Message);
             }  
@@ -738,8 +904,8 @@ namespace IK075G
         private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e)
         {
             timeInterval = comboBoxTimeInterval.SelectedItem.ToString().ToUpper();
-            // sätter min och max datum i kallender beroende min oxh max datum för analys (a_ana_tab)
-            SetCustomMinMaxDate();
+            // sätter min och max värde i boxar beroende på värdena i kallender 
+            SetYearAndWeek();
             // sätter format i kallender beroende på vald tids interval    
             if (timeInterval == hourly.ToUpper())
             {
@@ -752,6 +918,14 @@ namespace IK075G
                 comboBoxYearTo.Visible = false;
                 comboBoxWeekFrom.Visible = false;
                 comboBoxWeekTo.Visible = false;
+                //Michael start
+                lblFromWeek.Visible = false;
+                lblToWeek.Visible = false;
+                lblDateFrom.Visible = true;
+                lblDateFrom.Text = "Från:";
+                lblDateTo.Visible = true;
+                lblDateTo.Text = "Till:";
+                //Michael stop
             }
             else if (timeInterval == daily.ToUpper())
             {
@@ -764,6 +938,14 @@ namespace IK075G
                 comboBoxYearTo.Visible = false;
                 comboBoxWeekFrom.Visible = false;
                 comboBoxWeekTo.Visible = false;
+                //Michael start
+                lblFromWeek.Visible = false;
+                lblToWeek.Visible = false;
+                lblDateFrom.Visible = true;
+                lblDateFrom.Text = "Från:";
+                lblDateTo.Visible = true;
+                lblDateTo.Text = "Till:";
+                //Michael stop
             }
             else if (timeInterval == weekly.ToUpper())
             {
@@ -776,6 +958,14 @@ namespace IK075G
                 comboBoxYearTo.Visible = true;
                 comboBoxWeekFrom.Visible = true;
                 comboBoxWeekTo.Visible = true;
+                //Michael start
+                lblFromWeek.Visible = true;
+                lblToWeek.Visible = true;
+                lblDateFrom.Visible = true;
+                lblDateFrom.Text = "Från år:";
+                lblDateTo.Visible = true;
+                lblDateTo.Text = "Till år:";
+                //Michael stop
             }
             else if (timeInterval == monthly.ToUpper())
             {
@@ -788,6 +978,14 @@ namespace IK075G
                 comboBoxYearTo.Visible = false;
                 comboBoxWeekFrom.Visible = false;
                 comboBoxWeekTo.Visible = false;
+                //Michael start
+                lblFromWeek.Visible = false;
+                lblToWeek.Visible = false;
+                lblDateFrom.Visible = true;
+                lblDateFrom.Text = "Från:";
+                lblDateTo.Visible = true;
+                lblDateTo.Text = "Till:";
+                //Michael stop
             }
             else if (timeInterval == byyear.ToUpper())
             {
@@ -800,53 +998,78 @@ namespace IK075G
                 comboBoxYearTo.Visible = true;
                 comboBoxWeekFrom.Visible = false;
                 comboBoxWeekTo.Visible = false;
+                //Michael start
+                lblFromWeek.Visible = false;
+                lblToWeek.Visible = false;
+                lblDateFrom.Visible = true;
+                lblDateFrom.Text = "Från:";
+                lblDateTo.Visible = true;
+                lblDateTo.Text = "Till:";
+                //Michael stop
             }
-            labelMessage.Text = "";
-        }
-
-        private void comboBoxCustomerGrp_SelectedIndexChanged(object sender, EventArgs e)
-        {
             labelMessage.Text = "";
         }
 
         private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e)
         {
+            comboBoxPriority.Enabled = true;
             labelMessage.Text = "";
-        }
-
-        private void comboBoxPriority_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
         }
 
         private void dateTimePickerFrom_ValueChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
         }
 
         private void dateTimePickerTo_ValueChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
         }
 
         private void comboBoxYearFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
         }
 
         private void comboBoxWeekFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
         }
 
         private void comboBoxYearTo_SelectedIndexChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
         }
 
         private void comboBoxWeekTo_SelectedIndexChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
+        }
+
+        private void comboBoxCustomer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBoxAnalysis.Enabled = true;
+            labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
+        }
+
+        private void comboBoxPriority_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBoxTimeInterval.Enabled = true;
+            labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

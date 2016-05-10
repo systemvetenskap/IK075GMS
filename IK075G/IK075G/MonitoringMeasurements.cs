@@ -55,9 +55,36 @@ namespace IK075G
             resultLabel.Visible = false;
             progressBar1.Visible = false;
 
+            SetCustomMinMaxDate();
+
             //Datum
             lblTodaysDateAndTime.Text = DateTime.Now.ToString("ddddd, M MMMM, yyyy");
-  
+
+            //Från
+            int y = 0;
+            int x = 0;
+
+            y = dateTimePickerDayFrom.Location.Y;
+            x = dateTimePickerDayFrom.Location.X;
+
+            dateTimePickerDayFrom.Location = new Point(x, y);
+            comboBoxYearFrom.Location = new Point(x, y);
+            dateTimePickerMonthFrom.Location = new Point(x, y);
+
+            x = comboBoxWeekFrom.Location.X;
+            comboBoxWeekFrom.Location = new Point(x, y);
+
+            //Till
+            y = dateTimePickerDayTo.Location.Y;
+            x = dateTimePickerDayTo.Location.X;
+
+            dateTimePickerDayTo.Location = new Point(x, y);
+            comboBoxYearTo.Location = new Point(x, y);
+            dateTimePickerMonthTo.Location = new Point(x, y);
+
+            x = comboBoxWeekTo.Location.X;
+            comboBoxWeekTo.Location = new Point(x, y);
+
         }
         private void btnBack_Click_1(object sender, EventArgs e) //Till huvudmenyn
         {
@@ -129,8 +156,6 @@ namespace IK075G
                 chart1.ChartAreas.Clear();
                 chart1.ChartAreas.Add("");
 
-                // Titel ovanför diagramet  
-                //chart1.Titles.Add("Uppföljning av mätvärden");
 
                 //Kurva för medelvärde
                 chart1.Series.Add("Series1");
@@ -166,6 +191,7 @@ namespace IK075G
                 {
                     chart1.Titles.Add("Visar uppföljning av mätvärden månadsvis för analys: " + analysis + ", från kund: " + customergroup);
                 }
+                chart1.Titles[0].Alignment = ContentAlignment.TopLeft;
 
                 int i = 0;
                 string serie = string.Empty;
@@ -346,6 +372,72 @@ namespace IK075G
             //Månadsvis
             dateTimePickerMonthFrom.Visible = false;
             dateTimePickerMonthTo.Visible = false;
+        }
+        public void SetCustomMinMaxDate() // Används för att sätta start och stop år i kalender beroende på minsta 
+        {
+            DateTime newMinDateTime = new DateTime();
+            // Från år
+            try
+            {
+                string sql = "SELECT MIN(to_date(altm,'YYDDMMHH24MI')) AS altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0";
+                conn.Open();
+                cmd = new NpgsqlCommand(sql, conn);
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    newMinDateTime = Convert.ToDateTime(dr["altm"]);
+                }
+                conn.Close();
+            }
+            catch (NpgsqlException ex)
+            {
+                conn.Close();
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            dateTimePickerDayFrom.MinDate = newMinDateTime;
+
+            // Till år
+            DateTime newMaxDateTime = new DateTime();
+            newMaxDateTime = DateTime.Now;
+
+            // Sätter värdena i kallender            
+            dateTimePickerDayFrom.MinDate = newMinDateTime;
+            dateTimePickerDayFrom.MaxDate = newMaxDateTime;
+            dateTimePickerDayFrom.Value = newMinDateTime;
+
+            dateTimePickerDayTo.MinDate = newMinDateTime;
+            dateTimePickerDayTo.MaxDate = newMaxDateTime;
+            dateTimePickerDayTo.Value = newMaxDateTime;
+
+            // används för att sätta värdena i komboboxar  
+            SetYearAndWeek();
+        }
+        public void SetYearAndWeek() // Används för att sätta start och stop år respektive start och stop vecka beroende på värdena i kalender
+        {
+            DateTime dateFrom = dateTimePickerDayFrom.Value;
+            DateTime dateTo = dateTimePickerDayTo.Value;
+
+            string yearFrom = dateFrom.Year.ToString().Substring(2, 2);
+            comboBoxYearFrom.SelectedItem = yearFrom;
+
+            var cal1 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+            string weekFrom = cal1.GetWeekOfYear(dateFrom, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
+            comboBoxWeekFrom.SelectedItem = weekFrom;
+
+            string yearTo = dateTo.Year.ToString().Substring(2, 2);
+            comboBoxYearTo.SelectedItem = yearTo;
+
+            var cal2 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+            string weekTo = cal2.GetWeekOfYear(dateTo, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
+            comboBoxWeekTo.SelectedItem = weekTo;
+
+            dateTimePickerMonthFrom.Value = dateFrom;
+            dateTimePickerMonthTo.Value = dateTo;
         }
         private void OnlyBigLetters(object sender, KeyPressEventArgs e) //Metod för stora bokstäver
         {
@@ -603,7 +695,6 @@ namespace IK075G
         }
         private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e) //Tidsintervall
         {
-
                 if (comboBoxTimeInterval.Text == "DAGVIS")
                 {
                     comboBoxYearFrom.Visible = false;
@@ -668,8 +759,9 @@ namespace IK075G
                     lblFromWeek.Visible = false;
                     lblToWeek.Visible = false;
 
-                btnShowUpdateDiagram.Enabled = true;
+                    btnShowUpdateDiagram.Enabled = true;
                 }
+            SetYearAndWeek();
         }
         private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e) //Analys
         {
@@ -710,6 +802,11 @@ namespace IK075G
         private void comboBoxTimeInterval_KeyPress(object sender, KeyPressEventArgs e)
         {
             OnlyBigLetters(sender, e);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

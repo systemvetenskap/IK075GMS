@@ -35,5 +35,15 @@ namespace IK075G
         {
            
         }
+
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+            btnOperationMethod.Visible = false;
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
