@@ -59,13 +59,26 @@ namespace IK075G
             LoadYears();
             LoadWeekNumbers();
             SetCustomMinMaxDate();
+
             comboBoxYearFrom.Visible = false;
             comboBoxYearTo.Visible = false;
             comboBoxWeekFrom.Visible = false;
             comboBoxWeekTo.Visible = false;
 
-            comboBoxCustomer.SelectedItem = allGroups;
-            comboBoxPriority.SelectedItem = allGroups;
+            dateTimePickerFrom.Visible = false;
+            dateTimePickerTo.Visible = false;
+
+            lblFromWeek.Visible = false;
+            lblToWeek.Visible = false;
+            lblDateFrom.Visible = false;
+            lblDateTo.Visible = false;
+
+            comboBoxAnalysis.Enabled = false;
+            comboBoxPriority.Enabled = false;
+            comboBoxTimeInterval.Enabled = false;
+
+            //comboBoxCustomer.SelectedItem = allGroups;
+            //comboBoxPriority.SelectedItem = allGroups;
 
             //Datum
             lblTodaysDateAndTime.Text = DateTime.Now.ToString("ddddd, M MMMM, yyyy");
@@ -778,7 +791,7 @@ namespace IK075G
                 // diagram titel 
                 string titel = "Visar uppföljning av svarstider " + timeInterval.ToLower() + " för analys: " + analys + ", från kund: " + customer;
                 chartResponseTime.Titles.Add(titel);
-                //chartResponseTime.ChartAreas[0].AxisX.Title = "Svarstider (" + timeInterval.ToLower() + ")";
+                chartResponseTime.Titles[0].Alignment = ContentAlignment.TopLeft;
 
                 chartResponseTime.Legends.Add("Legend");
 
@@ -905,6 +918,14 @@ namespace IK075G
                 comboBoxYearTo.Visible = false;
                 comboBoxWeekFrom.Visible = false;
                 comboBoxWeekTo.Visible = false;
+                //Michael start
+                lblFromWeek.Visible = false;
+                lblToWeek.Visible = false;
+                lblDateFrom.Visible = true;
+                lblDateFrom.Text = "Från:";
+                lblDateTo.Visible = true;
+                lblDateTo.Text = "Till:";
+                //Michael stop
             }
             else if (timeInterval == daily.ToUpper())
             {
@@ -917,6 +938,14 @@ namespace IK075G
                 comboBoxYearTo.Visible = false;
                 comboBoxWeekFrom.Visible = false;
                 comboBoxWeekTo.Visible = false;
+                //Michael start
+                lblFromWeek.Visible = false;
+                lblToWeek.Visible = false;
+                lblDateFrom.Visible = true;
+                lblDateFrom.Text = "Från:";
+                lblDateTo.Visible = true;
+                lblDateTo.Text = "Till:";
+                //Michael stop
             }
             else if (timeInterval == weekly.ToUpper())
             {
@@ -929,6 +958,14 @@ namespace IK075G
                 comboBoxYearTo.Visible = true;
                 comboBoxWeekFrom.Visible = true;
                 comboBoxWeekTo.Visible = true;
+                //Michael start
+                lblFromWeek.Visible = true;
+                lblToWeek.Visible = true;
+                lblDateFrom.Visible = true;
+                lblDateFrom.Text = "Från år:";
+                lblDateTo.Visible = true;
+                lblDateTo.Text = "Till år:";
+                //Michael stop
             }
             else if (timeInterval == monthly.ToUpper())
             {
@@ -941,6 +978,14 @@ namespace IK075G
                 comboBoxYearTo.Visible = false;
                 comboBoxWeekFrom.Visible = false;
                 comboBoxWeekTo.Visible = false;
+                //Michael start
+                lblFromWeek.Visible = false;
+                lblToWeek.Visible = false;
+                lblDateFrom.Visible = true;
+                lblDateFrom.Text = "Från:";
+                lblDateTo.Visible = true;
+                lblDateTo.Text = "Till:";
+                //Michael stop
             }
             else if (timeInterval == byyear.ToUpper())
             {
@@ -953,12 +998,21 @@ namespace IK075G
                 comboBoxYearTo.Visible = true;
                 comboBoxWeekFrom.Visible = false;
                 comboBoxWeekTo.Visible = false;
+                //Michael start
+                lblFromWeek.Visible = false;
+                lblToWeek.Visible = false;
+                lblDateFrom.Visible = true;
+                lblDateFrom.Text = "Från:";
+                lblDateTo.Visible = true;
+                lblDateTo.Text = "Till:";
+                //Michael stop
             }
             labelMessage.Text = "";
         }
 
         private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e)
         {
+            comboBoxPriority.Enabled = true;
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
@@ -1001,12 +1055,14 @@ namespace IK075G
 
         private void comboBoxCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
+            comboBoxAnalysis.Enabled = true;
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
 
         private void comboBoxPriority_SelectedIndexChanged(object sender, EventArgs e)
         {
+            comboBoxTimeInterval.Enabled = true;
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }

@@ -58,6 +58,8 @@
             this.labelMessage = new System.Windows.Forms.Label();
             this.lblTodaysDateAndTime = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.lblFromWeek = new System.Windows.Forms.Label();
+            this.lblToWeek = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chartResponseTime)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,7 +80,7 @@
             this.dateTimePickerTo.Location = new System.Drawing.Point(404, 92);
             this.dateTimePickerTo.Name = "dateTimePickerTo";
             this.dateTimePickerTo.Size = new System.Drawing.Size(174, 22);
-            this.dateTimePickerTo.TabIndex = 35;
+            this.dateTimePickerTo.TabIndex = 5;
             this.dateTimePickerTo.ValueChanged += new System.EventHandler(this.dateTimePickerTo_ValueChanged);
             // 
             // dateTimePickerFrom
@@ -87,7 +89,7 @@
             this.dateTimePickerFrom.Location = new System.Drawing.Point(220, 92);
             this.dateTimePickerFrom.Name = "dateTimePickerFrom";
             this.dateTimePickerFrom.Size = new System.Drawing.Size(174, 22);
-            this.dateTimePickerFrom.TabIndex = 34;
+            this.dateTimePickerFrom.TabIndex = 4;
             this.dateTimePickerFrom.ValueChanged += new System.EventHandler(this.dateTimePickerFrom_ValueChanged);
             // 
             // comboBoxAnalysis
@@ -99,7 +101,7 @@
             this.comboBoxAnalysis.Location = new System.Drawing.Point(220, 37);
             this.comboBoxAnalysis.Name = "comboBoxAnalysis";
             this.comboBoxAnalysis.Size = new System.Drawing.Size(174, 24);
-            this.comboBoxAnalysis.TabIndex = 31;
+            this.comboBoxAnalysis.TabIndex = 1;
             this.comboBoxAnalysis.SelectedIndexChanged += new System.EventHandler(this.comboBoxAnalysis_SelectedIndexChanged);
             // 
             // comboBoxPriority
@@ -112,7 +114,7 @@
             this.comboBoxPriority.Location = new System.Drawing.Point(404, 37);
             this.comboBoxPriority.Name = "comboBoxPriority";
             this.comboBoxPriority.Size = new System.Drawing.Size(174, 24);
-            this.comboBoxPriority.TabIndex = 30;
+            this.comboBoxPriority.TabIndex = 2;
             this.comboBoxPriority.SelectedIndexChanged += new System.EventHandler(this.comboBoxPriority_SelectedIndexChanged);
             // 
             // comboBoxCustomer
@@ -124,7 +126,7 @@
             this.comboBoxCustomer.Location = new System.Drawing.Point(35, 37);
             this.comboBoxCustomer.Name = "comboBoxCustomer";
             this.comboBoxCustomer.Size = new System.Drawing.Size(174, 24);
-            this.comboBoxCustomer.TabIndex = 29;
+            this.comboBoxCustomer.TabIndex = 0;
             this.comboBoxCustomer.SelectedIndexChanged += new System.EventHandler(this.comboBoxCustomer_SelectedIndexChanged);
             // 
             // lblDateFrom
@@ -197,7 +199,7 @@
             this.comboBoxTimeInterval.Location = new System.Drawing.Point(35, 90);
             this.comboBoxTimeInterval.Name = "comboBoxTimeInterval";
             this.comboBoxTimeInterval.Size = new System.Drawing.Size(174, 24);
-            this.comboBoxTimeInterval.TabIndex = 37;
+            this.comboBoxTimeInterval.TabIndex = 3;
             this.comboBoxTimeInterval.SelectedIndexChanged += new System.EventHandler(this.comboBoxTimeInterval_SelectedIndexChanged);
             // 
             // btnShowUpdateDiagram
@@ -206,7 +208,7 @@
             this.btnShowUpdateDiagram.Location = new System.Drawing.Point(599, 93);
             this.btnShowUpdateDiagram.Name = "btnShowUpdateDiagram";
             this.btnShowUpdateDiagram.Size = new System.Drawing.Size(177, 24);
-            this.btnShowUpdateDiagram.TabIndex = 39;
+            this.btnShowUpdateDiagram.TabIndex = 10;
             this.btnShowUpdateDiagram.Text = "Updatera/visa";
             this.btnShowUpdateDiagram.UseVisualStyleBackColor = true;
             this.btnShowUpdateDiagram.Click += new System.EventHandler(this.btnShowUpdateDiagram_Click);
@@ -222,7 +224,7 @@
             chartArea1.Name = "ChartArea1";
             this.chartResponseTime.ChartAreas.Add(chartArea1);
             this.chartResponseTime.Location = new System.Drawing.Point(-6, 164);
-            this.chartResponseTime.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chartResponseTime.Margin = new System.Windows.Forms.Padding(2);
             this.chartResponseTime.Name = "chartResponseTime";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
@@ -242,10 +244,10 @@
             this.comboBoxYearTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxYearTo.FormattingEnabled = true;
             this.comboBoxYearTo.Location = new System.Drawing.Point(404, 119);
-            this.comboBoxYearTo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxYearTo.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxYearTo.Name = "comboBoxYearTo";
             this.comboBoxYearTo.Size = new System.Drawing.Size(78, 24);
-            this.comboBoxYearTo.TabIndex = 44;
+            this.comboBoxYearTo.TabIndex = 8;
             this.comboBoxYearTo.SelectedIndexChanged += new System.EventHandler(this.comboBoxYearTo_SelectedIndexChanged);
             // 
             // comboBoxWeekTo
@@ -256,10 +258,10 @@
             this.comboBoxWeekTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxWeekTo.FormattingEnabled = true;
             this.comboBoxWeekTo.Location = new System.Drawing.Point(485, 119);
-            this.comboBoxWeekTo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxWeekTo.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxWeekTo.Name = "comboBoxWeekTo";
             this.comboBoxWeekTo.Size = new System.Drawing.Size(91, 24);
-            this.comboBoxWeekTo.TabIndex = 45;
+            this.comboBoxWeekTo.TabIndex = 9;
             this.comboBoxWeekTo.SelectedIndexChanged += new System.EventHandler(this.comboBoxWeekTo_SelectedIndexChanged);
             // 
             // comboBoxWeekFrom
@@ -270,10 +272,10 @@
             this.comboBoxWeekFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxWeekFrom.FormattingEnabled = true;
             this.comboBoxWeekFrom.Location = new System.Drawing.Point(298, 119);
-            this.comboBoxWeekFrom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxWeekFrom.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxWeekFrom.Name = "comboBoxWeekFrom";
             this.comboBoxWeekFrom.Size = new System.Drawing.Size(94, 24);
-            this.comboBoxWeekFrom.TabIndex = 43;
+            this.comboBoxWeekFrom.TabIndex = 7;
             this.comboBoxWeekFrom.SelectedIndexChanged += new System.EventHandler(this.comboBoxWeekFrom_SelectedIndexChanged);
             // 
             // comboBoxYearFrom
@@ -284,10 +286,10 @@
             this.comboBoxYearFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxYearFrom.FormattingEnabled = true;
             this.comboBoxYearFrom.Location = new System.Drawing.Point(220, 119);
-            this.comboBoxYearFrom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxYearFrom.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxYearFrom.Name = "comboBoxYearFrom";
             this.comboBoxYearFrom.Size = new System.Drawing.Size(74, 24);
-            this.comboBoxYearFrom.TabIndex = 42;
+            this.comboBoxYearFrom.TabIndex = 6;
             this.comboBoxYearFrom.SelectedIndexChanged += new System.EventHandler(this.comboBoxYearFrom_SelectedIndexChanged);
             // 
             // labelMessage
@@ -321,12 +323,32 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // lblFromWeek
+            // 
+            this.lblFromWeek.AutoSize = true;
+            this.lblFromWeek.Location = new System.Drawing.Point(295, 74);
+            this.lblFromWeek.Name = "lblFromWeek";
+            this.lblFromWeek.Size = new System.Drawing.Size(41, 13);
+            this.lblFromWeek.TabIndex = 68;
+            this.lblFromWeek.Text = "Vecka:";
+            // 
+            // lblToWeek
+            // 
+            this.lblToWeek.AutoSize = true;
+            this.lblToWeek.Location = new System.Drawing.Point(482, 74);
+            this.lblToWeek.Name = "lblToWeek";
+            this.lblToWeek.Size = new System.Drawing.Size(41, 13);
+            this.lblToWeek.TabIndex = 69;
+            this.lblToWeek.Text = "Vecka:";
+            // 
             // TimeMonitoring
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(1184, 561);
+            this.Controls.Add(this.lblToWeek);
+            this.Controls.Add(this.lblFromWeek);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lblTodaysDateAndTime);
             this.Controls.Add(this.labelMessage);
@@ -387,5 +409,7 @@
         private System.Windows.Forms.Label labelMessage;
         private System.Windows.Forms.Label lblTodaysDateAndTime;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label lblFromWeek;
+        private System.Windows.Forms.Label lblToWeek;
     }
 }
