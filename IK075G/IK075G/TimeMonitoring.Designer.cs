@@ -60,15 +60,19 @@
             this.button1 = new System.Windows.Forms.Button();
             this.lblFromWeek = new System.Windows.Forms.Label();
             this.lblToWeek = new System.Windows.Forms.Label();
+            this.comboBoxShow = new System.Windows.Forms.ComboBox();
+            this.dataGridResponseTime = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.chartResponseTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridResponseTime)).BeginInit();
             this.SuspendLayout();
             // 
             // btnBack
             // 
             this.btnBack.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBack.Location = new System.Drawing.Point(1024, 57);
+            this.btnBack.Location = new System.Drawing.Point(1365, 70);
+            this.btnBack.Margin = new System.Windows.Forms.Padding(4);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(148, 32);
+            this.btnBack.Size = new System.Drawing.Size(197, 39);
             this.btnBack.TabIndex = 20;
             this.btnBack.Text = "Till huvudmenyn";
             this.btnBack.UseVisualStyleBackColor = true;
@@ -77,18 +81,20 @@
             // dateTimePickerTo
             // 
             this.dateTimePickerTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePickerTo.Location = new System.Drawing.Point(404, 92);
+            this.dateTimePickerTo.Location = new System.Drawing.Point(539, 113);
+            this.dateTimePickerTo.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePickerTo.Name = "dateTimePickerTo";
-            this.dateTimePickerTo.Size = new System.Drawing.Size(174, 22);
+            this.dateTimePickerTo.Size = new System.Drawing.Size(231, 26);
             this.dateTimePickerTo.TabIndex = 5;
             this.dateTimePickerTo.ValueChanged += new System.EventHandler(this.dateTimePickerTo_ValueChanged);
             // 
             // dateTimePickerFrom
             // 
             this.dateTimePickerFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePickerFrom.Location = new System.Drawing.Point(220, 92);
+            this.dateTimePickerFrom.Location = new System.Drawing.Point(293, 113);
+            this.dateTimePickerFrom.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePickerFrom.Name = "dateTimePickerFrom";
-            this.dateTimePickerFrom.Size = new System.Drawing.Size(174, 22);
+            this.dateTimePickerFrom.Size = new System.Drawing.Size(231, 26);
             this.dateTimePickerFrom.TabIndex = 4;
             this.dateTimePickerFrom.ValueChanged += new System.EventHandler(this.dateTimePickerFrom_ValueChanged);
             // 
@@ -98,9 +104,10 @@
             this.comboBoxAnalysis.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxAnalysis.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxAnalysis.FormattingEnabled = true;
-            this.comboBoxAnalysis.Location = new System.Drawing.Point(220, 37);
+            this.comboBoxAnalysis.Location = new System.Drawing.Point(293, 46);
+            this.comboBoxAnalysis.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxAnalysis.Name = "comboBoxAnalysis";
-            this.comboBoxAnalysis.Size = new System.Drawing.Size(174, 24);
+            this.comboBoxAnalysis.Size = new System.Drawing.Size(231, 28);
             this.comboBoxAnalysis.TabIndex = 1;
             this.comboBoxAnalysis.SelectedIndexChanged += new System.EventHandler(this.comboBoxAnalysis_SelectedIndexChanged);
             // 
@@ -111,9 +118,10 @@
             this.comboBoxPriority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxPriority.FormattingEnabled = true;
-            this.comboBoxPriority.Location = new System.Drawing.Point(404, 37);
+            this.comboBoxPriority.Location = new System.Drawing.Point(539, 46);
+            this.comboBoxPriority.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxPriority.Name = "comboBoxPriority";
-            this.comboBoxPriority.Size = new System.Drawing.Size(174, 24);
+            this.comboBoxPriority.Size = new System.Drawing.Size(231, 28);
             this.comboBoxPriority.TabIndex = 2;
             this.comboBoxPriority.SelectedIndexChanged += new System.EventHandler(this.comboBoxPriority_SelectedIndexChanged);
             // 
@@ -123,9 +131,10 @@
             this.comboBoxCustomer.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxCustomer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxCustomer.FormattingEnabled = true;
-            this.comboBoxCustomer.Location = new System.Drawing.Point(35, 37);
+            this.comboBoxCustomer.Location = new System.Drawing.Point(47, 46);
+            this.comboBoxCustomer.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxCustomer.Name = "comboBoxCustomer";
-            this.comboBoxCustomer.Size = new System.Drawing.Size(174, 24);
+            this.comboBoxCustomer.Size = new System.Drawing.Size(231, 28);
             this.comboBoxCustomer.TabIndex = 0;
             this.comboBoxCustomer.SelectedIndexChanged += new System.EventHandler(this.comboBoxCustomer_SelectedIndexChanged);
             // 
@@ -133,9 +142,10 @@
             // 
             this.lblDateFrom.AutoSize = true;
             this.lblDateFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateFrom.Location = new System.Drawing.Point(220, 71);
+            this.lblDateFrom.Location = new System.Drawing.Point(293, 87);
+            this.lblDateFrom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateFrom.Name = "lblDateFrom";
-            this.lblDateFrom.Size = new System.Drawing.Size(38, 16);
+            this.lblDateFrom.Size = new System.Drawing.Size(48, 20);
             this.lblDateFrom.TabIndex = 28;
             this.lblDateFrom.Text = "Från:";
             // 
@@ -143,9 +153,10 @@
             // 
             this.lblAnalysis.AutoSize = true;
             this.lblAnalysis.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAnalysis.Location = new System.Drawing.Point(220, 19);
+            this.lblAnalysis.Location = new System.Drawing.Point(293, 23);
+            this.lblAnalysis.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAnalysis.Name = "lblAnalysis";
-            this.lblAnalysis.Size = new System.Drawing.Size(52, 16);
+            this.lblAnalysis.Size = new System.Drawing.Size(64, 20);
             this.lblAnalysis.TabIndex = 27;
             this.lblAnalysis.Text = "Analys:";
             // 
@@ -153,9 +164,10 @@
             // 
             this.lblPriority.AutoSize = true;
             this.lblPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPriority.Location = new System.Drawing.Point(404, 19);
+            this.lblPriority.Location = new System.Drawing.Point(539, 23);
+            this.lblPriority.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPriority.Name = "lblPriority";
-            this.lblPriority.Size = new System.Drawing.Size(98, 16);
+            this.lblPriority.Size = new System.Drawing.Size(124, 20);
             this.lblPriority.TabIndex = 26;
             this.lblPriority.Text = "Prioritetsgrupp:";
             // 
@@ -163,9 +175,10 @@
             // 
             this.lblDateTo.AutoSize = true;
             this.lblDateTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateTo.Location = new System.Drawing.Point(404, 71);
+            this.lblDateTo.Location = new System.Drawing.Point(539, 87);
+            this.lblDateTo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateTo.Name = "lblDateTo";
-            this.lblDateTo.Size = new System.Drawing.Size(29, 16);
+            this.lblDateTo.Size = new System.Drawing.Size(36, 20);
             this.lblDateTo.TabIndex = 23;
             this.lblDateTo.Text = "Till:";
             // 
@@ -173,9 +186,10 @@
             // 
             this.lblCustomer.AutoSize = true;
             this.lblCustomer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomer.Location = new System.Drawing.Point(35, 19);
+            this.lblCustomer.Location = new System.Drawing.Point(47, 23);
+            this.lblCustomer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(41, 16);
+            this.lblCustomer.Size = new System.Drawing.Size(52, 20);
             this.lblCustomer.TabIndex = 22;
             this.lblCustomer.Text = "Kund:";
             // 
@@ -183,9 +197,10 @@
             // 
             this.labelTimeInterval.AutoSize = true;
             this.labelTimeInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTimeInterval.Location = new System.Drawing.Point(35, 71);
+            this.labelTimeInterval.Location = new System.Drawing.Point(47, 87);
+            this.labelTimeInterval.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTimeInterval.Name = "labelTimeInterval";
-            this.labelTimeInterval.Size = new System.Drawing.Size(84, 16);
+            this.labelTimeInterval.Size = new System.Drawing.Size(104, 20);
             this.labelTimeInterval.TabIndex = 38;
             this.labelTimeInterval.Text = "Tidsintervall:";
             // 
@@ -196,18 +211,20 @@
             this.comboBoxTimeInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTimeInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.comboBoxTimeInterval.FormattingEnabled = true;
-            this.comboBoxTimeInterval.Location = new System.Drawing.Point(35, 90);
+            this.comboBoxTimeInterval.Location = new System.Drawing.Point(47, 111);
+            this.comboBoxTimeInterval.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxTimeInterval.Name = "comboBoxTimeInterval";
-            this.comboBoxTimeInterval.Size = new System.Drawing.Size(174, 24);
+            this.comboBoxTimeInterval.Size = new System.Drawing.Size(231, 28);
             this.comboBoxTimeInterval.TabIndex = 3;
             this.comboBoxTimeInterval.SelectedIndexChanged += new System.EventHandler(this.comboBoxTimeInterval_SelectedIndexChanged);
             // 
             // btnShowUpdateDiagram
             // 
             this.btnShowUpdateDiagram.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowUpdateDiagram.Location = new System.Drawing.Point(599, 93);
+            this.btnShowUpdateDiagram.Location = new System.Drawing.Point(799, 114);
+            this.btnShowUpdateDiagram.Margin = new System.Windows.Forms.Padding(4);
             this.btnShowUpdateDiagram.Name = "btnShowUpdateDiagram";
-            this.btnShowUpdateDiagram.Size = new System.Drawing.Size(177, 24);
+            this.btnShowUpdateDiagram.Size = new System.Drawing.Size(236, 30);
             this.btnShowUpdateDiagram.TabIndex = 10;
             this.btnShowUpdateDiagram.Text = "Updatera/visa";
             this.btnShowUpdateDiagram.UseVisualStyleBackColor = true;
@@ -223,14 +240,14 @@
             chartArea1.AxisY2.CustomLabels.Add(customLabel2);
             chartArea1.Name = "ChartArea1";
             this.chartResponseTime.ChartAreas.Add(chartArea1);
-            this.chartResponseTime.Location = new System.Drawing.Point(-6, 164);
-            this.chartResponseTime.Margin = new System.Windows.Forms.Padding(2);
+            this.chartResponseTime.Location = new System.Drawing.Point(0, 200);
+            this.chartResponseTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chartResponseTime.Name = "chartResponseTime";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.Name = "Series1";
             this.chartResponseTime.Series.Add(series1);
-            this.chartResponseTime.Size = new System.Drawing.Size(1197, 407);
+            this.chartResponseTime.Size = new System.Drawing.Size(1588, 372);
             this.chartResponseTime.TabIndex = 41;
             this.chartResponseTime.Text = "chart1";
             title1.Name = "Test Titel1";
@@ -243,10 +260,10 @@
             this.comboBoxYearTo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxYearTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxYearTo.FormattingEnabled = true;
-            this.comboBoxYearTo.Location = new System.Drawing.Point(404, 119);
-            this.comboBoxYearTo.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxYearTo.Location = new System.Drawing.Point(539, 146);
+            this.comboBoxYearTo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBoxYearTo.Name = "comboBoxYearTo";
-            this.comboBoxYearTo.Size = new System.Drawing.Size(78, 24);
+            this.comboBoxYearTo.Size = new System.Drawing.Size(103, 28);
             this.comboBoxYearTo.TabIndex = 8;
             this.comboBoxYearTo.SelectedIndexChanged += new System.EventHandler(this.comboBoxYearTo_SelectedIndexChanged);
             // 
@@ -257,10 +274,10 @@
             this.comboBoxWeekTo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxWeekTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxWeekTo.FormattingEnabled = true;
-            this.comboBoxWeekTo.Location = new System.Drawing.Point(485, 119);
-            this.comboBoxWeekTo.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxWeekTo.Location = new System.Drawing.Point(647, 146);
+            this.comboBoxWeekTo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBoxWeekTo.Name = "comboBoxWeekTo";
-            this.comboBoxWeekTo.Size = new System.Drawing.Size(91, 24);
+            this.comboBoxWeekTo.Size = new System.Drawing.Size(120, 28);
             this.comboBoxWeekTo.TabIndex = 9;
             this.comboBoxWeekTo.SelectedIndexChanged += new System.EventHandler(this.comboBoxWeekTo_SelectedIndexChanged);
             // 
@@ -271,10 +288,10 @@
             this.comboBoxWeekFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxWeekFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxWeekFrom.FormattingEnabled = true;
-            this.comboBoxWeekFrom.Location = new System.Drawing.Point(298, 119);
-            this.comboBoxWeekFrom.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxWeekFrom.Location = new System.Drawing.Point(397, 146);
+            this.comboBoxWeekFrom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBoxWeekFrom.Name = "comboBoxWeekFrom";
-            this.comboBoxWeekFrom.Size = new System.Drawing.Size(94, 24);
+            this.comboBoxWeekFrom.Size = new System.Drawing.Size(124, 28);
             this.comboBoxWeekFrom.TabIndex = 7;
             this.comboBoxWeekFrom.SelectedIndexChanged += new System.EventHandler(this.comboBoxWeekFrom_SelectedIndexChanged);
             // 
@@ -285,10 +302,10 @@
             this.comboBoxYearFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxYearFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxYearFrom.FormattingEnabled = true;
-            this.comboBoxYearFrom.Location = new System.Drawing.Point(220, 119);
-            this.comboBoxYearFrom.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxYearFrom.Location = new System.Drawing.Point(293, 146);
+            this.comboBoxYearFrom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBoxYearFrom.Name = "comboBoxYearFrom";
-            this.comboBoxYearFrom.Size = new System.Drawing.Size(74, 24);
+            this.comboBoxYearFrom.Size = new System.Drawing.Size(97, 28);
             this.comboBoxYearFrom.TabIndex = 6;
             this.comboBoxYearFrom.SelectedIndexChanged += new System.EventHandler(this.comboBoxYearFrom_SelectedIndexChanged);
             // 
@@ -296,9 +313,10 @@
             // 
             this.labelMessage.AutoSize = true;
             this.labelMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMessage.Location = new System.Drawing.Point(599, 122);
+            this.labelMessage.Location = new System.Drawing.Point(799, 150);
+            this.labelMessage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelMessage.Name = "labelMessage";
-            this.labelMessage.Size = new System.Drawing.Size(88, 16);
+            this.labelMessage.Size = new System.Drawing.Size(104, 20);
             this.labelMessage.TabIndex = 46;
             this.labelMessage.Text = "Meddelande:";
             // 
@@ -306,18 +324,20 @@
             // 
             this.lblTodaysDateAndTime.AutoSize = true;
             this.lblTodaysDateAndTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTodaysDateAndTime.Location = new System.Drawing.Point(1024, 95);
+            this.lblTodaysDateAndTime.Location = new System.Drawing.Point(1365, 117);
+            this.lblTodaysDateAndTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTodaysDateAndTime.Name = "lblTodaysDateAndTime";
-            this.lblTodaysDateAndTime.Size = new System.Drawing.Size(123, 16);
+            this.lblTodaysDateAndTime.Size = new System.Drawing.Size(147, 20);
             this.lblTodaysDateAndTime.TabIndex = 64;
             this.lblTodaysDateAndTime.Text = "yearmmdayofweek";
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(1024, 11);
+            this.button1.Location = new System.Drawing.Point(1365, 14);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(148, 32);
+            this.button1.Size = new System.Drawing.Size(197, 39);
             this.button1.TabIndex = 65;
             this.button1.Text = "Avsluta programmet";
             this.button1.UseVisualStyleBackColor = true;
@@ -326,27 +346,53 @@
             // lblFromWeek
             // 
             this.lblFromWeek.AutoSize = true;
-            this.lblFromWeek.Location = new System.Drawing.Point(295, 74);
+            this.lblFromWeek.Location = new System.Drawing.Point(393, 91);
+            this.lblFromWeek.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFromWeek.Name = "lblFromWeek";
-            this.lblFromWeek.Size = new System.Drawing.Size(41, 13);
+            this.lblFromWeek.Size = new System.Drawing.Size(51, 17);
             this.lblFromWeek.TabIndex = 68;
             this.lblFromWeek.Text = "Vecka:";
             // 
             // lblToWeek
             // 
             this.lblToWeek.AutoSize = true;
-            this.lblToWeek.Location = new System.Drawing.Point(482, 74);
+            this.lblToWeek.Location = new System.Drawing.Point(643, 91);
+            this.lblToWeek.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblToWeek.Name = "lblToWeek";
-            this.lblToWeek.Size = new System.Drawing.Size(41, 13);
+            this.lblToWeek.Size = new System.Drawing.Size(51, 17);
             this.lblToWeek.TabIndex = 69;
             this.lblToWeek.Text = "Vecka:";
             // 
+            // comboBoxShow
+            // 
+            this.comboBoxShow.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.comboBoxShow.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxShow.FormattingEnabled = true;
+            this.comboBoxShow.Location = new System.Drawing.Point(1365, 161);
+            this.comboBoxShow.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxShow.Name = "comboBoxShow";
+            this.comboBoxShow.Size = new System.Drawing.Size(193, 28);
+            this.comboBoxShow.TabIndex = 70;
+            this.comboBoxShow.SelectedIndexChanged += new System.EventHandler(this.comboBoxShow_SelectedIndexChanged);
+            // 
+            // dataGridResponseTime
+            // 
+            this.dataGridResponseTime.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridResponseTime.Location = new System.Drawing.Point(128, 599);
+            this.dataGridResponseTime.Name = "dataGridResponseTime";
+            this.dataGridResponseTime.RowTemplate.Height = 24;
+            this.dataGridResponseTime.Size = new System.Drawing.Size(1214, 200);
+            this.dataGridResponseTime.TabIndex = 72;
+            // 
             // TimeMonitoring
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1184, 561);
+            this.ClientSize = new System.Drawing.Size(1583, 816);
+            this.Controls.Add(this.dataGridResponseTime);
+            this.Controls.Add(this.comboBoxShow);
             this.Controls.Add(this.lblToWeek);
             this.Controls.Add(this.lblFromWeek);
             this.Controls.Add(this.button1);
@@ -373,12 +419,14 @@
             this.Controls.Add(this.btnBack);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "TimeMonitoring";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "IK075G - Svarstider";
             this.Load += new System.EventHandler(this.TimeMonitoring_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chartResponseTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridResponseTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -411,5 +459,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lblFromWeek;
         private System.Windows.Forms.Label lblToWeek;
+        private System.Windows.Forms.ComboBox comboBoxShow;
+        private System.Windows.Forms.DataGridView dataGridResponseTime;
     }
 }

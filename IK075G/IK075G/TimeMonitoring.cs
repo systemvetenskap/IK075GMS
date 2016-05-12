@@ -26,6 +26,9 @@ namespace IK075G
         string weekly = "Veckovis";
         string monthly = "Månadsvis";
         string byyear = "Årsvis";
+
+        string as_chart = "Diagram";
+        string as_both = "Diagram och tabell";
         
         // Upprättar koppling mot databas
         // CommandTimeout=200000 d.v.s 200 sekunder - 3 minuter;
@@ -77,10 +80,7 @@ namespace IK075G
             comboBoxPriority.Enabled = false;
             comboBoxTimeInterval.Enabled = false;
 
-            //comboBoxCustomer.SelectedItem = allGroups;
-            //comboBoxPriority.SelectedItem = allGroups;
-
-            //Datum
+            // Datum
             lblTodaysDateAndTime.Text = DateTime.Now.ToString("ddddd, M MMMM, yyyy");
 
             int y = 0;
@@ -100,6 +100,15 @@ namespace IK075G
             x = comboBoxWeekTo.Location.X;
             comboBoxWeekTo.Location = new Point(x, y);
 
+            // Suad start
+            // Laddar komboboxen visa med alternativ och väljer digram som default alternativ  
+            LoadShow();
+            comboBoxShow.SelectedItem = as_chart;
+            chartResponseTime.Height = 450;
+            dataGridResponseTime.Height = 160;
+            dataGridResponseTime.Visible = false;
+            comboBoxShow.Visible = false;
+            // Suad stop
         }
 
         // Egna metoder        
@@ -195,6 +204,12 @@ namespace IK075G
             {
                 conn.Close();
             }       
+        }
+
+        public void LoadShow() //Metod för att fylla comboboxen med alternativ
+        {
+            comboBoxShow.Items.Add(as_chart);
+            comboBoxShow.Items.Add(as_both);
         }
 
         public void LoadTimeInterval() //Metod för att fylla comboboxen med tidsintervall
@@ -887,8 +902,129 @@ namespace IK075G
                 }
                 chartResponseTime.Show();
                 labelMessage.Text = "Klart";
-                Cursor = Cursors.Default;		
-	        }
+                Cursor = Cursors.Default;	
+	            // Suad start
+                dataGridResponseTime.DataSource = string.Empty;
+                dataGridResponseTime.DataSource = newListMember;
+                if (newListMember.Count > 0)
+                {
+                    foreach (DataGridViewColumn column in dataGridResponseTime.Columns)
+                    {
+                        if (column.Name.ToString() == "customer")
+                        {
+                            dataGridResponseTime.Columns["customer"].HeaderText = "Kund";
+                        }
+                        else if (column.Name.ToString() == "prio")
+                        {
+                            dataGridResponseTime.Columns["prio"].HeaderText = "Prioritet";
+                        }
+                        else if (column.Name.ToString() == "analys")
+                        {
+                            dataGridResponseTime.Columns["analys"].HeaderText = "Analys";
+                        }
+                        else if (column.Name.ToString() == "year")
+                        {
+                            dataGridResponseTime.Columns["year"].HeaderText = "År";
+                        }
+                        else if (column.Name.ToString() == "month")
+                        {
+                            dataGridResponseTime.Columns["month"].HeaderText = "Månad";
+                        }
+                        else if (column.Name.ToString() == "week")
+                        {
+                            dataGridResponseTime.Columns["week"].HeaderText = "Vecka";
+                        }
+                        else if (column.Name.ToString() == "day")
+                        {
+                            dataGridResponseTime.Columns["day"].HeaderText = "Dag";
+                        }
+                        else if (column.Name.ToString() == "hour")
+                        {
+                            dataGridResponseTime.Columns["hour"].HeaderText = "Timmar";
+                        }
+                        else if (column.Name.ToString() == "minute")
+                        {
+                            dataGridResponseTime.Columns["minute"].HeaderText = "Minuter";
+                        }
+                        else if (column.Name.ToString() == "quantity")
+                        {
+                            dataGridResponseTime.Columns["quantity"].HeaderText = "Antal";
+                        }
+                        else if (column.Name.ToString() == "minTime")
+                        {
+                            dataGridResponseTime.Columns["minTime"].HeaderText = "Minsta tid";
+                        }
+                        else if (column.Name.ToString() == "maxTime")
+                        {
+                            dataGridResponseTime.Columns["maxTime"].HeaderText = "Högsta tid";
+                        }
+                        else if (column.Name.ToString() == "avgTime")
+                        {
+                            dataGridResponseTime.Columns["avgTime"].HeaderText = "Medel tid";
+                        }
+                        else if (column.Name.ToString() == "minValue")
+                        {
+                            dataGridResponseTime.Columns["minValue"].HeaderText = "Minsta värde";
+                        }
+                        else if (column.Name.ToString() == "maxValue")
+                        {
+                            dataGridResponseTime.Columns["maxValue"].HeaderText = "Högsta värde";
+                        }
+                        else if (column.Name.ToString() == "avgValue")
+                        {
+                            dataGridResponseTime.Columns["avgValue"].HeaderText = "Medel värde";
+                        }
+                    }
+
+                    if (timeInterval == hourly.ToUpper())
+                    {
+                        dataGridResponseTime.Columns.Remove("year");
+                        dataGridResponseTime.Columns.Remove("month");
+                        dataGridResponseTime.Columns.Remove("week");
+                        dataGridResponseTime.Columns.Remove("day");
+                        // dataGridResponseTime.Columns.Remove("hour");
+                        dataGridResponseTime.Columns.Remove("minute");
+                    }
+                    else if (timeInterval == daily.ToUpper())
+                    {
+                        dataGridResponseTime.Columns.Remove("year");
+                        dataGridResponseTime.Columns.Remove("month");
+                        dataGridResponseTime.Columns.Remove("week");
+                        // dataGridResponseTime.Columns.Remove("day");
+                        dataGridResponseTime.Columns.Remove("hour");
+                        dataGridResponseTime.Columns.Remove("minute");
+                    }
+                    else if (timeInterval == weekly.ToUpper())
+                    {
+                        dataGridResponseTime.Columns.Remove("year");
+                        dataGridResponseTime.Columns.Remove("month");
+                        // dataGridResponseTime.Columns.Remove("week");
+                        dataGridResponseTime.Columns.Remove("day");
+                        dataGridResponseTime.Columns.Remove("hour");
+                        dataGridResponseTime.Columns.Remove("minute");
+                    }
+                    else if (timeInterval == monthly.ToUpper())
+                    {
+                        dataGridResponseTime.Columns.Remove("year");
+                        // dataGridResponseTime.Columns.Remove("month");
+                        dataGridResponseTime.Columns.Remove("week");
+                        dataGridResponseTime.Columns.Remove("day");
+                        dataGridResponseTime.Columns.Remove("hour");
+                        dataGridResponseTime.Columns.Remove("minute");
+                    }
+                    else if (timeInterval == byyear.ToUpper())
+                    {
+                        // dataGridResponseTime.Columns.Remove("year");
+                        dataGridResponseTime.Columns.Remove("month");
+                        dataGridResponseTime.Columns.Remove("week");
+                        dataGridResponseTime.Columns.Remove("day");
+                        dataGridResponseTime.Columns.Remove("hour");
+                        dataGridResponseTime.Columns.Remove("minute");
+                    }
+                    comboBoxShow.Visible = true;
+                }
+                // Suad stop
+            }
             catch (Exception ex)
             {
                 Cursor = Cursors.Default;
@@ -1070,6 +1206,22 @@ namespace IK075G
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void comboBoxShow_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxShow.SelectedItem.ToString() == as_both)
+            {
+                chartResponseTime.Height = 300;
+                dataGridResponseTime.Height = 150;
+                dataGridResponseTime.Visible = true;
+            }
+            else
+            {
+                chartResponseTime.Height = 450; 
+                dataGridResponseTime.Height = 150;
+                dataGridResponseTime.Visible = false;
+            }
         }
     }
 }
