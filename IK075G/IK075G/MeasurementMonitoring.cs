@@ -8,15 +8,16 @@ namespace IK075G
 {
     public class MeasurementMonitoring
     {
+        public string customer { get; set; }
+        public string analysis { get; set; }
+        public string prio { get; set; }
         public string year { get; set; }
         public string week { get; set; }
         public string month { get; set; }
         public string day { get; set; }
-        public string prio { get; set; }
-        public string analysis { get; set; }
+        public string quantity { get; set; }
         public string minrawr { get; set; }
         public string maxrawr { get; set; }
         public string medelrawr { get; set; }
-        public string quantity { get; set; }
     }
 }

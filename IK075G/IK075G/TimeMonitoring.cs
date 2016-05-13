@@ -108,6 +108,7 @@ namespace IK075G
             dataGridResponseTime.Height = 160;
             dataGridResponseTime.Visible = false;
             comboBoxShow.Visible = false;
+            lblShowAs.Visible = false;
             // Suad stop
         }
 
@@ -1022,6 +1023,7 @@ namespace IK075G
                         dataGridResponseTime.Columns.Remove("minute");
                     }
                     comboBoxShow.Visible = true;
+                    lblShowAs.Visible = true;
                 }
                 // Suad stop
             }
@@ -1222,6 +1224,26 @@ namespace IK075G
                 dataGridResponseTime.Height = 150;
                 dataGridResponseTime.Visible = false;
             }
+        }
+
+        private void lblToWeek_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblDateFrom_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelTimeInterval_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblFromWeek_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
