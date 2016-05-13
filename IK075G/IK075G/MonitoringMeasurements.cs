@@ -19,6 +19,9 @@ namespace IK075G
         string allGroups = "ALLA";
         string allPriority = "ALLA";
 
+        string as_chart = "Diagram";
+        string as_both = "Diagram och tabell";
+
         //Upprättar koppling mot databas
         NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["IK075G"].ConnectionString);
         NpgsqlCommand cmd;
@@ -53,7 +56,6 @@ namespace IK075G
             lblToWeek.Visible = false;
 
             resultLabel.Visible = false;
-            progressBar1.Visible = false;
 
             SetCustomMinMaxDate();
 
@@ -85,6 +87,15 @@ namespace IK075G
             x = comboBoxWeekTo.Location.X;
             comboBoxWeekTo.Location = new Point(x, y);
 
+            // Laddar komboboxen visa med alternativ och väljer digram som default alternativ  
+            LoadShow();
+            comboBoxShow.SelectedItem = as_chart;
+            chart1.Height = 450;
+            dataGridTimeMonitoring.Height = 160;
+            dataGridTimeMonitoring.Visible = false;
+            comboBoxShow.Visible = false;
+            lblShowAs.Visible = false;
+
         }
         private void btnBack_Click_1(object sender, EventArgs e) //Till huvudmenyn
         {
@@ -108,8 +119,7 @@ namespace IK075G
                     }
 
                 }
-                progressBar1.Visible = true;
-                progressBar1.Value = 0;
+
                 resultLabel.Visible = true;
                 resultLabel.ForeColor = Color.Tomato;
                 resultLabel.Text = "Laddar diagrammet";
@@ -133,21 +143,30 @@ namespace IK075G
                 {
                     string dayfrom = dateTimePickerDayFrom.Value.ToShortDateString();
                     string dayto = dateTimePickerDayTo.Value.ToShortDateString();
-
+                    resultLabel.Visible = true;
+                    resultLabel.ForeColor = Color.Tomato;
+                    resultLabel.Text = "Hämtning av data pågår";
+                    Cursor = Cursors.WaitCursor;
                     newListMember = getDayValues(customergroup, analysis, prioritygroup, timeinterval, dayfrom, dayto);
                 }
                 else if (timeinterval == "VECKOVIS")
                 {
                     string weekfrom = comboBoxYearFrom.Text + comboBoxWeekFrom.Text.PadLeft(2, '0');
                     string weekto = comboBoxYearTo.Text + comboBoxWeekTo.Text.PadLeft(2, '0');
-
+                    resultLabel.Visible = true;
+                    resultLabel.ForeColor = Color.Tomato;
+                    resultLabel.Text = "Hämtning av data pågår";
+                    Cursor = Cursors.WaitCursor;
                     newListMember = getWeekValues(customergroup, analysis, prioritygroup, timeinterval, weekfrom, weekto);
                 }
                 else if (timeinterval == "MÅNADSVIS")
                 {
                     string monthfrom = dateTimePickerMonthFrom.Value.ToShortDateString();
                     string monthto = dateTimePickerMonthTo.Value.ToShortDateString();
-
+                    resultLabel.Visible = true;
+                    resultLabel.ForeColor = Color.Tomato;
+                    resultLabel.Text = "Hämtning av data pågår";
+                    Cursor = Cursors.WaitCursor;
                     newListMember = getMonthValues(customergroup, analysis, prioritygroup, timeinterval, monthfrom, monthto);
                 }
 
@@ -156,6 +175,9 @@ namespace IK075G
                 chart1.ChartAreas.Clear();
                 chart1.ChartAreas.Add("");
 
+                resultLabel.Visible = true;
+                resultLabel.ForeColor = Color.Tomato;
+                resultLabel.Text = "Laddar diagrammet";
 
                 //Kurva för medelvärde
                 chart1.Series.Add("Series1");
@@ -250,12 +272,86 @@ namespace IK075G
                     i = i + 1;
 
                 }
+                Cursor = Cursors.WaitCursor;
                 chart1.Show();
-                progressBar1.Visible = true;
-                progressBar1.Value = 100;
                 resultLabel.Visible = true;
                 resultLabel.ForeColor = Color.Green;
                 resultLabel.Text = "Klart";
+                Cursor = Cursors.Default;
+
+                dataGridTimeMonitoring.DataSource = string.Empty;
+                dataGridTimeMonitoring.DataSource = newListMember;
+
+                lblShowAs.Visible = true;
+                comboBoxShow.Visible = true;
+
+                if (newListMember.Count>0)
+                {
+                    foreach (DataGridViewColumn column in dataGridTimeMonitoring.Columns)
+                    {
+                        if (column.Name.ToString() == "customer")
+                        {
+                            dataGridTimeMonitoring.Columns["customer"].HeaderText = "Kund";
+                        }
+                        else if (column.Name.ToString() == "week")
+                        {
+                            dataGridTimeMonitoring.Columns["week"].HeaderText = "Vecka";
+                        }
+                        else if (column.Name.ToString() == "month")
+                        {
+                            dataGridTimeMonitoring.Columns["month"].HeaderText = "Månad";
+                        }
+                        else if (column.Name.ToString() == "day")
+                        {
+                            dataGridTimeMonitoring.Columns["day"].HeaderText = "Dag";
+                        }
+                        else if (column.Name.ToString() == "prio")
+                        {
+                            dataGridTimeMonitoring.Columns["prio"].HeaderText = "Prioritet";
+                        }
+                        else if (column.Name.ToString() == "analysis")
+                        {
+                            dataGridTimeMonitoring.Columns["analysis"].HeaderText = "Analys";
+                        }
+                        else if (column.Name.ToString() == "minrawr")
+                        {
+                            dataGridTimeMonitoring.Columns["minrawr"].HeaderText = "Minsta värde";
+                        }
+                        else if (column.Name.ToString() == "maxrawr")
+                        {
+                            dataGridTimeMonitoring.Columns["maxrawr"].HeaderText = "Högsta värde";
+                        }
+                        else if (column.Name.ToString() == "medelrawr")
+                        {
+                            dataGridTimeMonitoring.Columns["medelrawr"].HeaderText = "Medelvärde";
+                        }
+                        else if (column.Name.ToString() == "quantity")
+                        {
+                            dataGridTimeMonitoring.Columns["quantity"].HeaderText = "Antal";
+                        }
+                    }
+                    if (comboBoxTimeInterval.Text=="DAGVIS")
+                    {
+                        dataGridTimeMonitoring.Columns.Remove("year");
+                        dataGridTimeMonitoring.Columns.Remove("month");
+                        dataGridTimeMonitoring.Columns.Remove("week");
+                        //dataGridTimeMonitoring.Columns.Remove("day");
+                    }
+                    else if (comboBoxTimeInterval.Text == "VECKOVIS")
+                    {
+                        dataGridTimeMonitoring.Columns.Remove("year");
+                        dataGridTimeMonitoring.Columns.Remove("month");
+                        //dataGridTimeMonitoring.Columns.Remove("week");
+                        dataGridTimeMonitoring.Columns.Remove("day");
+                    }
+                    else if (comboBoxTimeInterval.Text == "MÅNADSVIS")
+                    {
+                        dataGridTimeMonitoring.Columns.Remove("year");
+                        //dataGridTimeMonitoring.Columns.Remove("month");
+                        dataGridTimeMonitoring.Columns.Remove("week");
+                        dataGridTimeMonitoring.Columns.Remove("day");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -356,6 +452,11 @@ namespace IK075G
                 comboBoxYearTo.Items.Add(yearOrderedbyLowest);
             }
             conn.Close();
+        }
+        public void LoadShow() //Metod för att fylla comboboxen med alternativ
+        {
+            comboBoxShow.Items.Add(as_chart);
+            comboBoxShow.Items.Add(as_both);
         }
         public void DisableDatePick() //Metod för att dölja tids valen
         {
@@ -461,8 +562,7 @@ namespace IK075G
                 weekto = weekto.PadLeft(2, '0');
 
                 string sql = string.Empty;
-                sql = sql + "SELECT prio AS prio,";
-                sql = sql + "    anco AS anco,";
+                sql = sql + "SELECT ";
                 sql = sql + "    to_char(tetm_date,'YYYYWW') AS myweek,";
                 sql = sql + "    count(anco) AS quantity,";
                 sql = sql + "   min(rawr) minrawr, ";
@@ -474,8 +574,8 @@ namespace IK075G
                 sql = sql + " AND anco = :newFirstanco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newweekFrom AND :newweekTo";
-                sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYWW')";
-                sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYWW')";
+                sql = sql + " GROUP BY to_char(tetm_date,'YYYYWW')";
+                sql = sql + " ORDER BY to_char(tetm_date,'YYYYWW')";
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
@@ -497,9 +597,10 @@ namespace IK075G
                 while (dr1.Read())
                 {
                     MeasurementMonitoring newMonitorByWeek = new MeasurementMonitoring();
+                    newMonitorByWeek.customer = customergroup;
+                    newMonitorByWeek.prio = prioritygroup;
+                    newMonitorByWeek.analysis = analysis;
                     newMonitorByWeek.week = dr1["myweek"].ToString();
-                    newMonitorByWeek.prio = dr1["prio"].ToString();
-                    newMonitorByWeek.analysis = dr1["anco"].ToString();
                     newMonitorByWeek.minrawr = dr1["minrawr"].ToString();
                     newMonitorByWeek.maxrawr = dr1["maxrawr"].ToString();
                     newMonitorByWeek.medelrawr = dr1["medelrawr"].ToString();
@@ -537,8 +638,7 @@ namespace IK075G
                 dayto = dayto.PadLeft(2, '0');
 
                 string sql = string.Empty;
-                sql = sql + "SELECT prio AS prio,";
-                sql = sql + "    anco AS anco,";
+                sql = sql + "SELECT ";
                 sql = sql + "    to_char(tetm_date,'YYYYMMDD') AS myday,";
                 sql = sql + "    count(anco) AS quantity,";
                 sql = sql + "   min(rawr) minrawr, ";
@@ -550,8 +650,8 @@ namespace IK075G
                 sql = sql + " AND anco = :newFirstanco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newdayFrom AND :newdayTo";
-                sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
-                sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMMDD')";
+                sql = sql + " GROUP BY to_char(tetm_date,'YYYYMMDD')";
+                sql = sql + " ORDER BY to_char(tetm_date,'YYYYMMDD')";
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
@@ -573,9 +673,10 @@ namespace IK075G
                 while (dr1.Read())
                 {
                     MeasurementMonitoring newMonitorByDay = new MeasurementMonitoring();
+                    newMonitorByDay.customer = customergroup;
+                    newMonitorByDay.prio = prioritygroup;
+                    newMonitorByDay.analysis = analysis;
                     newMonitorByDay.day = dr1["myday"].ToString();
-                    newMonitorByDay.prio = dr1["prio"].ToString();
-                    newMonitorByDay.analysis = dr1["anco"].ToString();
                     newMonitorByDay.minrawr = dr1["minrawr"].ToString();
                     newMonitorByDay.maxrawr = dr1["maxrawr"].ToString();
                     newMonitorByDay.medelrawr = dr1["medelrawr"].ToString();
@@ -614,8 +715,7 @@ namespace IK075G
 
                 string sql = string.Empty;
 
-                sql = sql + "SELECT prio AS prio,";
-                sql = sql + "    anco AS anco,";
+                sql = sql + "SELECT ";
                 sql = sql + "    to_char(tetm_date,'YYYYMM') AS mymonth,";
                 sql = sql + "    count(anco) AS quantity,";
                 sql = sql + "   min(rawr) minrawr, ";
@@ -627,8 +727,8 @@ namespace IK075G
                 sql = sql + " AND anco = :newFirstanco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newmonthFrom AND :newmonthTo";
-                sql = sql + " GROUP BY prio, anco, to_char(tetm_date,'YYYYMM')";
-                sql = sql + " ORDER BY prio, anco, to_char(tetm_date,'YYYYMM')";
+                sql = sql + " GROUP BY to_char(tetm_date,'YYYYMM')";
+                sql = sql + " ORDER BY to_char(tetm_date,'YYYYMM')";
                 NpgsqlCommand cmd = new NpgsqlCommand(@sql, conn);
 
                 cmd.Parameters.Add(new NpgsqlParameter("newFirstanco", NpgsqlDbType.Varchar));
@@ -652,9 +752,10 @@ namespace IK075G
                 while (dr1.Read())
                 {
                     MeasurementMonitoring newMonitorByMonth = new MeasurementMonitoring();
+                    newMonitorByMonth.customer = customergroup;
+                    newMonitorByMonth.prio = prioritygroup;
+                    newMonitorByMonth.analysis = analysis;
                     newMonitorByMonth.month = dr1["mymonth"].ToString();
-                    newMonitorByMonth.prio = dr1["prio"].ToString();
-                    newMonitorByMonth.analysis = dr1["anco"].ToString();
                     newMonitorByMonth.minrawr = dr1["minrawr"].ToString();
                     newMonitorByMonth.maxrawr = dr1["maxrawr"].ToString();
                     newMonitorByMonth.medelrawr = dr1["medelrawr"].ToString();
@@ -807,6 +908,22 @@ namespace IK075G
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void comboBoxShow_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxShow.SelectedItem.ToString() == as_both)
+            {
+                chart1.Height = 300;
+                dataGridTimeMonitoring.Height = 150;
+                dataGridTimeMonitoring.Visible = true;
+            }
+            else
+            {
+                chart1.Height = 450;
+                dataGridTimeMonitoring.Height = 150;
+                dataGridTimeMonitoring.Visible = false;
+            }
         }
     }
 }
