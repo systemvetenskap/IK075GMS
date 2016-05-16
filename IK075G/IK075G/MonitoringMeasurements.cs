@@ -377,7 +377,7 @@ namespace IK075G
         }
         public void LoadAnalysis() //Metod för att LADDA analyser i comboboxen
         {
-            string sql = "SELECT DISTINCT anco FROM a_ana_tab ORDER BY anco";
+            string sql = "SELECT anco FROM anco_tab ORDER BY anco";
             conn.Open();
             cmd = new NpgsqlCommand(sql, conn);
             NpgsqlDataReader dr = cmd.ExecuteReader();
@@ -415,8 +415,7 @@ namespace IK075G
             {
                 comboBoxWeekFrom.Items.Add(i.ToString());
                 comboBoxWeekTo.Items.Add(i.ToString());
-            }
-            
+            }            
         }      
         public void LoadYears() // Metod för att LADDA in årtal i comboboxar från och till
         {
@@ -429,26 +428,16 @@ namespace IK075G
             {
                 comboBoxYearTo.Items.Clear();
             }
-            
-            // Från år
-            string sql1 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) >0 ORDER BY altm";
+
+            // Från år - Till år
+            string sql1 = "SELECT DISTINCT substr(tetm,1,2) tetm FROM a_ana_tab WHERE LENGTH(REPLACE(tetm, ' ','')) > 0 ORDER BY tetm";
             conn.Open();
             cmd = new NpgsqlCommand(sql1, conn);
             NpgsqlDataReader dr1 = cmd.ExecuteReader();
             while (dr1.Read())
             {
-                string yearOrderedbyLowest = dr1["altm"].ToString();
+                string yearOrderedbyLowest = dr1["tetm"].ToString();
                 comboBoxYearFrom.Items.Add(yearOrderedbyLowest);
-            }
-            conn.Close();
-            //Till år
-            string sql2 = "SELECT DISTINCT substr(altm,1,2) altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) >0 ORDER BY altm";
-            conn.Open();
-            cmd = new NpgsqlCommand(sql2, conn);
-            NpgsqlDataReader dr2 = cmd.ExecuteReader();
-            while (dr2.Read())
-            {
-                string yearOrderedbyLowest = dr2["altm"].ToString();
                 comboBoxYearTo.Items.Add(yearOrderedbyLowest);
             }
             conn.Close();
@@ -480,13 +469,14 @@ namespace IK075G
             // Från år
             try
             {
-                string sql = "SELECT MIN(to_date(altm,'YYDDMMHH24MI')) AS altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0";
+                // string sql = "SELECT MIN(to_date(altm,'YYDDMMHH24MI')) AS altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0";
+                string sql = "SELECT MIN(to_date(tetm,'YYDDMMHH24MI')) AS tetm FROM a_ana_tab WHERE LENGTH(REPLACE(tetm, ' ','')) > 0";
                 conn.Open();
                 cmd = new NpgsqlCommand(sql, conn);
                 NpgsqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    newMinDateTime = Convert.ToDateTime(dr["altm"]);
+                    newMinDateTime = Convert.ToDateTime(dr["tetm"]);
                 }
                 conn.Close();
             }
@@ -563,14 +553,13 @@ namespace IK075G
 
                 string sql = string.Empty;
                 sql = sql + "SELECT ";
-                sql = sql + "    to_char(tetm_date,'YYYYWW') AS myweek,";
-                sql = sql + "    count(anco) AS quantity,";
+                sql = sql + "   to_char(tetm_date,'YYYYWW') AS myweek,";
+                sql = sql + "   count(rawr) AS quantity,";
                 sql = sql + "   min(rawr) minrawr, ";
                 sql = sql + "   max(rawr) maxrawr, ";
                 sql = sql + "   avg(rawr) medelrawr ";
                 sql = sql + " FROM xxx_monitoring_measure_vw";
-                sql = sql + " WHERE 1 = 1";
-                sql = sql + " AND cuco LIKE :newcustomerGroup";
+                sql = sql + " WHERE cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYWW') BETWEEN :newweekFrom AND :newweekTo";
@@ -639,14 +628,13 @@ namespace IK075G
 
                 string sql = string.Empty;
                 sql = sql + "SELECT ";
-                sql = sql + "    to_char(tetm_date,'YYYYMMDD') AS myday,";
-                sql = sql + "    count(anco) AS quantity,";
+                sql = sql + "   to_char(tetm_date,'YYYYMMDD') AS myday,";
+                sql = sql + "   count(rawr) AS quantity,";
                 sql = sql + "   min(rawr) minrawr, ";
                 sql = sql + "   max(rawr) maxrawr, ";
                 sql = sql + "   avg(rawr) medelrawr ";
                 sql = sql + " FROM xxx_monitoring_measure_vw";
-                sql = sql + " WHERE 1 = 1";
-                sql = sql + " AND cuco LIKE :newcustomerGroup";
+                sql = sql + " WHERE cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYYY-MM-DD') BETWEEN :newdayFrom AND :newdayTo";
@@ -716,14 +704,13 @@ namespace IK075G
                 string sql = string.Empty;
 
                 sql = sql + "SELECT ";
-                sql = sql + "    to_char(tetm_date,'YYYYMM') AS mymonth,";
-                sql = sql + "    count(anco) AS quantity,";
+                sql = sql + "   to_char(tetm_date,'YYYYMM') AS mymonth,";
+                sql = sql + "   count(rawr) AS quantity,";
                 sql = sql + "   min(rawr) minrawr, ";
                 sql = sql + "   max(rawr) maxrawr, ";
                 sql = sql + "   avg(rawr) medelrawr ";
                 sql = sql + " FROM xxx_monitoring_measure_vw";
-                sql = sql + " WHERE 1 = 1";
-                sql = sql + " AND cuco LIKE :newcustomerGroup";
+                sql = sql + " WHERE cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
                 sql = sql + " AND prio LIKE :newPrio";
                 sql = sql + " AND to_char(tetm_date,'YYYY-MM') BETWEEN :newmonthFrom AND :newmonthTo";
