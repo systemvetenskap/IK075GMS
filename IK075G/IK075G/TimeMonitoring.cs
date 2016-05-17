@@ -105,7 +105,10 @@ namespace IK075G
             dataGridResponseTime.Height = 160;
             dataGridResponseTime.Visible = false;
             comboBoxShow.Visible = false;
-            lblShowAs.Visible = false;
+            lblShowAs.Visible = false;            
+            
+            // Lägger till menyn
+            AddMenu();
         }
 
         // Egna metoder        
@@ -349,9 +352,9 @@ namespace IK075G
                 sql = sql + "   min(difference_interval) AS min_time,";
                 sql = sql + "   max(difference_interval) AS max_time,";
                 sql = sql + "   avg(difference_interval) AS avg_time,";
-                sql = sql + "   round(min(difference_value),2) AS min_value,";
-                sql = sql + "   round(max(difference_value),2) AS max_value,";
-                sql = sql + "   round(avg(difference_value),2) AS avg_value";
+                sql = sql + "   round(min(difference_value),1) AS min_value,";
+                sql = sql + "   round(max(difference_value),1) AS max_value,";
+                sql = sql + "   round(avg(difference_value),1) AS avg_value";
                 sql = sql + " FROM xxx_time_control_vw";
                 sql = sql + " WHERE cuco LIKE :newCuco";
                 sql = sql + " AND anco = :newAnco";
@@ -386,9 +389,9 @@ namespace IK075G
                     newResponseTimes.minTime = Convert.ToString(dr["min_time"]);
                     newResponseTimes.maxTime = Convert.ToString(dr["max_time"]);
                     newResponseTimes.avgTime = Convert.ToString(dr["avg_time"]);
-                    newResponseTimes.minValue = Convert.ToString(dr["min_value"]);
-                    newResponseTimes.maxValue = Convert.ToString(dr["max_value"]);
-                    newResponseTimes.avgValue = Convert.ToString(dr["avg_value"]);
+                    newResponseTimes.minValue = Convert.ToDouble(dr["min_value"]).ToString();
+                    newResponseTimes.maxValue = Convert.ToDouble(dr["max_value"]).ToString();
+                    newResponseTimes.avgValue = Convert.ToDouble(dr["avg_value"]).ToString();
                     newListMember.Add(newResponseTimes);
                 }
                 conn.Close();
@@ -426,9 +429,9 @@ namespace IK075G
                 sql = sql + "   min(difference_interval) AS min_time,";
                 sql = sql + "   max(difference_interval) AS max_time,";
                 sql = sql + "   avg(difference_interval) AS avg_time,";
-                sql = sql + "   round(min(difference_value),2) AS min_value,";
-                sql = sql + "   round(max(difference_value),2) AS max_value,";
-                sql = sql + "   round(avg(difference_value),2) AS avg_value";
+                sql = sql + "   round(min(difference_value),1) AS min_value,";
+                sql = sql + "   round(max(difference_value),1) AS max_value,";
+                sql = sql + "   round(avg(difference_value),1) AS avg_value";
                 sql = sql + " FROM xxx_time_control_vw";
                 sql = sql + " WHERE cuco LIKE :newCuco";
                 sql = sql + " AND anco = :newAnco";
@@ -466,9 +469,9 @@ namespace IK075G
                     newResponseTimes.minTime = Convert.ToString(dr["min_time"]);
                     newResponseTimes.maxTime = Convert.ToString(dr["max_time"]);
                     newResponseTimes.avgTime = Convert.ToString(dr["avg_time"]);
-                    newResponseTimes.minValue = Convert.ToString(dr["min_value"]);
-                    newResponseTimes.maxValue = Convert.ToString(dr["max_value"]);
-                    newResponseTimes.avgValue = Convert.ToString(dr["avg_value"]);
+                    newResponseTimes.minValue = Convert.ToDouble(dr["min_value"]).ToString();
+                    newResponseTimes.maxValue = Convert.ToDouble(dr["max_value"]).ToString();
+                    newResponseTimes.avgValue = Convert.ToDouble(dr["avg_value"]).ToString();
                     newListMember.Add(newResponseTimes);
                 }
                 conn.Close();
@@ -506,9 +509,9 @@ namespace IK075G
                 sql = sql + "   min(difference_interval) AS min_time,";
                 sql = sql + "   max(difference_interval) AS max_time,";
                 sql = sql + "   avg(difference_interval) AS avg_time,";
-                sql = sql + "   round(min(difference_value),2) AS min_value,";
-                sql = sql + "   round(max(difference_value),2) AS max_value,";
-                sql = sql + "   round(avg(difference_value),2) AS avg_value";
+                sql = sql + "   round(min(difference_value),1) AS min_value,";
+                sql = sql + "   round(max(difference_value),1) AS max_value,";
+                sql = sql + "   round(avg(difference_value),1) AS avg_value";
                 sql = sql + " FROM xxx_time_control_vw";
                 sql = sql + " WHERE cuco LIKE :newCuco";
                 sql = sql + " AND anco = :newAnco";
@@ -542,9 +545,9 @@ namespace IK075G
                     newResponseTimes.minTime = Convert.ToString(dr["min_time"]);
                     newResponseTimes.maxTime = Convert.ToString(dr["max_time"]);
                     newResponseTimes.avgTime = Convert.ToString(dr["avg_time"]);
-                    newResponseTimes.minValue = Convert.ToString(dr["min_value"]);
-                    newResponseTimes.maxValue = Convert.ToString(dr["max_value"]);
-                    newResponseTimes.avgValue = Convert.ToString(dr["avg_value"]);
+                    newResponseTimes.minValue = Convert.ToDouble(dr["min_value"]).ToString();
+                    newResponseTimes.maxValue = Convert.ToDouble(dr["max_value"]).ToString();
+                    newResponseTimes.avgValue = Convert.ToDouble(dr["avg_value"]).ToString();
                     newListMember.Add(newResponseTimes);
                 }
                 conn.Close();
@@ -579,9 +582,9 @@ namespace IK075G
                 sql = sql + "   min(difference_interval) AS min_time,";
                 sql = sql + "   max(difference_interval) AS max_time,";
                 sql = sql + "   avg(difference_interval) AS avg_time,";
-                sql = sql + "   round(min(difference_value),2) AS min_value,";
-                sql = sql + "   round(max(difference_value),2) AS max_value,";
-                sql = sql + "   round(avg(difference_value),2) AS avg_value";
+                sql = sql + "   round(min(difference_value),1) AS min_value,";
+                sql = sql + "   round(max(difference_value),1) AS max_value,";
+                sql = sql + "   round(avg(difference_value),1) AS avg_value";
                 sql = sql + " FROM xxx_time_control_vw";
                 sql = sql + " WHERE cuco LIKE :newCuco";
                 sql = sql + " AND anco = :newAnco";
@@ -615,9 +618,9 @@ namespace IK075G
                     newResponseTimes.minTime = Convert.ToString(dr["min_time"]);
                     newResponseTimes.maxTime = Convert.ToString(dr["max_time"]);
                     newResponseTimes.avgTime = Convert.ToString(dr["avg_time"]);
-                    newResponseTimes.minValue = Convert.ToString(dr["min_value"]);
-                    newResponseTimes.maxValue = Convert.ToString(dr["max_value"]);
-                    newResponseTimes.avgValue = Convert.ToString(dr["avg_value"]);
+                    newResponseTimes.minValue = Convert.ToDouble(dr["min_value"]).ToString();
+                    newResponseTimes.maxValue = Convert.ToDouble(dr["max_value"]).ToString();
+                    newResponseTimes.avgValue = Convert.ToDouble(dr["avg_value"]).ToString();
                     newListMember.Add(newResponseTimes);
                 }
                 conn.Close();
@@ -650,6 +653,46 @@ namespace IK075G
                 }
             }
             return maxValue;
+        }
+
+        private void AddMenu() // Metod för all lägga till mennyn till form
+        {
+            ToolStripMenuItem menuItem = new ToolStripMenuItem("Export data till Excel", null,
+                new System.EventHandler(ShortcutMenuClick));
+
+            ContextMenuStrip exportMenu = new ContextMenuStrip();
+            exportMenu.Items.Add(menuItem);
+            
+            this.ContextMenuStrip = exportMenu;
+            this.MouseDown += new MouseEventHandler(TimeMonitoring_MouseDown);
+            this.ContextMenuStrip.Enabled = false;
+        }
+
+        public void ExportGridData(object sender, EventArgs e) // Metod för exportera data till excel
+        { 
+            Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
+            Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
+            app.Visible = true;
+            worksheet = workbook.ActiveSheet;
+            for (int i = 1; i < dataGridResponseTime.Columns.Count + 1; i++)
+            {
+                worksheet.Cells[1, i] = dataGridResponseTime.Columns[i - 1].HeaderText;
+            }
+            for (int i = 0; i <= dataGridResponseTime.Rows.Count - 1; i++)
+            {
+                for (int j = 0; j < dataGridResponseTime.Columns.Count; j++)
+                {
+                    if (dataGridResponseTime.Rows[i].Cells[j].Value != null)
+                    {
+                        worksheet.Cells[i + 2, j + 1] = dataGridResponseTime.Rows[i].Cells[j].Value.ToString();
+                    }
+                    else
+                    {
+                        worksheet.Cells[i + 2, j + 1] = "";
+                    }
+                }
+            }
         }
 
         // Events
@@ -868,11 +911,11 @@ namespace IK075G
                 }
                 chartResponseTime.Show();
                 // Diagrammet stop
-
-                dataGridResponseTime.DataSource = string.Empty;
-                dataGridResponseTime.DataSource = newListMember;
-                if (newListMember.Count > 0)
+                dataGridResponseTime.DataSource = string.Empty;                
+                if (newListMember.Count >= 0)
                 {
+                    // Suad start
+                    dataGridResponseTime.DataSource = newListMember;
                     foreach (DataGridViewColumn column in dataGridResponseTime.Columns)
                     {
                         if (column.Name.ToString() == "customer")
@@ -987,8 +1030,7 @@ namespace IK075G
                 Cursor = Cursors.Default;                
                 labelMessage.Visible = true;
                 labelMessage.ForeColor = Color.Green;
-                labelMessage.Text = "Klart";
-            
+                labelMessage.Text = "Klart";           
             }
             catch (Exception ex)
             {
@@ -1162,7 +1204,7 @@ namespace IK075G
             chartResponseTime.Titles.Clear();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
@@ -1201,6 +1243,28 @@ namespace IK075G
         private void lblFromWeek_Click(object sender, EventArgs e)
         {
 
+        }
+        
+        private void ShortcutMenuClick(object sender, System.EventArgs e)
+        {
+            ExportGridData(sender, e);
+        }
+
+        private void TimeMonitoring_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (dataGridResponseTime.RowCount == 0)
+                {
+                    this.ContextMenuStrip.Visible = false;
+                    this.ContextMenuStrip.Enabled = false;
+                }
+                else
+                {
+                    this.ContextMenuStrip.Visible = true;
+                    this.ContextMenuStrip.Enabled = true;
+                }
+            }
         }
     }
 }
