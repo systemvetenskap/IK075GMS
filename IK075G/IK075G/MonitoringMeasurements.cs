@@ -96,6 +96,8 @@ namespace IK075G
             comboBoxShow.Visible = false;
             lblShowAs.Visible = false;
 
+            // Lägger till menyn
+            AddMenu();
         }
         private void btnBack_Click_1(object sender, EventArgs e) //Till huvudmenyn
         {
@@ -279,14 +281,14 @@ namespace IK075G
                 resultLabel.Text = "Klart";
                 Cursor = Cursors.Default;
 
-                dataGridTimeMonitoring.DataSource = string.Empty;
-                dataGridTimeMonitoring.DataSource = newListMember;
-
                 lblShowAs.Visible = true;
                 comboBoxShow.Visible = true;
+                // Diagrammet stop
 
-                if (newListMember.Count>0)
+                dataGridTimeMonitoring.DataSource = string.Empty;
+                if (newListMember.Count >= 0)
                 {
+                    dataGridTimeMonitoring.DataSource = newListMember;
                     foreach (DataGridViewColumn column in dataGridTimeMonitoring.Columns)
                     {
                         if (column.Name.ToString() == "customer")
@@ -335,19 +337,16 @@ namespace IK075G
                         dataGridTimeMonitoring.Columns.Remove("year");
                         dataGridTimeMonitoring.Columns.Remove("month");
                         dataGridTimeMonitoring.Columns.Remove("week");
-                        //dataGridTimeMonitoring.Columns.Remove("day");
                     }
                     else if (comboBoxTimeInterval.Text == "VECKOVIS")
                     {
                         dataGridTimeMonitoring.Columns.Remove("year");
                         dataGridTimeMonitoring.Columns.Remove("month");
-                        //dataGridTimeMonitoring.Columns.Remove("week");
                         dataGridTimeMonitoring.Columns.Remove("day");
                     }
                     else if (comboBoxTimeInterval.Text == "MÅNADSVIS")
                     {
                         dataGridTimeMonitoring.Columns.Remove("year");
-                        //dataGridTimeMonitoring.Columns.Remove("month");
                         dataGridTimeMonitoring.Columns.Remove("week");
                         dataGridTimeMonitoring.Columns.Remove("day");
                     }
@@ -469,7 +468,6 @@ namespace IK075G
             // Från år
             try
             {
-                // string sql = "SELECT MIN(to_date(altm,'YYDDMMHH24MI')) AS altm FROM a_ana_tab WHERE LENGTH(REPLACE(altm, ' ','')) > 0";
                 string sql = "SELECT MIN(to_date(tetm,'YYDDMMHH24MI')) AS tetm FROM a_ana_tab WHERE LENGTH(REPLACE(tetm, ' ','')) > 0";
                 conn.Open();
                 cmd = new NpgsqlCommand(sql, conn);
@@ -555,9 +553,9 @@ namespace IK075G
                 sql = sql + "SELECT ";
                 sql = sql + "   to_char(tetm_date,'YYYYWW') AS myweek,";
                 sql = sql + "   count(rawr) AS quantity,";
-                sql = sql + "   min(rawr) minrawr, ";
-                sql = sql + "   max(rawr) maxrawr, ";
-                sql = sql + "   avg(rawr) medelrawr ";
+                sql = sql + "   round(min(rawr),9) AS minrawr, ";
+                sql = sql + "   round(max(rawr),9) AS maxrawr, ";
+                sql = sql + "   round(avg(rawr),9) AS medelrawr ";
                 sql = sql + " FROM xxx_monitoring_measure_vw";
                 sql = sql + " WHERE cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
@@ -590,10 +588,10 @@ namespace IK075G
                     newMonitorByWeek.prio = prioritygroup;
                     newMonitorByWeek.analysis = analysis;
                     newMonitorByWeek.week = dr1["myweek"].ToString();
-                    newMonitorByWeek.minrawr = dr1["minrawr"].ToString();
-                    newMonitorByWeek.maxrawr = dr1["maxrawr"].ToString();
-                    newMonitorByWeek.medelrawr = dr1["medelrawr"].ToString();
                     newMonitorByWeek.quantity = dr1["quantity"].ToString();
+                    newMonitorByWeek.minrawr = Convert.ToDouble(dr1["minrawr"]).ToString();
+                    newMonitorByWeek.maxrawr = Convert.ToDouble(dr1["maxrawr"]).ToString();
+                    newMonitorByWeek.medelrawr = Convert.ToDouble(dr1["medelrawr"]).ToString();
 
                     newListMember.Add(newMonitorByWeek);
                 }
@@ -630,9 +628,9 @@ namespace IK075G
                 sql = sql + "SELECT ";
                 sql = sql + "   to_char(tetm_date,'YYYYMMDD') AS myday,";
                 sql = sql + "   count(rawr) AS quantity,";
-                sql = sql + "   min(rawr) minrawr, ";
-                sql = sql + "   max(rawr) maxrawr, ";
-                sql = sql + "   avg(rawr) medelrawr ";
+                sql = sql + "   round(min(rawr),9) AS minrawr, ";
+                sql = sql + "   round(max(rawr),9) AS maxrawr, ";
+                sql = sql + "   round(avg(rawr),9) AS medelrawr ";
                 sql = sql + " FROM xxx_monitoring_measure_vw";
                 sql = sql + " WHERE cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
@@ -665,10 +663,10 @@ namespace IK075G
                     newMonitorByDay.prio = prioritygroup;
                     newMonitorByDay.analysis = analysis;
                     newMonitorByDay.day = dr1["myday"].ToString();
-                    newMonitorByDay.minrawr = dr1["minrawr"].ToString();
-                    newMonitorByDay.maxrawr = dr1["maxrawr"].ToString();
-                    newMonitorByDay.medelrawr = dr1["medelrawr"].ToString();
                     newMonitorByDay.quantity = dr1["quantity"].ToString();
+                    newMonitorByDay.minrawr = Convert.ToDouble(dr1["minrawr"]).ToString();
+                    newMonitorByDay.maxrawr = Convert.ToDouble(dr1["maxrawr"]).ToString();
+                    newMonitorByDay.medelrawr = Convert.ToDouble(dr1["medelrawr"]).ToString();
 
                     newListMember.Add(newMonitorByDay);
                 }
@@ -706,9 +704,9 @@ namespace IK075G
                 sql = sql + "SELECT ";
                 sql = sql + "   to_char(tetm_date,'YYYYMM') AS mymonth,";
                 sql = sql + "   count(rawr) AS quantity,";
-                sql = sql + "   min(rawr) minrawr, ";
-                sql = sql + "   max(rawr) maxrawr, ";
-                sql = sql + "   avg(rawr) medelrawr ";
+                sql = sql + "   round(min(rawr),9) AS minrawr, ";
+                sql = sql + "   round(max(rawr),9) AS maxrawr, ";
+                sql = sql + "   round(avg(rawr),9) AS medelrawr ";
                 sql = sql + " FROM xxx_monitoring_measure_vw";
                 sql = sql + " WHERE cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
@@ -743,10 +741,10 @@ namespace IK075G
                     newMonitorByMonth.prio = prioritygroup;
                     newMonitorByMonth.analysis = analysis;
                     newMonitorByMonth.month = dr1["mymonth"].ToString();
-                    newMonitorByMonth.minrawr = dr1["minrawr"].ToString();
-                    newMonitorByMonth.maxrawr = dr1["maxrawr"].ToString();
-                    newMonitorByMonth.medelrawr = dr1["medelrawr"].ToString();
                     newMonitorByMonth.quantity = dr1["quantity"].ToString();
+                    newMonitorByMonth.minrawr = Convert.ToDouble(dr1["minrawr"]).ToString();
+                    newMonitorByMonth.maxrawr = Convert.ToDouble(dr1["maxrawr"]).ToString();
+                    newMonitorByMonth.medelrawr = Convert.ToDouble(dr1["medelrawr"]).ToString();
 
                     newListMember.Add(newMonitorByMonth);
                 }
@@ -767,6 +765,50 @@ namespace IK075G
                 conn.Close();
             }
             return newListMember;
+        }
+
+        private void AddMenu() // Metod för all lägga till mennyn till form
+        {
+            ToolStripMenuItem menuItem = new ToolStripMenuItem("Export data till Excel", null,
+                new System.EventHandler(ShortcutMenuClick));
+
+            ContextMenuStrip exportMenu = new ContextMenuStrip();
+            exportMenu.Items.Add(menuItem);
+
+            this.ContextMenuStrip = exportMenu;
+            this.MouseDown += new MouseEventHandler(MonitoringMeasurements_MouseDown);
+            this.ContextMenuStrip.Enabled = false;
+        }
+        public void ExportGridData(object sender, EventArgs e) // Metod för exportera data till excel
+        {
+            Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
+            Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
+            app.Visible = true;
+            worksheet = workbook.ActiveSheet;
+
+            worksheet.Cells.NumberFormat = "@";
+
+            for (int i = 1; i < dataGridTimeMonitoring.Columns.Count + 1; i++)
+            {
+                worksheet.Cells[1, i] = dataGridTimeMonitoring.Columns[i - 1].HeaderText;
+            }
+
+            for (int i = 0; i <= dataGridTimeMonitoring.Rows.Count - 1; i++)
+            {
+                for (int j = 0; j < dataGridTimeMonitoring.Columns.Count; j++)
+                {
+                    DataGridViewCell cell = dataGridTimeMonitoring[j, i];
+                    if (cell.Value.ToString() != null)
+                    {
+                        worksheet.Cells[i + 2, j + 1] = cell.Value.ToString();
+                    }
+                    else
+                    {
+                        worksheet.Cells[i + 2, j + 1] = "";
+                    }
+                }
+            }
         }
 
         //Comboboxar
@@ -912,5 +954,27 @@ namespace IK075G
                 dataGridTimeMonitoring.Visible = false;
             }
         }
+
+        private void ShortcutMenuClick(object sender, System.EventArgs e)
+        {
+            ExportGridData(sender, e);
+        }
+        private void MonitoringMeasurements_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (dataGridTimeMonitoring.RowCount == 0)
+                {
+                    this.ContextMenuStrip.Visible = false;
+                    this.ContextMenuStrip.Enabled = false;
+                }
+                else
+                {
+                    this.ContextMenuStrip.Visible = true;
+                    this.ContextMenuStrip.Enabled = true;
+                }
+            }
+        }
+
     }
 }

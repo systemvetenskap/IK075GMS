@@ -669,23 +669,28 @@ namespace IK075G
         }
 
         public void ExportGridData(object sender, EventArgs e) // Metod för exportera data till excel
-        { 
+        {
             Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
             Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
             Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
             app.Visible = true;
             worksheet = workbook.ActiveSheet;
+            
+            worksheet.Cells.NumberFormat = "@";
+            
             for (int i = 1; i < dataGridResponseTime.Columns.Count + 1; i++)
             {
                 worksheet.Cells[1, i] = dataGridResponseTime.Columns[i - 1].HeaderText;
-            }
+            }            
+            
             for (int i = 0; i <= dataGridResponseTime.Rows.Count - 1; i++)
             {
                 for (int j = 0; j < dataGridResponseTime.Columns.Count; j++)
                 {
-                    if (dataGridResponseTime.Rows[i].Cells[j].Value != null)
+                    DataGridViewCell cell = dataGridResponseTime[j, i];
+                    if (cell.Value.ToString() != null)
                     {
-                        worksheet.Cells[i + 2, j + 1] = dataGridResponseTime.Rows[i].Cells[j].Value.ToString();
+                        worksheet.Cells[i + 2, j + 1] = cell.Value.ToString();
                     }
                     else
                     {
@@ -909,12 +914,12 @@ namespace IK075G
                     // används för att räkna points
                     i = i + 1;
                 }
-                chartResponseTime.Show();
+                chartResponseTime.Show();                
                 // Diagrammet stop
+
                 dataGridResponseTime.DataSource = string.Empty;                
                 if (newListMember.Count >= 0)
                 {
-                    // Suad start
                     dataGridResponseTime.DataSource = newListMember;
                     foreach (DataGridViewColumn column in dataGridResponseTime.Columns)
                     {
