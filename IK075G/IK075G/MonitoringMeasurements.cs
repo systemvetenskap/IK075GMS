@@ -553,9 +553,9 @@ namespace IK075G
                 sql = sql + "SELECT ";
                 sql = sql + "   to_char(tetm_date,'YYYYWW') AS myweek,";
                 sql = sql + "   count(rawr) AS quantity,";
-                sql = sql + "   round(min(rawr),9) AS minrawr, ";
-                sql = sql + "   round(max(rawr),9) AS maxrawr, ";
-                sql = sql + "   round(avg(rawr),9) AS medelrawr ";
+                sql = sql + "   round(min(rawr),3) AS minrawr, ";
+                sql = sql + "   round(max(rawr),3) AS maxrawr, ";
+                sql = sql + "   round(avg(rawr),3) AS medelrawr ";
                 sql = sql + " FROM xxx_monitoring_measure_vw";
                 sql = sql + " WHERE cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
@@ -628,9 +628,9 @@ namespace IK075G
                 sql = sql + "SELECT ";
                 sql = sql + "   to_char(tetm_date,'YYYYMMDD') AS myday,";
                 sql = sql + "   count(rawr) AS quantity,";
-                sql = sql + "   round(min(rawr),9) AS minrawr, ";
-                sql = sql + "   round(max(rawr),9) AS maxrawr, ";
-                sql = sql + "   round(avg(rawr),9) AS medelrawr ";
+                sql = sql + "   round(min(rawr),3) AS minrawr, ";
+                sql = sql + "   round(max(rawr),3) AS maxrawr, ";
+                sql = sql + "   round(avg(rawr),3) AS medelrawr ";
                 sql = sql + " FROM xxx_monitoring_measure_vw";
                 sql = sql + " WHERE cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";
@@ -704,9 +704,9 @@ namespace IK075G
                 sql = sql + "SELECT ";
                 sql = sql + "   to_char(tetm_date,'YYYYMM') AS mymonth,";
                 sql = sql + "   count(rawr) AS quantity,";
-                sql = sql + "   round(min(rawr),9) AS minrawr, ";
-                sql = sql + "   round(max(rawr),9) AS maxrawr, ";
-                sql = sql + "   round(avg(rawr),9) AS medelrawr ";
+                sql = sql + "   round(min(rawr),3) AS minrawr, ";
+                sql = sql + "   round(max(rawr),3) AS maxrawr, ";
+                sql = sql + "   round(avg(rawr),3) AS medelrawr ";
                 sql = sql + " FROM xxx_monitoring_measure_vw";
                 sql = sql + " WHERE cuco LIKE :newcustomerGroup";
                 sql = sql + " AND anco = :newFirstanco";

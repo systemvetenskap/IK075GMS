@@ -27,6 +27,15 @@ namespace IK075G
         string monthly = "Månadsvis";
         string byyear = "Årsvis";
 
+        // Suad start
+        string min_serie = "Minsta värden";
+        string max_serie = "Högsta värden";
+        string avg_serie = "Medelvärde";
+        string med_serie = "Medianvärde";
+        string all_serie = "Samtliga värden";
+        string serie_type = "";
+        // Suad stop
+
         string as_chart = "Diagram";
         string as_both = "Diagram och tabell";
         
@@ -97,6 +106,15 @@ namespace IK075G
             comboBoxYearTo.Location = new Point(x, y);
             x = comboBoxWeekTo.Location.X;
             comboBoxWeekTo.Location = new Point(x, y);
+
+            // Suad start
+            // Laddar samtliga serie typer i komboboxen, väljer medel värde som default alternativ  
+            LoadSerieType();
+            comboBoxSerieTyp.SelectedItem = avg_serie;
+            // temporört lösning inför mötet
+            labelSerieTyp.Visible = false;
+            comboBoxSerieTyp.Visible = false;
+            // Suad stop
 
             // Laddar komboboxen visa med alternativ och väljer digram som default alternativ  
             LoadShow();
@@ -263,6 +281,17 @@ namespace IK075G
             }
         }
 
+        // Suad start
+        public void LoadSerieType() //Metod för att ladda series i komboboxen
+        {
+            comboBoxSerieTyp.Items.Add(min_serie);
+            comboBoxSerieTyp.Items.Add(max_serie);
+            comboBoxSerieTyp.Items.Add(avg_serie);
+            // laddar inte median då är den inte klar för användning
+            // comboBoxSerieTyp.Items.Add(med_serie);
+            comboBoxSerieTyp.Items.Add(all_serie);
+        }
+        // Suad stop            
         public void SetCustomMinMaxDate() // Används för att sätta start och stop år i kalender beroende på minsta 
         {
             DateTime newMinDateTime = new DateTime();            
@@ -668,6 +697,82 @@ namespace IK075G
             this.ContextMenuStrip.Enabled = false;
         }
 
+        private void AddSerie(string serie_type, string serie_name, string serie_desc, List<ResponseTimes> newList) // Metod för all lägga till en ny serie till diagrammet
+        {
+            // än så länge behandlar vi enbart grundläggande serie namn och beskrivning
+            chartResponseTime.Series.Add(serie_name);
+            chartResponseTime.Series[serie_name].ChartType = SeriesChartType.Line;
+            chartResponseTime.Series[serie_name].LegendText = serie_desc;
+            chartResponseTime.Series[serie_name].XValueType = ChartValueType.DateTime;
+            chartResponseTime.Series[serie_name].YValueType = ChartValueType.Double;
+
+            int i = 0;
+            string serie = string.Empty;
+            string info = string.Empty;
+
+            foreach (ResponseTimes item in newList)
+            {               
+                // ritar serie
+                DataPoint newPoint = new DataPoint();
+                if (timeInterval == daily.ToUpper())
+                {
+                    chartResponseTime.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;
+                    newPoint.AxisLabel = item.day;
+                }
+                else if (timeInterval == weekly.ToUpper())
+                {
+                    chartResponseTime.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Weeks;
+                    newPoint.AxisLabel = item.week;
+                }
+                else if (timeInterval == monthly.ToUpper())
+                {
+                    chartResponseTime.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Months;
+                    newPoint.AxisLabel = item.month;
+                }
+                else if (timeInterval == byyear.ToUpper())
+                {
+                    chartResponseTime.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Years;
+                    newPoint.AxisLabel = item.year;
+                }
+                // tillfäligt lösning för att hantera värdet för respektive punkt start
+                double current_value = 0.00;
+                string current_time = "";
+
+                if (serie_type == "average_values")
+                {
+                    current_value = Convert.ToDouble(item.avgValue);
+                    current_time = item.avgTime;
+                }
+                else if (serie_type == "minimum_values")
+                {
+                    current_value = Convert.ToDouble(item.minValue);
+                    current_time = item.minTime;
+                }
+                else if (serie_type == "maximum_values")
+                {
+                    current_value = Convert.ToDouble(item.maxValue);
+                    current_time = item.maxTime;
+                }
+
+                newPoint.SetValueY(current_value);
+                chartResponseTime.Series[serie_name].Points.Add(newPoint);
+
+                serie = chartResponseTime.Series[serie_name].LegendText;
+                info = info + "Serie : " + serie + "\n";
+                info = info + "Värde : " + current_value + "\n";
+                info = info + current_time + "\n";
+                info = info + "Antal analyser: " + item.quantity + "\n";
+                info = info + "Datum : " + newPoint.AxisLabel.ToString() + "\n";
+                chartResponseTime.Series["Series1"].Points[i].ToolTip = info;
+                info = string.Empty;
+
+                // används för att räkna points
+                i = i + 1;
+            }
+            chartResponseTime.Show();
+            // Diagrammet stop
+        }
+        
         public void ExportGridData(object sender, EventArgs e) // Metod för exportera data till excel
         {
             Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
@@ -1270,6 +1375,33 @@ namespace IK075G
                     this.ContextMenuStrip.Enabled = true;
                 }
             }
+        }
+
+        private void comboBoxSerieTyp_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Suad start
+            string itemValue = comboBoxSerieTyp.SelectedItem.ToString();
+            if (itemValue == min_serie)
+            {
+                serie_type = "minimum_values";
+            }
+            else if (itemValue == max_serie)
+            {
+                serie_type = "maximum_values";
+            }
+            else if (itemValue == avg_serie)
+            {
+                serie_type = "average_values";
+            }
+            else if (itemValue == med_serie)
+            {
+                serie_type = "median_values";
+            }
+            else if (itemValue == all_serie)
+            {
+                serie_type = "all_values";
+            }
+            // Suad stop
         }
     }
 }
