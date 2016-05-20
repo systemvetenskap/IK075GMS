@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel5 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
-            System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel6 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel13 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
+            System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel14 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title7 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.btnBack = new System.Windows.Forms.Button();
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
@@ -61,7 +61,8 @@
             this.dataGridResponseTime = new System.Windows.Forms.DataGridView();
             this.lblShowAs = new System.Windows.Forms.Label();
             this.labelSerieTyp = new System.Windows.Forms.Label();
-            this.comboBoxSerieTyp = new System.Windows.Forms.ComboBox();
+            this.comboBoxSeries = new System.Windows.Forms.ComboBox();
+            this.buttonSeries = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartResponseTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridResponseTime)).BeginInit();
             this.SuspendLayout();
@@ -148,7 +149,6 @@
             this.lblDateFrom.Size = new System.Drawing.Size(48, 20);
             this.lblDateFrom.TabIndex = 28;
             this.lblDateFrom.Text = "Från:";
-            this.lblDateFrom.Click += new System.EventHandler(this.lblDateFrom_Click);
             // 
             // lblAnalysis
             // 
@@ -204,7 +204,6 @@
             this.labelTimeInterval.Size = new System.Drawing.Size(104, 20);
             this.labelTimeInterval.TabIndex = 38;
             this.labelTimeInterval.Text = "Tidsintervall:";
-            this.labelTimeInterval.Click += new System.EventHandler(this.labelTimeInterval_Click);
             // 
             // comboBoxTimeInterval
             // 
@@ -236,24 +235,24 @@
             // 
             this.chartResponseTime.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.chartResponseTime.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.HorizontalCenter;
-            customLabel5.Text = "Test 1";
-            chartArea3.AxisY.CustomLabels.Add(customLabel5);
-            customLabel6.ToolTip = "Test ToolTip Custom Label";
-            chartArea3.AxisY2.CustomLabels.Add(customLabel6);
-            chartArea3.Name = "ChartArea1";
-            this.chartResponseTime.ChartAreas.Add(chartArea3);
+            customLabel13.Text = "Test 1";
+            chartArea7.AxisY.CustomLabels.Add(customLabel13);
+            customLabel14.ToolTip = "Test ToolTip Custom Label";
+            chartArea7.AxisY2.CustomLabels.Add(customLabel14);
+            chartArea7.Name = "ChartArea1";
+            this.chartResponseTime.ChartAreas.Add(chartArea7);
             this.chartResponseTime.Location = new System.Drawing.Point(0, 199);
             this.chartResponseTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chartResponseTime.Name = "chartResponseTime";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Name = "Series1";
-            this.chartResponseTime.Series.Add(series3);
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.Name = "Series1";
+            this.chartResponseTime.Series.Add(series7);
             this.chartResponseTime.Size = new System.Drawing.Size(1588, 372);
             this.chartResponseTime.TabIndex = 41;
             this.chartResponseTime.Text = "chart1";
-            title3.Name = "Test Titel1";
-            this.chartResponseTime.Titles.Add(title3);
+            title7.Name = "Test Titel1";
+            this.chartResponseTime.Titles.Add(title7);
             // 
             // comboBoxYearTo
             // 
@@ -355,7 +354,6 @@
             this.lblFromWeek.Size = new System.Drawing.Size(60, 20);
             this.lblFromWeek.TabIndex = 68;
             this.lblFromWeek.Text = "Vecka:";
-            this.lblFromWeek.Click += new System.EventHandler(this.lblFromWeek_Click);
             // 
             // lblToWeek
             // 
@@ -367,7 +365,6 @@
             this.lblToWeek.Size = new System.Drawing.Size(60, 20);
             this.lblToWeek.TabIndex = 69;
             this.lblToWeek.Text = "Vecka:";
-            this.lblToWeek.Click += new System.EventHandler(this.lblToWeek_Click);
             // 
             // comboBoxShow
             // 
@@ -387,7 +384,7 @@
             // 
             this.dataGridResponseTime.BackgroundColor = System.Drawing.Color.White;
             this.dataGridResponseTime.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridResponseTime.Location = new System.Drawing.Point(128, 599);
+            this.dataGridResponseTime.Location = new System.Drawing.Point(124, 700);
             this.dataGridResponseTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridResponseTime.Name = "dataGridResponseTime";
             this.dataGridResponseTime.RowTemplate.Height = 24;
@@ -409,35 +406,48 @@
             // 
             this.labelSerieTyp.AutoSize = true;
             this.labelSerieTyp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSerieTyp.Location = new System.Drawing.Point(1187, 138);
+            this.labelSerieTyp.Location = new System.Drawing.Point(1080, 138);
             this.labelSerieTyp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSerieTyp.Name = "labelSerieTyp";
             this.labelSerieTyp.Size = new System.Drawing.Size(47, 20);
             this.labelSerieTyp.TabIndex = 78;
             this.labelSerieTyp.Text = "Visa:";
             // 
-            // comboBoxSerieTyp
+            // comboBoxSeries
             // 
-            this.comboBoxSerieTyp.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
-            this.comboBoxSerieTyp.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxSerieTyp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxSerieTyp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBoxSerieTyp.FormattingEnabled = true;
-            this.comboBoxSerieTyp.Location = new System.Drawing.Point(1184, 161);
-            this.comboBoxSerieTyp.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBoxSerieTyp.Name = "comboBoxSerieTyp";
-            this.comboBoxSerieTyp.Size = new System.Drawing.Size(173, 28);
-            this.comboBoxSerieTyp.TabIndex = 77;
-            this.comboBoxSerieTyp.SelectedIndexChanged += new System.EventHandler(this.comboBoxSerieTyp_SelectedIndexChanged);
+            this.comboBoxSeries.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.comboBoxSeries.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxSeries.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSeries.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxSeries.FormattingEnabled = true;
+            this.comboBoxSeries.Location = new System.Drawing.Point(1077, 161);
+            this.comboBoxSeries.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxSeries.Name = "comboBoxSeries";
+            this.comboBoxSeries.Size = new System.Drawing.Size(150, 28);
+            this.comboBoxSeries.TabIndex = 77;
+            this.comboBoxSeries.SelectedIndexChanged += new System.EventHandler(this.comboBoxSeries_SelectedIndexChanged);
+            // 
+            // buttonSeries
+            // 
+            this.buttonSeries.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSeries.Location = new System.Drawing.Point(1235, 159);
+            this.buttonSeries.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonSeries.Name = "buttonSeries";
+            this.buttonSeries.Size = new System.Drawing.Size(98, 30);
+            this.buttonSeries.TabIndex = 79;
+            this.buttonSeries.Text = "Lägg Till";
+            this.buttonSeries.UseVisualStyleBackColor = true;
+            this.buttonSeries.Click += new System.EventHandler(this.buttonSeries_Click);
             // 
             // TimeMonitoring
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1583, 816);
+            this.ClientSize = new System.Drawing.Size(1622, 816);
+            this.Controls.Add(this.buttonSeries);
             this.Controls.Add(this.labelSerieTyp);
-            this.Controls.Add(this.comboBoxSerieTyp);
+            this.Controls.Add(this.comboBoxSeries);
             this.Controls.Add(this.lblShowAs);
             this.Controls.Add(this.dataGridResponseTime);
             this.Controls.Add(this.comboBoxShow);
@@ -510,6 +520,7 @@
         private System.Windows.Forms.DataGridView dataGridResponseTime;
         private System.Windows.Forms.Label lblShowAs;
         private System.Windows.Forms.Label labelSerieTyp;
-        private System.Windows.Forms.ComboBox comboBoxSerieTyp;
+        private System.Windows.Forms.ComboBox comboBoxSeries;
+        private System.Windows.Forms.Button buttonSeries;
     }
 }

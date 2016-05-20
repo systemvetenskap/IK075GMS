@@ -17,27 +17,36 @@ namespace IK075G
 {
     public partial class TimeMonitoring : Form
     {
-        string allGroups = "ALLA";
-        string allPriority = "ALLA";
-
+        // deklarerar konstanter  
+        const string allGroups = "ALLA";
+        const string allPriority = "ALLA";
         string timeInterval = string.Empty;
-        string hourly = "Timvis";
-        string daily = "Dagvis";
-        string weekly = "Veckovis";
-        string monthly = "Månadsvis";
-        string byyear = "Årsvis";
 
-        // Suad start
-        string min_serie = "Minsta värden";
-        string max_serie = "Högsta värden";
-        string avg_serie = "Medelvärde";
-        string med_serie = "Medianvärde";
-        string all_serie = "Samtliga värden";
-        string serie_type = "";
-        // Suad stop
+        // deklarer period, används i titel 
+        string period_from = "";
+        string period_to = "";
 
-        string as_chart = "Diagram";
-        string as_both = "Diagram och tabell";
+        const string hourly = "Timvis";
+        const string daily = "Dagvis";
+        const string weekly = "Veckovis";
+        const string monthly = "Månadsvis";
+        const string byyear = "Årsvis";
+
+        // deklarer serier 
+        const string min_serie = "minimum_serie", min_desc = "Minsta värden";
+        const string max_serie = "maximum_serie", max_desc = "Högsta värden";
+        const string avg_serie = "average_serie", avg_desc = "Medelvärde   ";
+        const string med_serie = "median_serie",  med_desc = "Medianvärde  ";
+
+        const string remove_serie = "Ta bort";
+        const string add_serie = "Lägg till";
+
+        const string as_chart = "Diagram";
+        const string as_both = "Diagram och tabell";
+
+        // deklarer listor
+        List<ResponseTimes> newListMember = new List<ResponseTimes>();
+        List<ChartSeries> newSerieList = new List<ChartSeries>();
         
         // Upprättar koppling mot databas
         NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["IK075G"].ConnectionString);
@@ -48,17 +57,15 @@ namespace IK075G
         {
             InitializeComponent();
         }
-
         private void btnBack_Click(object sender, EventArgs e)
         {
             this.Hide();
             MainMenu huvudmeny = new MainMenu();
             huvudmeny.ShowDialog();
         }
-
         private void TimeMonitoring_Load(object sender, EventArgs e)
         {
-            // Hantering av samtliga
+            // Lägger till "ALLA" som alternativ i komboxar 
             comboBoxCustomer.Items.Add(allGroups);
             comboBoxPriority.Items.Add(allPriority);
 
@@ -70,6 +77,7 @@ namespace IK075G
             LoadWeekNumbers();
             SetCustomMinMaxDate();
 
+            // Hanterar tillgänglighet för de olika boxar  
             comboBoxYearFrom.Visible = false;
             comboBoxYearTo.Visible = false;
             comboBoxWeekFrom.Visible = false;
@@ -90,6 +98,7 @@ namespace IK075G
             // Datum
             lblTodaysDateAndTime.Text = DateTime.Now.ToString("ddddd, M MMMM, yyyy");
 
+            // Ordnar position för kallender och komboboxar
             int y = 0;
             int x = 0;
 
@@ -106,26 +115,47 @@ namespace IK075G
             comboBoxYearTo.Location = new Point(x, y);
             x = comboBoxWeekTo.Location.X;
             comboBoxWeekTo.Location = new Point(x, y);
+            
+            // Laddar olika serie alternativ  
+            ChartSeries newSerie1 = new ChartSeries();
+            newSerie1.serieName = avg_serie;
+            newSerie1.serieDesc = avg_desc;
+            newSerie1.serieSelected = true;
+            newSerieList.Add(newSerie1);
 
-            // Suad start
-            // Laddar samtliga serie typer i komboboxen, väljer medel värde som default alternativ  
+            ChartSeries newSerie2 = new ChartSeries();
+            newSerie2.serieName = min_serie;
+            newSerie2.serieDesc = min_desc; 
+            newSerie2.serieSelected = false;
+            newSerieList.Add(newSerie2);
+
+            ChartSeries newSerie3 = new ChartSeries();
+            newSerie3.serieName = max_serie;
+            newSerie3.serieDesc = max_desc;
+            newSerie3.serieSelected = false;
+            newSerieList.Add(newSerie3);
+
+            ChartSeries newSerie4 = new ChartSeries();
+            newSerie4.serieName = med_serie;
+            newSerie4.serieDesc = med_desc;
+            newSerie4.serieSelected = false;
+            newSerieList.Add(newSerie4);
+
             LoadSerieType();
-            comboBoxSerieTyp.SelectedItem = avg_serie;
-            // temporört lösning inför mötet
-            labelSerieTyp.Visible = false;
-            comboBoxSerieTyp.Visible = false;
-            // Suad stop
-
+            comboBoxSeries.SelectedItem = avg_desc;
+            
             // Laddar komboboxen visa med alternativ och väljer digram som default alternativ  
             LoadShow();
+
+            // Digram storlek anpassas i comboBoxShow_SelectedIndexChanged     
             comboBoxShow.SelectedItem = as_chart;
-            chartResponseTime.Height = 450;
-            dataGridResponseTime.Height = 160;
+
+            // Hanterar synlighet
             dataGridResponseTime.Visible = false;
             comboBoxShow.Visible = false;
-            lblShowAs.Visible = false;            
-            
-            // Lägger till menyn
+            lblShowAs.Visible = false;
+
+            // Lägger till HMV för att möjliggöra export till excel
             AddMenu();
         }
 
@@ -161,7 +191,6 @@ namespace IK075G
                 conn.Close();
             }       
         }
-
         public void LoadAnalysis() //Metod för att ladda analyser i comboboxen 
         {
             try 
@@ -192,7 +221,6 @@ namespace IK075G
                 conn.Close();
             }       
         }
-
         public void LoadPriorityGroup() //Metod för att ladda prioritetsgrupper i comboboxen
         {
             try 
@@ -223,22 +251,20 @@ namespace IK075G
                 conn.Close();
             }       
         }
-
         public void LoadShow() //Metod för att fylla comboboxen med alternativ
         {
             comboBoxShow.Items.Add(as_chart);
             comboBoxShow.Items.Add(as_both);
         }
-
         public void LoadTimeInterval() //Metod för att fylla comboboxen med tidsintervall
         {
+            // Föreberder för "Timvis"
             // comboBoxTimeInterval.Items.Add(hourly);
             comboBoxTimeInterval.Items.Add(daily);
             comboBoxTimeInterval.Items.Add(weekly);
             comboBoxTimeInterval.Items.Add(monthly);
             comboBoxTimeInterval.Items.Add(byyear);
         }
-
         public void LoadYears() // Metod för att LADDA in årtal i comboboxar från och till
         {
             // Från år - Till år 
@@ -271,7 +297,6 @@ namespace IK075G
                 conn.Close();
             }            
         }
-
         public void LoadWeekNumbers() //Metod för att FYLLA comboboxarna med veckonummer
         {
             for (int i = 1; i <= 53; i++)
@@ -280,18 +305,6 @@ namespace IK075G
                 comboBoxWeekTo.Items.Add(i.ToString());
             }
         }
-
-        // Suad start
-        public void LoadSerieType() //Metod för att ladda series i komboboxen
-        {
-            comboBoxSerieTyp.Items.Add(min_serie);
-            comboBoxSerieTyp.Items.Add(max_serie);
-            comboBoxSerieTyp.Items.Add(avg_serie);
-            // laddar inte median då är den inte klar för användning
-            // comboBoxSerieTyp.Items.Add(med_serie);
-            comboBoxSerieTyp.Items.Add(all_serie);
-        }
-        // Suad stop            
         public void SetCustomMinMaxDate() // Används för att sätta start och stop år i kalender beroende på minsta 
         {
             DateTime newMinDateTime = new DateTime();            
@@ -336,7 +349,6 @@ namespace IK075G
             // används för att sätta värdena i komboboxar  
             SetYearAndWeek();
         }
-
         public void SetYearAndWeek() // Används för att sätta start och stop år respektive start och stop vecka beroende på värdena i kalender
         { 
             DateTime dateFrom = dateTimePickerFrom.Value;
@@ -355,9 +367,8 @@ namespace IK075G
             var cal2 = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
             string weekTo = cal2.GetWeekOfYear(dateTo, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString();
             comboBoxWeekTo.SelectedItem = weekTo;
-        }
-        
-        public void SetCustomFormat(string format) // Används för att definera format i kallender 
+        }        
+        public void SetCustomFormat(string format) // Används för att definera format i kalender 
         {
             dateTimePickerFrom.Format = DateTimePickerFormat.Custom;
             dateTimePickerFrom.CustomFormat = format;
@@ -367,10 +378,8 @@ namespace IK075G
             dateTimePickerTo.CustomFormat = format;
             dateTimePickerTo.ShowUpDown = true;
         }
-
         public List<ResponseTimes> GetResponseByYear(string customer, string analys, string prio, string yearFrom, string yearTo)
         {
-            List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
             {
                 conn.Open();
@@ -405,6 +414,9 @@ namespace IK075G
                 cmd.Parameters["newFrom"].Value = yearFrom;
                 cmd.Parameters.Add(new NpgsqlParameter("newTo", NpgsqlDbType.Varchar));
                 cmd.Parameters["newTo"].Value = yearTo;
+
+                period_from = yearFrom;
+                period_to = yearTo;
 
                 NpgsqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
@@ -441,10 +453,8 @@ namespace IK075G
             }
             return newListMember;
         }
-
         public List<ResponseTimes> GetResponseByMonth(string customer, string analys, string prio, string monthFrom, string monthTo)
         {
-            List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
             {
                 monthFrom = monthFrom.PadLeft(2, '0');
@@ -486,6 +496,9 @@ namespace IK075G
                 cmd.Parameters.Add(new NpgsqlParameter("newTo", NpgsqlDbType.Varchar));
                 cmd.Parameters["newTo"].Value = monthTo;
 
+                period_from = monthFrom;
+                period_to = monthTo;
+
                 NpgsqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -521,10 +534,8 @@ namespace IK075G
             }
             return newListMember;
         }
-
         public List<ResponseTimes> GetResponseByWeek(string customer, string analys, string prio, string yearFrom, string yearTo, string weekFrom, string weekTo)
         {
-            List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
             {
                 weekFrom = weekFrom.PadLeft(2, '0');
@@ -562,6 +573,9 @@ namespace IK075G
                 cmd.Parameters.Add(new NpgsqlParameter("newTo", NpgsqlDbType.Varchar));
                 cmd.Parameters["newTo"].Value = yearTo + weekTo;
 
+                period_from = yearFrom + weekFrom;
+                period_to = yearTo + weekTo;
+
                 NpgsqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -597,10 +611,8 @@ namespace IK075G
             }
             return newListMember;
         }
-
         public List<ResponseTimes> GetResponseByDay(string customer, string analys, string prio, string dayFrom, string dayTo)
         {
-            List<ResponseTimes> newListMember = new List<ResponseTimes>();
             try
             {
                 conn.Open();
@@ -634,6 +646,9 @@ namespace IK075G
                 cmd.Parameters["newFrom"].Value = dayFrom;
                 cmd.Parameters.Add(new NpgsqlParameter("newTo", NpgsqlDbType.Varchar));
                 cmd.Parameters["newTo"].Value = dayTo;
+
+                period_from = dayFrom;
+                period_to = dayTo;
 
                 NpgsqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
@@ -670,7 +685,6 @@ namespace IK075G
             }
             return newListMember;
         }
-
         public double FindMaxValue(List<ResponseTimes> newListMember) // Metod för att hitta högsta värdet
         {
             double maxValue = double.MinValue;
@@ -683,7 +697,6 @@ namespace IK075G
             }
             return maxValue;
         }
-
         private void AddMenu() // Metod för all lägga till mennyn till form
         {
             ToolStripMenuItem menuItem = new ToolStripMenuItem("Export data till Excel", null,
@@ -696,22 +709,82 @@ namespace IK075G
             this.MouseDown += new MouseEventHandler(TimeMonitoring_MouseDown);
             this.ContextMenuStrip.Enabled = false;
         }
-
-        private void AddSerie(string serie_type, string serie_name, string serie_desc, List<ResponseTimes> newList) // Metod för all lägga till en ny serie till diagrammet
+        public void ExportGridData(object sender, EventArgs e) // Metod för exportera data till excel
         {
-            // än så länge behandlar vi enbart grundläggande serie namn och beskrivning
+            Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
+            Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
+            app.Visible = true;
+            worksheet = workbook.ActiveSheet;
+
+            worksheet.Cells.NumberFormat = "@";
+
+            for (int i = 1; i < dataGridResponseTime.Columns.Count + 1; i++)
+            {
+                worksheet.Cells[1, i] = dataGridResponseTime.Columns[i - 1].HeaderText;
+            }
+
+            for (int i = 0; i <= dataGridResponseTime.Rows.Count - 1; i++)
+            {
+                for (int j = 0; j < dataGridResponseTime.Columns.Count; j++)
+                {
+                    DataGridViewCell cell = dataGridResponseTime[j, i];
+                    if (cell.Value.ToString() != null)
+                    {
+                        worksheet.Cells[i + 2, j + 1] = cell.Value.ToString();
+                    }
+                    else
+                    {
+                        worksheet.Cells[i + 2, j + 1] = "";
+                    }
+                }
+            }
+        }
+
+        public void LoadSerieType() //Metod för att ladda series i komboboxen
+        {
+            comboBoxSeries.DataSource = null;
+            comboBoxSeries.DataSource = newSerieList;
+        }
+        public void ClearChart() 
+        {
+            chartResponseTime.Titles.Clear();
+            chartResponseTime.Series.Clear();
+            chartResponseTime.ChartAreas.Clear();
+            chartResponseTime.ChartAreas.Add("");
+            chartResponseTime.Legends.Clear();
+        }        
+        public void AddChartTitle(string timeInterval, string analys, string customer)
+        {
+            string titel = "Visar uppföljning av svarstider för analys: " + analys + ", från kund: " + customer;
+            chartResponseTime.Titles.Add(titel);
+            chartResponseTime.Titles[0].Alignment = ContentAlignment.TopLeft;
+            chartResponseTime.Legends.Add("Legend");
+        }
+        private void AddSerie(string serie_name, string serie_desc, List<ResponseTimes> newListMember) // Metod för all lägga till en ny serie till diagrammet
+        {
+            // serie 
             chartResponseTime.Series.Add(serie_name);
+            
             chartResponseTime.Series[serie_name].ChartType = SeriesChartType.Line;
             chartResponseTime.Series[serie_name].LegendText = serie_desc;
             chartResponseTime.Series[serie_name].XValueType = ChartValueType.DateTime;
             chartResponseTime.Series[serie_name].YValueType = ChartValueType.Double;
+            
+            // Axis X
+            chartResponseTime.ChartAreas[0].AxisX.Title = "Tidsperiod " + timeInterval.ToLower() + " från och med " + period_from + " till och med " + period_to;            
+            chartResponseTime.ChartAreas[0].AxisX.LabelStyle.Angle = -90;
+            chartResponseTime.ChartAreas[0].AxisX.Interval = 20;
+
+            // Axis Y
+            chartResponseTime.ChartAreas[0].AxisY.Title = "Svartider " + timeInterval.ToLower() + " i antal minuter";
 
             int i = 0;
             string serie = string.Empty;
             string info = string.Empty;
 
-            foreach (ResponseTimes item in newList)
-            {               
+            foreach (ResponseTimes item in newListMember)
+            {
                 // ritar serie
                 DataPoint newPoint = new DataPoint();
                 if (timeInterval == daily.ToUpper())
@@ -734,298 +807,58 @@ namespace IK075G
                     chartResponseTime.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Years;
                     newPoint.AxisLabel = item.year;
                 }
-                // tillfäligt lösning för att hantera värdet för respektive punkt start
+                
                 double current_value = 0.00;
                 string current_time = "";
 
-                if (serie_type == "average_values")
+                if (serie_name == avg_serie)
                 {
                     current_value = Convert.ToDouble(item.avgValue);
                     current_time = item.avgTime;
                 }
-                else if (serie_type == "minimum_values")
+                else if (serie_name == min_serie)
                 {
                     current_value = Convert.ToDouble(item.minValue);
                     current_time = item.minTime;
                 }
-                else if (serie_type == "maximum_values")
+                else if (serie_name == max_serie)
                 {
                     current_value = Convert.ToDouble(item.maxValue);
                     current_time = item.maxTime;
+                }
+                else if (serie_name == med_serie)
+                {
+                    // Föreberder för median serien
+                    // current_value = Convert.ToDouble(item.medValue);
+                    // current_time = item.maxTime;
                 }
 
                 newPoint.SetValueY(current_value);
                 chartResponseTime.Series[serie_name].Points.Add(newPoint);
 
+                // ToolTip punkt beskrivning
                 serie = chartResponseTime.Series[serie_name].LegendText;
                 info = info + "Serie : " + serie + "\n";
-                info = info + "Värde : " + current_value + "\n";
-                info = info + current_time + "\n";
+                info = info + "Värde : " + current_value + " ( " + current_time + " )\n";
                 info = info + "Antal analyser: " + item.quantity + "\n";
                 info = info + "Datum : " + newPoint.AxisLabel.ToString() + "\n";
-                chartResponseTime.Series["Series1"].Points[i].ToolTip = info;
+                chartResponseTime.Series[serie_name].Points[i].ToolTip = info;
                 info = string.Empty;
 
-                // används för att räkna points
+                // Används för att räkna points
                 i = i + 1;
             }
-            chartResponseTime.Show();
-            // Diagrammet stop
         }
-        
-        public void ExportGridData(object sender, EventArgs e) // Metod för exportera data till excel
+        public void AddGridValue() // Metod för att hantera griden 
         {
-            Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
-            Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
-            Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
-            app.Visible = true;
-            worksheet = workbook.ActiveSheet;
-            
-            worksheet.Cells.NumberFormat = "@";
-            
-            for (int i = 1; i < dataGridResponseTime.Columns.Count + 1; i++)
+            if (dataGridResponseTime.Rows.Count == 0)
             {
-                worksheet.Cells[1, i] = dataGridResponseTime.Columns[i - 1].HeaderText;
-            }            
-            
-            for (int i = 0; i <= dataGridResponseTime.Rows.Count - 1; i++)
-            {
-                for (int j = 0; j < dataGridResponseTime.Columns.Count; j++)
-                {
-                    DataGridViewCell cell = dataGridResponseTime[j, i];
-                    if (cell.Value.ToString() != null)
-                    {
-                        worksheet.Cells[i + 2, j + 1] = cell.Value.ToString();
-                    }
-                    else
-                    {
-                        worksheet.Cells[i + 2, j + 1] = "";
-                    }
-                }
-            }
-        }
-
-        // Events
-        private void btnShowUpdateDiagram_Click(object sender, EventArgs e)
-        {
-            try 
-	        {
-                List<ResponseTimes> newListMember = new List<ResponseTimes>();
-                string customer = comboBoxCustomer.Text.ToString().ToUpper();
-                if (customer == allGroups)
-                {
-                    customer = "%";
-                }
-                string analys = comboBoxAnalysis.Text.ToString().ToUpper();
-                string prio = comboBoxPriority.Text.ToString().ToUpper();
-                if (prio == allPriority)
-                {
-                    prio = "%";
-                }
-
-                DateTime dateFrom;
-                DateTime dateTo;
-                string yearFrom;
-                string yearTo;
-                string weekFrom;
-                string monthFrom;
-                string monthTo;
-                string weekTo;
-                string dayFrom;
-                string dayTo;
-                // string hoursFrom;
-                // string hoursTo;
-
-                if (timeInterval == hourly.ToUpper())
-                {
-                    // från kalender string format = "dd MMMM yyyy"
-                    dateFrom = dateTimePickerFrom.Value;
-                    dateTo = dateTimePickerTo.Value;
-
-                    dayFrom = dateFrom.ToShortDateString();
-                    dayTo = dateTo.ToShortDateString();
-
-                    // hoursFrom = dateFrom.Hour.ToString();
-                    // hoursTo = dateTo.Hour.ToString();
-
-                    // Hämtning av data påbörjas
-                    // Cursor = Cursors.WaitCursor;
-                    // newListMember = GetResponseByHours(customer, analys, prio, yearFrom, yearTo, hoursFrom, hoursTo);
-                }
-                else if (timeInterval == daily.ToUpper())
-                {
-                    // från kallender
-                    dateFrom = dateTimePickerFrom.Value;
-                    dateTo = dateTimePickerTo.Value;
-
-                    dayFrom = dateFrom.ToShortDateString();
-                    dayTo = dateTo.ToShortDateString();
-
-                    // Hämtning av data påbörjas
-                    labelMessage.Visible = true;
-                    labelMessage.ForeColor = Color.Tomato;
-                    labelMessage.Text = "Hämtning av data påbörjad";
-                    Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByDay(customer, analys, prio, dayFrom, dayTo);
-                }
-                else if (timeInterval == weekly.ToUpper())
-                {
-                    // från boxar för år och vecka, string format = "yyyy";
-                    yearFrom = comboBoxYearFrom.Text;
-                    weekFrom = comboBoxWeekFrom.Text;
-                    yearTo = comboBoxYearTo.Text;
-                    weekTo = comboBoxWeekTo.Text;
-
-                    // Hämtning av data påbörjas
-                    labelMessage.Visible = true;
-                    labelMessage.ForeColor = Color.Tomato;
-                    labelMessage.Text = "Hämtning av data påbörjad";
-                    Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByWeek(customer, analys, prio, yearFrom, yearTo, weekFrom, weekTo);
-                }
-                else if (timeInterval == monthly.ToUpper())
-                {
-                    // från kallender, string format = "MMMM yyyy";
-                    monthFrom = dateTimePickerFrom.Value.ToShortDateString();
-                    monthTo = dateTimePickerTo.Value.ToShortDateString();
-
-                    // Hämtning av data påbörjas
-                    labelMessage.Visible = true;
-                    labelMessage.ForeColor = Color.Tomato;
-                    labelMessage.Text = "Hämtning av data påbörjad";
-                    Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByMonth(customer, analys, prio, monthFrom, monthTo);
-                }
-                else if (timeInterval == byyear.ToUpper())
-                {
-                    // från listbox
-                    yearFrom = comboBoxYearFrom.Text;
-                    yearTo = comboBoxYearTo.Text;
-
-                    // Hämtning av data påbörjas
-                    Cursor = Cursors.WaitCursor;
-                    labelMessage.Visible = true;
-                    labelMessage.ForeColor = Color.Tomato;
-                    labelMessage.Text = "Hämtning av data påbörjad";
-                    Cursor = Cursors.WaitCursor;
-                    newListMember = GetResponseByYear(customer, analys, prio, yearFrom, yearTo);
-                }
-
-                labelMessage.Visible = true;
-                labelMessage.ForeColor = Color.Tomato;
-                labelMessage.Text = "Laddar diagrammet";
-
-                // diagram
-                chartResponseTime.Titles.Clear();
-                chartResponseTime.Series.Clear();
-                chartResponseTime.ChartAreas.Clear();
-                chartResponseTime.ChartAreas.Add("");
-                chartResponseTime.Legends.Clear();
-                
-                // diagram titel 
-                string titel = "Visar uppföljning av svarstider " + timeInterval.ToLower() + " för analys: " + analys + ", från kund: " + customer;
-                chartResponseTime.Titles.Add(titel);
-                chartResponseTime.Titles[0].Alignment = ContentAlignment.TopLeft;
-
-                chartResponseTime.Legends.Add("Legend");
-
-                // medel
-                chartResponseTime.Series.Add("Series1");
-                chartResponseTime.Series["Series1"].ChartType = SeriesChartType.Line;
-                chartResponseTime.Series["Series1"].LegendText = "Medel värde";
-                chartResponseTime.Series["Series1"].XValueType = ChartValueType.DateTime;
-                chartResponseTime.Series["Series1"].YValueType = ChartValueType.Double;
-
-                // minsta
-                chartResponseTime.Series.Add("Series2");
-                chartResponseTime.Series["Series2"].ChartType = SeriesChartType.Line;
-                chartResponseTime.Series["Series2"].LegendText = "Minsta värde";
-                chartResponseTime.Series["Series2"].XValueType = ChartValueType.DateTime;
-                chartResponseTime.Series["Series2"].YValueType = ChartValueType.Double;
-
-                // högsta
-                chartResponseTime.Series.Add("Series3");
-                chartResponseTime.Series["Series3"].ChartType = SeriesChartType.Line;
-                chartResponseTime.Series["Series3"].LegendText = "Högsta värde";
-                chartResponseTime.Series["Series3"].XValueType = ChartValueType.DateTime;
-                chartResponseTime.Series["Series3"].YValueType = ChartValueType.Double;
-                
-                int i = 0;
-                string serie = string.Empty;
-                string info = string.Empty;
-
-                foreach (ResponseTimes item in newListMember)
-                {
-                    // ritar diagrammet
-                    DataPoint newAveragePoint = new DataPoint();
-                    if (timeInterval == daily.ToUpper())
-                    {
-                        chartResponseTime.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;
-                        newAveragePoint.AxisLabel = item.day;
-                    }
-                    else if (timeInterval == weekly.ToUpper())
-                    {
-                        chartResponseTime.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Weeks;
-                        newAveragePoint.AxisLabel = item.week;
-                    }
-                    else if (timeInterval == monthly.ToUpper())
-                    {
-                        chartResponseTime.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Months;
-                        newAveragePoint.AxisLabel = item.month;
-                    }
-                    else if (timeInterval == byyear.ToUpper())
-                    {
-                        chartResponseTime.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Years;
-                        newAveragePoint.AxisLabel = item.year;
-                    }
-                    newAveragePoint.SetValueY(Convert.ToDouble(item.avgValue));
-                    chartResponseTime.Series["Series1"].Points.Add(newAveragePoint);
-
-                    serie = chartResponseTime.Series["Series1"].LegendText;
-                    info = info + "Serie : " + serie + "\n";
-                    info = info + "Värde : " + item.avgValue + "\n";
-                    info = info + item.avgTime + "\n";
-                    info = info + "Antal analyser: " + item.quantity + "\n";
-                    info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
-                    chartResponseTime.Series["Series1"].Points[i].ToolTip = info;
-                    info = string.Empty;
-
-                    DataPoint newMinPoint = new DataPoint();
-                    newMinPoint.SetValueY(Convert.ToDouble(item.minValue));
-                    chartResponseTime.Series["Series2"].Points.Add(newMinPoint);
-
-                    serie = chartResponseTime.Series["Series2"].LegendText;
-                    info = info + "Serie : " + serie + "\n";
-                    info = info + "Värde : " + item.minValue + "\n";
-                    info = info + item.minTime + "\n";
-                    info = info + "Antal analyser: " + item.quantity + "\n";
-                    info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
-                    chartResponseTime.Series["Series2"].Points[i].ToolTip = info;
-                    info = string.Empty;
-
-                    DataPoint newMaxPoint = new DataPoint();
-                    newMaxPoint.SetValueY(Convert.ToDouble(item.maxValue));
-                    chartResponseTime.Series["Series3"].Points.Add(newMaxPoint);
-                    
-                    serie = chartResponseTime.Series["Series3"].LegendText;
-                    info = info + "Serie : " + serie + "\n";
-                    info = info + "Värde : " + item.maxValue + "\n";
-                    info = info + item.maxTime + "\n";
-                    info = info + "Antal analyser: " + item.quantity + "\n";
-                    info = info + "Datum : " + newAveragePoint.AxisLabel.ToString() + "\n";
-                    chartResponseTime.Series["Series3"].Points[i].ToolTip = info;
-                    info = string.Empty;
-                    
-                    // används för att räkna points
-                    i = i + 1;
-                }
-                chartResponseTime.Show();                
-                // Diagrammet stop
-
-                dataGridResponseTime.DataSource = string.Empty;                
+                dataGridResponseTime.DataSource = string.Empty;
                 if (newListMember.Count >= 0)
                 {
+                    
                     dataGridResponseTime.DataSource = newListMember;
+                    // Ordnar kolumn namnen  
                     foreach (DataGridViewColumn column in dataGridResponseTime.Columns)
                     {
                         if (column.Name.ToString() == "customer")
@@ -1094,6 +927,7 @@ namespace IK075G
                         }
                     }
 
+                    // Tar bort överflödiga kolumner för respektive tidsinterval 
                     if (timeInterval == hourly.ToUpper())
                     {
                         dataGridResponseTime.Columns.Remove("year");
@@ -1137,10 +971,125 @@ namespace IK075G
                     comboBoxShow.Visible = true;
                     lblShowAs.Visible = true;
                 }
+            }                        
+        }
+
+        // Events
+        private void btnShowUpdateDiagram_Click(object sender, EventArgs e)
+        {
+            try 
+	        {
+                // Hämtar parametrar
+                string customer = comboBoxCustomer.Text.ToString().ToUpper();
+                if (customer == allGroups)
+                {
+                    customer = "%";
+                }
+                string analys = comboBoxAnalysis.Text.ToString().ToUpper();
+                string prio = comboBoxPriority.Text.ToString().ToUpper();
+                if (prio == allPriority)
+                {
+                    prio = "%";
+                }
+
+                DateTime dateFrom;
+                DateTime dateTo;
+                string yearFrom;
+                string yearTo;
+                string weekFrom;
+                string monthFrom;
+                string monthTo;
+                string weekTo;
+                string dayFrom;
+                string dayTo;
+                // Föreberder för Timvis
+                // string hoursFrom;
+                // string hoursTo;
+
+                // Hämtar datat
+                newListMember.Clear();                
+                if (timeInterval == hourly.ToUpper())
+                {
+                    // Föreberder för Timvis
+                    // från kalender string format = "dd MMMM yyyy"
+                    dateFrom = dateTimePickerFrom.Value;
+                    dateTo = dateTimePickerTo.Value;
+                    dayFrom = dateFrom.ToShortDateString();
+                    dayTo = dateTo.ToShortDateString();
+                    // hoursFrom = dateFrom.Hour.ToString();
+                    // hoursTo = dateTo.Hour.ToString();
+                    
+                    // Hämtning av data påbörjas
+                    // Cursor = Cursors.WaitCursor;
+                    // newListMember = GetResponseByHours(customer, analys, prio, yearFrom, yearTo, hoursFrom, hoursTo);
+                }
+                else if (timeInterval == daily.ToUpper())
+                {
+                    // från kallender
+                    dateFrom = dateTimePickerFrom.Value;
+                    dateTo = dateTimePickerTo.Value;
+                    dayFrom = dateFrom.ToShortDateString();
+                    dayTo = dateTo.ToShortDateString();
+
+                    // Hämtning av data påbörjas
+                    Cursor = Cursors.WaitCursor;
+                    newListMember = GetResponseByDay(customer, analys, prio, dayFrom, dayTo);
+                }
+                else if (timeInterval == weekly.ToUpper())
+                {
+                    // från boxar för år och vecka, string format = "yyyy";
+                    yearFrom = comboBoxYearFrom.Text;
+                    weekFrom = comboBoxWeekFrom.Text;
+                    yearTo = comboBoxYearTo.Text;
+                    weekTo = comboBoxWeekTo.Text;
+
+                    // Hämtning av data påbörjas
+                    Cursor = Cursors.WaitCursor;
+                    newListMember = GetResponseByWeek(customer, analys, prio, yearFrom, yearTo, weekFrom, weekTo);
+                }
+                else if (timeInterval == monthly.ToUpper())
+                {
+                    // från kallender, string format = "MMMM yyyy";
+                    monthFrom = dateTimePickerFrom.Value.ToShortDateString();
+                    monthTo = dateTimePickerTo.Value.ToShortDateString();
+
+                    // Hämtning av data påbörjas
+                    Cursor = Cursors.WaitCursor;
+                    newListMember = GetResponseByMonth(customer, analys, prio, monthFrom, monthTo);
+                }
+                else if (timeInterval == byyear.ToUpper())
+                {
+                    // från listbox
+                    yearFrom = comboBoxYearFrom.Text;
+                    yearTo = comboBoxYearTo.Text;
+
+                    // Hämtning av data påbörjas
+                    Cursor = Cursors.WaitCursor;
+                    newListMember = GetResponseByYear(customer, analys, prio, yearFrom, yearTo);
+                }
+
+                // Hanterar diagram
+                ClearChart();
+                
+                AddChartTitle(timeInterval.ToLower(), analys, customer);
+                
+                foreach (ChartSeries item in newSerieList)
+                {
+                    if (item.serieSelected == true)
+                    {
+                        AddSerie(item.serieName, item.serieDesc, newListMember);
+                    }
+                }
+
+                // Lägg till data till griden (enbart vid hämtning av data)
+                AddGridValue();
+
+                // Klart
                 Cursor = Cursors.Default;                
                 labelMessage.Visible = true;
                 labelMessage.ForeColor = Color.Green;
-                labelMessage.Text = "Klart";           
+                labelMessage.Text = "Klart";
+                
             }
             catch (Exception ex)
             {
@@ -1152,7 +1101,82 @@ namespace IK075G
                 Cursor = Cursors.Default;
             }
         }
+        private void comboBoxSeries_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ChartSeries newChartSerie = new ChartSeries();
+            newChartSerie = (ChartSeries)comboBoxSeries.SelectedItem;
+            string serieName = newChartSerie.serieName;
+            bool serieSelected = newChartSerie.serieSelected;
+            if (serieSelected == true)
+            {
+                buttonSeries.Text = remove_serie;
+            }
+            else
+            {
+                buttonSeries.Text = add_serie;
+            }
+        }
+        private void buttonSeries_Click(object sender, EventArgs e)
+        {
+            // hämtar serie namn för uppdatering 
+            ChartSeries newChartSerie = new ChartSeries();
+            newChartSerie = (ChartSeries)comboBoxSeries.SelectedItem;
+            string serieName = newChartSerie.serieName;
 
+            bool serieSelected;
+            if (buttonSeries.Text == remove_serie)
+            {
+                serieSelected = false;
+                buttonSeries.Text = add_serie;
+            }
+            else
+            {
+                serieSelected = true;
+                buttonSeries.Text = remove_serie;
+            }
+
+            // uppdatera aktuell serie 
+            for (int i = 0; i < newSerieList.Count; i++)
+            {
+                if (newSerieList[i].serieName.ToString() == serieName)
+                {
+                    newSerieList[i].serieSelected = serieSelected;
+                }
+            }
+
+            // Hämtar parametrar
+            string customer = comboBoxCustomer.Text.ToString().ToUpper();
+            if (customer == allGroups)
+            {
+                customer = "%";
+            }
+            string analys = comboBoxAnalysis.Text.ToString().ToUpper();
+            string prio = comboBoxPriority.Text.ToString().ToUpper();
+            if (prio == allPriority)
+            {
+                prio = "%";
+            }
+
+            // Hanterar diagram 
+            ClearChart();
+
+            AddChartTitle(timeInterval.ToLower(), analys, customer);
+
+            foreach (ChartSeries item in newSerieList)
+            {
+                if (item.serieSelected == true)
+                {
+                    AddSerie(item.serieName, item.serieDesc, newListMember);
+                }
+            }
+
+            // Klart
+            Cursor = Cursors.Default;
+            labelMessage.Visible = true;
+            labelMessage.ForeColor = Color.Green;
+            labelMessage.Text = "Klart";
+        }
+        
         private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e)
         {
             timeInterval = comboBoxTimeInterval.SelectedItem.ToString().ToUpper();
@@ -1256,110 +1280,84 @@ namespace IK075G
             }
             labelMessage.Text = "";
         }
-
         private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboBoxPriority.Enabled = true;
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
-
         private void dateTimePickerFrom_ValueChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
-
         private void dateTimePickerTo_ValueChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
-
         private void comboBoxYearFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
-
         private void comboBoxWeekFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
-
         private void comboBoxYearTo_SelectedIndexChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
-
         private void comboBoxWeekTo_SelectedIndexChanged(object sender, EventArgs e)
         {
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
-
         private void comboBoxCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboBoxAnalysis.Enabled = true;
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
-
         private void comboBoxPriority_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboBoxTimeInterval.Enabled = true;
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
-
         private void buttonExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-
         private void comboBoxShow_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxShow.SelectedItem.ToString() == as_both)
             {
-                chartResponseTime.Height = 300;
-                dataGridResponseTime.Height = 150;
+                chartResponseTime.Height = 350;                
+                int y = 0;
+                int x = 0;
+                x = dataGridResponseTime.Location.X;
+                y = dataGridResponseTime.Location.Y;
+                y = 520;
+                dataGridResponseTime.Location = new Point(x, y);
+                
+                dataGridResponseTime.Height = 130;
                 dataGridResponseTime.Visible = true;
             }
             else
             {
-                chartResponseTime.Height = 450; 
-                dataGridResponseTime.Height = 150;
+                chartResponseTime.Height = 480;
+                dataGridResponseTime.Height = 130;
                 dataGridResponseTime.Visible = false;
             }
         }
-
-        private void lblToWeek_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblDateFrom_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelTimeInterval_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblFromWeek_Click(object sender, EventArgs e)
-        {
-
-        }
-        
         private void ShortcutMenuClick(object sender, System.EventArgs e)
         {
             ExportGridData(sender, e);
         }
-
         private void TimeMonitoring_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -1375,33 +1373,6 @@ namespace IK075G
                     this.ContextMenuStrip.Enabled = true;
                 }
             }
-        }
-
-        private void comboBoxSerieTyp_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Suad start
-            string itemValue = comboBoxSerieTyp.SelectedItem.ToString();
-            if (itemValue == min_serie)
-            {
-                serie_type = "minimum_values";
-            }
-            else if (itemValue == max_serie)
-            {
-                serie_type = "maximum_values";
-            }
-            else if (itemValue == avg_serie)
-            {
-                serie_type = "average_values";
-            }
-            else if (itemValue == med_serie)
-            {
-                serie_type = "median_values";
-            }
-            else if (itemValue == all_serie)
-            {
-                serie_type = "all_values";
-            }
-            // Suad stop
         }
     }
 }
