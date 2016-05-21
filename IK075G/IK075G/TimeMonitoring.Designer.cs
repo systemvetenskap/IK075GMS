@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel13 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
-            System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel14 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title7 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel15 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
+            System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel16 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title8 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.btnBack = new System.Windows.Forms.Button();
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
@@ -111,6 +111,7 @@
             this.comboBoxAnalysis.Size = new System.Drawing.Size(231, 28);
             this.comboBoxAnalysis.TabIndex = 1;
             this.comboBoxAnalysis.SelectedIndexChanged += new System.EventHandler(this.comboBoxAnalysis_SelectedIndexChanged);
+            this.comboBoxAnalysis.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxAnalysis_KeyUp);
             // 
             // comboBoxPriority
             // 
@@ -119,12 +120,13 @@
             this.comboBoxPriority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxPriority.FormattingEnabled = true;
-            this.comboBoxPriority.Location = new System.Drawing.Point(539, 46);
+            this.comboBoxPriority.Location = new System.Drawing.Point(543, 46);
             this.comboBoxPriority.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxPriority.Name = "comboBoxPriority";
             this.comboBoxPriority.Size = new System.Drawing.Size(231, 28);
             this.comboBoxPriority.TabIndex = 2;
             this.comboBoxPriority.SelectedIndexChanged += new System.EventHandler(this.comboBoxPriority_SelectedIndexChanged);
+            this.comboBoxPriority.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxPriority_KeyUp);
             // 
             // comboBoxCustomer
             // 
@@ -138,6 +140,7 @@
             this.comboBoxCustomer.Size = new System.Drawing.Size(231, 28);
             this.comboBoxCustomer.TabIndex = 0;
             this.comboBoxCustomer.SelectedIndexChanged += new System.EventHandler(this.comboBoxCustomer_SelectedIndexChanged);
+            this.comboBoxCustomer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxCustomer_KeyUp);
             // 
             // lblDateFrom
             // 
@@ -222,7 +225,7 @@
             // btnShowUpdateDiagram
             // 
             this.btnShowUpdateDiagram.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowUpdateDiagram.Location = new System.Drawing.Point(799, 114);
+            this.btnShowUpdateDiagram.Location = new System.Drawing.Point(799, 109);
             this.btnShowUpdateDiagram.Margin = new System.Windows.Forms.Padding(4);
             this.btnShowUpdateDiagram.Name = "btnShowUpdateDiagram";
             this.btnShowUpdateDiagram.Size = new System.Drawing.Size(156, 30);
@@ -235,24 +238,24 @@
             // 
             this.chartResponseTime.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.chartResponseTime.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.HorizontalCenter;
-            customLabel13.Text = "Test 1";
-            chartArea7.AxisY.CustomLabels.Add(customLabel13);
-            customLabel14.ToolTip = "Test ToolTip Custom Label";
-            chartArea7.AxisY2.CustomLabels.Add(customLabel14);
-            chartArea7.Name = "ChartArea1";
-            this.chartResponseTime.ChartAreas.Add(chartArea7);
+            customLabel15.Text = "Test 1";
+            chartArea8.AxisY.CustomLabels.Add(customLabel15);
+            customLabel16.ToolTip = "Test ToolTip Custom Label";
+            chartArea8.AxisY2.CustomLabels.Add(customLabel16);
+            chartArea8.Name = "ChartArea1";
+            this.chartResponseTime.ChartAreas.Add(chartArea8);
             this.chartResponseTime.Location = new System.Drawing.Point(0, 199);
             this.chartResponseTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chartResponseTime.Name = "chartResponseTime";
-            series7.ChartArea = "ChartArea1";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series7.Name = "Series1";
-            this.chartResponseTime.Series.Add(series7);
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.Name = "Series1";
+            this.chartResponseTime.Series.Add(series8);
             this.chartResponseTime.Size = new System.Drawing.Size(1588, 372);
             this.chartResponseTime.TabIndex = 41;
             this.chartResponseTime.Text = "chart1";
-            title7.Name = "Test Titel1";
-            this.chartResponseTime.Titles.Add(title7);
+            title8.Name = "Test Titel1";
+            this.chartResponseTime.Titles.Add(title8);
             // 
             // comboBoxYearTo
             // 
@@ -444,7 +447,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1622, 816);
+            this.ClientSize = new System.Drawing.Size(1622, 873);
             this.Controls.Add(this.buttonSeries);
             this.Controls.Add(this.labelSerieTyp);
             this.Controls.Add(this.comboBoxSeries);

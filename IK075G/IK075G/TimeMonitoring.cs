@@ -76,8 +76,15 @@ namespace IK075G
             LoadYears();
             LoadWeekNumbers();
             SetCustomMinMaxDate();
+            // Default
+            comboBoxCustomer.SelectedItem = allGroups;
+            comboBoxPriority.SelectedItem = allPriority;
 
             // Hanterar tillgänglighet för de olika boxar  
+            // comboBoxAnalysis.Enabled = true;
+            // comboBoxPriority.Enabled = true;
+            comboBoxTimeInterval.Enabled = false;
+
             comboBoxYearFrom.Visible = false;
             comboBoxYearTo.Visible = false;
             comboBoxWeekFrom.Visible = false;
@@ -90,11 +97,7 @@ namespace IK075G
             lblToWeek.Visible = false;
             lblDateFrom.Visible = false;
             lblDateTo.Visible = false;
-
-            comboBoxAnalysis.Enabled = false;
-            comboBoxPriority.Enabled = false;
-            comboBoxTimeInterval.Enabled = false;
-
+            
             // Datum
             lblTodaysDateAndTime.Text = DateTime.Now.ToString("ddddd, M MMMM, yyyy");
 
@@ -740,7 +743,6 @@ namespace IK075G
                 }
             }
         }
-
         public void LoadSerieType() //Metod för att ladda series i komboboxen
         {
             comboBoxSeries.DataSource = null;
@@ -848,130 +850,142 @@ namespace IK075G
                 // Används för att räkna points
                 i = i + 1;
             }
+        
         }
         public void AddGridValue() // Metod för att hantera griden 
         {
-            if (dataGridResponseTime.Rows.Count == 0)
+            dataGridResponseTime.DataSource = string.Empty;
+            if (newListMember.Count >= 0)
             {
-                dataGridResponseTime.DataSource = string.Empty;
-                if (newListMember.Count >= 0)
+                dataGridResponseTime.DataSource = newListMember;
+                // Ordnar kolumn namnen  
+                foreach (DataGridViewColumn column in dataGridResponseTime.Columns)
                 {
-                    
-                    dataGridResponseTime.DataSource = newListMember;
-                    // Ordnar kolumn namnen  
-                    foreach (DataGridViewColumn column in dataGridResponseTime.Columns)
+                    if (column.Name.ToString() == "customer")
                     {
-                        if (column.Name.ToString() == "customer")
-                        {
-                            dataGridResponseTime.Columns["customer"].HeaderText = "Kund";
-                        }
-                        else if (column.Name.ToString() == "prio")
-                        {
-                            dataGridResponseTime.Columns["prio"].HeaderText = "Prioritet";
-                        }
-                        else if (column.Name.ToString() == "analys")
-                        {
-                            dataGridResponseTime.Columns["analys"].HeaderText = "Analys";
-                        }
-                        else if (column.Name.ToString() == "year")
-                        {
-                            dataGridResponseTime.Columns["year"].HeaderText = "År";
-                        }
-                        else if (column.Name.ToString() == "month")
-                        {
-                            dataGridResponseTime.Columns["month"].HeaderText = "Månad";
-                        }
-                        else if (column.Name.ToString() == "week")
-                        {
-                            dataGridResponseTime.Columns["week"].HeaderText = "Vecka";
-                        }
-                        else if (column.Name.ToString() == "day")
-                        {
-                            dataGridResponseTime.Columns["day"].HeaderText = "Dag";
-                        }
-                        else if (column.Name.ToString() == "hour")
-                        {
-                            dataGridResponseTime.Columns["hour"].HeaderText = "Timmar";
-                        }
-                        else if (column.Name.ToString() == "minute")
-                        {
-                            dataGridResponseTime.Columns["minute"].HeaderText = "Minuter";
-                        }
-                        else if (column.Name.ToString() == "quantity")
-                        {
-                            dataGridResponseTime.Columns["quantity"].HeaderText = "Antal";
-                        }
-                        else if (column.Name.ToString() == "minTime")
-                        {
-                            dataGridResponseTime.Columns["minTime"].HeaderText = "Minsta tid";
-                        }
-                        else if (column.Name.ToString() == "maxTime")
-                        {
-                            dataGridResponseTime.Columns["maxTime"].HeaderText = "Högsta tid";
-                        }
-                        else if (column.Name.ToString() == "avgTime")
-                        {
-                            dataGridResponseTime.Columns["avgTime"].HeaderText = "Medel tid";
-                        }
-                        else if (column.Name.ToString() == "minValue")
-                        {
-                            dataGridResponseTime.Columns["minValue"].HeaderText = "Minsta värde";
-                        }
-                        else if (column.Name.ToString() == "maxValue")
-                        {
-                            dataGridResponseTime.Columns["maxValue"].HeaderText = "Högsta värde";
-                        }
-                        else if (column.Name.ToString() == "avgValue")
-                        {
-                            dataGridResponseTime.Columns["avgValue"].HeaderText = "Medel värde";
-                        }
+                        dataGridResponseTime.Columns["customer"].HeaderText = "Kund";
                     }
-
-                    // Tar bort överflödiga kolumner för respektive tidsinterval 
-                    if (timeInterval == hourly.ToUpper())
+                    else if (column.Name.ToString() == "prio")
                     {
-                        dataGridResponseTime.Columns.Remove("year");
-                        dataGridResponseTime.Columns.Remove("month");
-                        dataGridResponseTime.Columns.Remove("week");
-                        dataGridResponseTime.Columns.Remove("day");
-                        dataGridResponseTime.Columns.Remove("minute");
+                        dataGridResponseTime.Columns["prio"].HeaderText = "Prioritet";
                     }
-                    else if (timeInterval == daily.ToUpper())
+                    else if (column.Name.ToString() == "analys")
                     {
-                        dataGridResponseTime.Columns.Remove("year");
-                        dataGridResponseTime.Columns.Remove("month");
-                        dataGridResponseTime.Columns.Remove("week");
-                        dataGridResponseTime.Columns.Remove("hour");
-                        dataGridResponseTime.Columns.Remove("minute");
+                        dataGridResponseTime.Columns["analys"].HeaderText = "Analys";
                     }
-                    else if (timeInterval == weekly.ToUpper())
+                    else if (column.Name.ToString() == "year")
                     {
-                        dataGridResponseTime.Columns.Remove("year");
-                        dataGridResponseTime.Columns.Remove("month");
-                        dataGridResponseTime.Columns.Remove("day");
-                        dataGridResponseTime.Columns.Remove("hour");
-                        dataGridResponseTime.Columns.Remove("minute");
+                        dataGridResponseTime.Columns["year"].HeaderText = "År";
                     }
-                    else if (timeInterval == monthly.ToUpper())
+                    else if (column.Name.ToString() == "month")
                     {
-                        dataGridResponseTime.Columns.Remove("year");
-                        dataGridResponseTime.Columns.Remove("week");
-                        dataGridResponseTime.Columns.Remove("day");
-                        dataGridResponseTime.Columns.Remove("hour");
-                        dataGridResponseTime.Columns.Remove("minute");
+                        dataGridResponseTime.Columns["month"].HeaderText = "Månad";
                     }
-                    else if (timeInterval == byyear.ToUpper())
+                    else if (column.Name.ToString() == "week")
                     {
-                        dataGridResponseTime.Columns.Remove("month");
-                        dataGridResponseTime.Columns.Remove("week");
-                        dataGridResponseTime.Columns.Remove("day");
-                        dataGridResponseTime.Columns.Remove("hour");
-                        dataGridResponseTime.Columns.Remove("minute");
+                        dataGridResponseTime.Columns["week"].HeaderText = "Vecka";
                     }
-                    comboBoxShow.Visible = true;
-                    lblShowAs.Visible = true;
+                    else if (column.Name.ToString() == "day")
+                    {
+                        dataGridResponseTime.Columns["day"].HeaderText = "Dag";
+                    }
+                    else if (column.Name.ToString() == "hour")
+                    {
+                        dataGridResponseTime.Columns["hour"].HeaderText = "Timmar";
+                    }
+                    else if (column.Name.ToString() == "minute")
+                    {
+                        dataGridResponseTime.Columns["minute"].HeaderText = "Minuter";
+                    }
+                    else if (column.Name.ToString() == "quantity")
+                    {
+                        dataGridResponseTime.Columns["quantity"].HeaderText = "Antal";
+                    }
+                    else if (column.Name.ToString() == "minTime")
+                    {
+                        dataGridResponseTime.Columns["minTime"].HeaderText = "Minsta tid";
+                    }
+                    else if (column.Name.ToString() == "maxTime")
+                    {
+                        dataGridResponseTime.Columns["maxTime"].HeaderText = "Högsta tid";
+                    }
+                    else if (column.Name.ToString() == "avgTime")
+                    {
+                        dataGridResponseTime.Columns["avgTime"].HeaderText = "Medel tid";
+                    }
+                    else if (column.Name.ToString() == "minValue")
+                    {
+                        dataGridResponseTime.Columns["minValue"].HeaderText = "Minsta värde";
+                    }
+                    else if (column.Name.ToString() == "maxValue")
+                    {
+                        dataGridResponseTime.Columns["maxValue"].HeaderText = "Högsta värde";
+                    }
+                    else if (column.Name.ToString() == "avgValue")
+                    {
+                        dataGridResponseTime.Columns["avgValue"].HeaderText = "Medel värde";
+                    }
                 }
-            }                        
+
+                // Tar bort överflödiga kolumner för respektive tidsinterval 
+                if (timeInterval == hourly.ToUpper())
+                {
+                    dataGridResponseTime.Columns.Remove("year");
+                    dataGridResponseTime.Columns.Remove("month");
+                    dataGridResponseTime.Columns.Remove("week");
+                    dataGridResponseTime.Columns.Remove("day");
+                    dataGridResponseTime.Columns.Remove("minute");
+                }
+                else if (timeInterval == daily.ToUpper())
+                {
+                    dataGridResponseTime.Columns.Remove("year");
+                    dataGridResponseTime.Columns.Remove("month");
+                    dataGridResponseTime.Columns.Remove("week");
+                    dataGridResponseTime.Columns.Remove("hour");
+                    dataGridResponseTime.Columns.Remove("minute");
+                }
+                else if (timeInterval == weekly.ToUpper())
+                {
+                    dataGridResponseTime.Columns.Remove("year");
+                    dataGridResponseTime.Columns.Remove("month");
+                    dataGridResponseTime.Columns.Remove("day");
+                    dataGridResponseTime.Columns.Remove("hour");
+                    dataGridResponseTime.Columns.Remove("minute");
+                }
+                else if (timeInterval == monthly.ToUpper())
+                {
+                    dataGridResponseTime.Columns.Remove("year");
+                    dataGridResponseTime.Columns.Remove("week");
+                    dataGridResponseTime.Columns.Remove("day");
+                    dataGridResponseTime.Columns.Remove("hour");
+                    dataGridResponseTime.Columns.Remove("minute");
+                }
+                else if (timeInterval == byyear.ToUpper())
+                {
+                    dataGridResponseTime.Columns.Remove("month");
+                    dataGridResponseTime.Columns.Remove("week");
+                    dataGridResponseTime.Columns.Remove("day");
+                    dataGridResponseTime.Columns.Remove("hour");
+                    dataGridResponseTime.Columns.Remove("minute");
+                }
+                comboBoxShow.Visible = true;
+                lblShowAs.Visible = true;
+            }
+        }
+        private void ActivateTimeInterval() // Används för att hantera tillgänglighet för tidsinterval
+        {
+            if ((comboBoxCustomer.Text.ToString() == string.Empty)
+                || (comboBoxAnalysis.Text.ToString() == string.Empty)
+                    || (comboBoxPriority.Text.ToString() == string.Empty))
+            {
+                comboBoxTimeInterval.Text = string.Empty;
+                comboBoxTimeInterval.SelectedIndex = -1;
+                comboBoxTimeInterval.Enabled = false;             
+            }
+            else
+            {
+                comboBoxTimeInterval.Enabled = true;
+            }
         }
 
         // Events
@@ -1175,116 +1189,127 @@ namespace IK075G
             labelMessage.Visible = true;
             labelMessage.ForeColor = Color.Green;
             labelMessage.Text = "Klart";
-        }
-        
+        }        
         private void comboBoxTimeInterval_SelectedIndexChanged(object sender, EventArgs e)
         {
-            timeInterval = comboBoxTimeInterval.SelectedItem.ToString().ToUpper();
-            // sätter min och max värde i boxar beroende på värdena i kallender 
-            SetYearAndWeek();
-            // sätter format i kallender beroende på vald tids interval    
-            if (timeInterval == hourly.ToUpper())
+            if (comboBoxTimeInterval.SelectedIndex < 0)
             {
-                // från kalender
-                string format = "dd MMMM yyyy"; // MMMM yyyy
-                SetCustomFormat(format);
-                dateTimePickerFrom.Visible = true;
-                dateTimePickerTo.Visible = true;
                 comboBoxYearFrom.Visible = false;
                 comboBoxYearTo.Visible = false;
                 comboBoxWeekFrom.Visible = false;
                 comboBoxWeekTo.Visible = false;
-
-                lblFromWeek.Visible = false;
-                lblToWeek.Visible = false;
-                lblDateFrom.Visible = true;
-                lblDateFrom.Text = "Från:";
-                lblDateTo.Visible = true;
-                lblDateTo.Text = "Till:";
-            }
-            else if (timeInterval == daily.ToUpper())
-            {
-                // från kalender
-                string format = "dd MMMM yyyy";
-                SetCustomFormat(format);
-                dateTimePickerFrom.Visible = true;
-                dateTimePickerTo.Visible = true;
-                comboBoxYearFrom.Visible = false;
-                comboBoxYearTo.Visible = false;
-                comboBoxWeekFrom.Visible = false;
-                comboBoxWeekTo.Visible = false;
-
-                lblFromWeek.Visible = false;
-                lblToWeek.Visible = false;
-                lblDateFrom.Visible = true;
-                lblDateFrom.Text = "Från:";
-                lblDateTo.Visible = true;
-                lblDateTo.Text = "Till:";
-            }
-            else if (timeInterval == weekly.ToUpper())
-            {
-                // från boxar för år och vecka
-                string format = "yyyy";
-                SetCustomFormat(format);
                 dateTimePickerFrom.Visible = false;
                 dateTimePickerTo.Visible = false;
-                comboBoxYearFrom.Visible = true;
-                comboBoxYearTo.Visible = true;
-                comboBoxWeekFrom.Visible = true;
-                comboBoxWeekTo.Visible = true;
-
-                lblFromWeek.Visible = true;
-                lblToWeek.Visible = true;
-                lblDateFrom.Visible = true;
-                lblDateFrom.Text = "Från år:";
-                lblDateTo.Visible = true;
-                lblDateTo.Text = "Till år:";
-            }
-            else if (timeInterval == monthly.ToUpper())
-            {
-                // från kallender
-                string format = "MMMM yyyy";
-                SetCustomFormat(format);
-                dateTimePickerFrom.Visible = true;
-                dateTimePickerTo.Visible = true;
-                comboBoxYearFrom.Visible = false;
-                comboBoxYearTo.Visible = false;
-                comboBoxWeekFrom.Visible = false;
-                comboBoxWeekTo.Visible = false;
-                
                 lblFromWeek.Visible = false;
                 lblToWeek.Visible = false;
-                lblDateFrom.Visible = true;
-                lblDateFrom.Text = "Från:";
-                lblDateTo.Visible = true;
-                lblDateTo.Text = "Till:";
+                lblDateFrom.Visible = false;
+                lblDateTo.Visible = false;
+                btnShowUpdateDiagram.Enabled = false;
             }
-            else if (timeInterval == byyear.ToUpper())
+            else 
             {
-                // från boxen för år
-                string format = "yyyy";
-                SetCustomFormat(format);
-                dateTimePickerFrom.Visible = false;
-                dateTimePickerTo.Visible = false;
-                comboBoxYearFrom.Visible = true;
-                comboBoxYearTo.Visible = true;
-                comboBoxWeekFrom.Visible = false;
-                comboBoxWeekTo.Visible = false;
+                timeInterval = comboBoxTimeInterval.SelectedItem.ToString().ToUpper();
+                // sätter min och max värde i boxar beroende på värdena i kallender 
+                SetYearAndWeek();
+                // sätter format i kallender beroende på vald tids interval    
+                if (timeInterval == hourly.ToUpper())
+                {
+                    // från kalender
+                    string format = "dd MMMM yyyy"; // MMMM yyyy
+                    SetCustomFormat(format);
+                    dateTimePickerFrom.Visible = true;
+                    dateTimePickerTo.Visible = true;
+                    comboBoxYearFrom.Visible = false;
+                    comboBoxYearTo.Visible = false;
+                    comboBoxWeekFrom.Visible = false;
+                    comboBoxWeekTo.Visible = false;
 
-                lblFromWeek.Visible = false;
-                lblToWeek.Visible = false;
-                lblDateFrom.Visible = true;
-                lblDateFrom.Text = "Från:";
-                lblDateTo.Visible = true;
-                lblDateTo.Text = "Till:";
+                    lblFromWeek.Visible = false;
+                    lblToWeek.Visible = false;
+                    lblDateFrom.Visible = true;
+                    lblDateFrom.Text = "Från:";
+                    lblDateTo.Visible = true;
+                    lblDateTo.Text = "Till:";
+                }
+                else if (timeInterval == daily.ToUpper())
+                {
+                    // från kalender
+                    string format = "dd MMMM yyyy";
+                    SetCustomFormat(format);
+                    dateTimePickerFrom.Visible = true;
+                    dateTimePickerTo.Visible = true;
+                    comboBoxYearFrom.Visible = false;
+                    comboBoxYearTo.Visible = false;
+                    comboBoxWeekFrom.Visible = false;
+                    comboBoxWeekTo.Visible = false;
+
+                    lblFromWeek.Visible = false;
+                    lblToWeek.Visible = false;
+                    lblDateFrom.Visible = true;
+                    lblDateFrom.Text = "Från:";
+                    lblDateTo.Visible = true;
+                    lblDateTo.Text = "Till:";
+                }
+                else if (timeInterval == weekly.ToUpper())
+                {
+                    // från boxar för år och vecka
+                    string format = "yyyy";
+                    SetCustomFormat(format);
+                    dateTimePickerFrom.Visible = false;
+                    dateTimePickerTo.Visible = false;
+                    comboBoxYearFrom.Visible = true;
+                    comboBoxYearTo.Visible = true;
+                    comboBoxWeekFrom.Visible = true;
+                    comboBoxWeekTo.Visible = true;
+
+                    lblFromWeek.Visible = true;
+                    lblToWeek.Visible = true;
+                    lblDateFrom.Visible = true;
+                    lblDateFrom.Text = "Från år:";
+                    lblDateTo.Visible = true;
+                    lblDateTo.Text = "Till år:";
+                }
+                else if (timeInterval == monthly.ToUpper())
+                {
+                    // från kallender
+                    string format = "MMMM yyyy";
+                    SetCustomFormat(format);
+                    dateTimePickerFrom.Visible = true;
+                    dateTimePickerTo.Visible = true;
+                    comboBoxYearFrom.Visible = false;
+                    comboBoxYearTo.Visible = false;
+                    comboBoxWeekFrom.Visible = false;
+                    comboBoxWeekTo.Visible = false;
+
+                    lblFromWeek.Visible = false;
+                    lblToWeek.Visible = false;
+                    lblDateFrom.Visible = true;
+                    lblDateFrom.Text = "Från:";
+                    lblDateTo.Visible = true;
+                    lblDateTo.Text = "Till:";
+                }
+                else if (timeInterval == byyear.ToUpper())
+                {
+                    // från boxen för år
+                    string format = "yyyy";
+                    SetCustomFormat(format);
+                    dateTimePickerFrom.Visible = false;
+                    dateTimePickerTo.Visible = false;
+                    comboBoxYearFrom.Visible = true;
+                    comboBoxYearTo.Visible = true;
+                    comboBoxWeekFrom.Visible = false;
+                    comboBoxWeekTo.Visible = false;
+
+                    lblFromWeek.Visible = false;
+                    lblToWeek.Visible = false;
+                    lblDateFrom.Visible = true;
+                    lblDateFrom.Text = "Från:";
+                    lblDateTo.Visible = true;
+                    lblDateTo.Text = "Till:";
+                }
+                btnShowUpdateDiagram.Enabled = true;
+                labelMessage.Text = "";
             }
-            labelMessage.Text = "";
-        }
-        private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            comboBoxPriority.Enabled = true;
-            labelMessage.Text = "";
-            chartResponseTime.Titles.Clear();
         }
         private void dateTimePickerFrom_ValueChanged(object sender, EventArgs e)
         {
@@ -1313,18 +1338,6 @@ namespace IK075G
         }
         private void comboBoxWeekTo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            labelMessage.Text = "";
-            chartResponseTime.Titles.Clear();
-        }
-        private void comboBoxCustomer_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            comboBoxAnalysis.Enabled = true;
-            labelMessage.Text = "";
-            chartResponseTime.Titles.Clear();
-        }
-        private void comboBoxPriority_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            comboBoxTimeInterval.Enabled = true;
             labelMessage.Text = "";
             chartResponseTime.Titles.Clear();
         }
@@ -1373,6 +1386,42 @@ namespace IK075G
                     this.ContextMenuStrip.Enabled = true;
                 }
             }
+        }
+        private void comboBoxCustomer_KeyUp(object sender, KeyEventArgs e)
+        {
+            ActivateTimeInterval();
+            labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
+        }
+        private void comboBoxAnalysis_KeyUp(object sender, KeyEventArgs e)
+        {
+            ActivateTimeInterval();
+            labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
+        }
+        private void comboBoxPriority_KeyUp(object sender, KeyEventArgs e)
+        {
+            ActivateTimeInterval();
+            labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
+        }
+        private void comboBoxCustomer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ActivateTimeInterval();
+            labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
+        }
+        private void comboBoxAnalysis_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ActivateTimeInterval();
+            labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
+        }
+        private void comboBoxPriority_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ActivateTimeInterval();
+            labelMessage.Text = "";
+            chartResponseTime.Titles.Clear();
         }
     }
 }
