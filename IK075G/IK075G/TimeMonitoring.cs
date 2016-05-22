@@ -36,7 +36,7 @@ namespace IK075G
         const string min_serie = "minimum_serie", min_desc = "Minsta värden";
         const string max_serie = "maximum_serie", max_desc = "Högsta värden";
         const string avg_serie = "average_serie", avg_desc = "Medelvärde   ";
-        const string med_serie = "median_serie",  med_desc = "Medianvärde  ";
+        //const string med_serie = "median_serie",  med_desc = "Medianvärde  ";
 
         const string remove_serie = "Ta bort";
         const string add_serie = "Lägg till";
@@ -138,11 +138,11 @@ namespace IK075G
             newSerie3.serieSelected = false;
             newSerieList.Add(newSerie3);
 
-            ChartSeries newSerie4 = new ChartSeries();
-            newSerie4.serieName = med_serie;
-            newSerie4.serieDesc = med_desc;
-            newSerie4.serieSelected = false;
-            newSerieList.Add(newSerie4);
+            // ChartSeries newSerie4 = new ChartSeries();
+            // newSerie4.serieName = med_serie;
+            // newSerie4.serieDesc = med_desc;
+            // newSerie4.serieSelected = false;
+            // newSerieList.Add(newSerie4);
 
             LoadSerieType();
             comboBoxSeries.SelectedItem = avg_desc;
@@ -752,10 +752,19 @@ namespace IK075G
         {
             chartResponseTime.Titles.Clear();
             chartResponseTime.Series.Clear();
-            chartResponseTime.ChartAreas.Clear();
-            chartResponseTime.ChartAreas.Add("");
             chartResponseTime.Legends.Clear();
+            chartResponseTime.ChartAreas.Clear();
         }        
+        
+        public void AddChart() 
+        {
+            // Suad start, Chart properties
+        }
+        public void AddChartArea() 
+        {
+            chartResponseTime.ChartAreas.Add("");
+        }        
+        
         public void AddChartTitle(string timeInterval, string analys, string customer)
         {
             string titel = "Visar uppföljning av svarstider för analys: " + analys + ", från kund: " + customer;
@@ -763,10 +772,13 @@ namespace IK075G
             chartResponseTime.Titles[0].Alignment = ContentAlignment.TopLeft;
             chartResponseTime.Legends.Add("Legend");
         }
+
         private void AddSerie(string serie_name, string serie_desc, List<ResponseTimes> newListMember) // Metod för all lägga till en ny serie till diagrammet
         {
             // serie 
             chartResponseTime.Series.Add(serie_name);
+            chartResponseTime.ChartAreas[0].BorderColor = Color.Black;
+            chartResponseTime.ChartAreas[0].BorderWidth = 2;
             
             chartResponseTime.Series[serie_name].ChartType = SeriesChartType.Line;
             chartResponseTime.Series[serie_name].LegendText = serie_desc;
@@ -775,8 +787,8 @@ namespace IK075G
             
             // Axis X
             chartResponseTime.ChartAreas[0].AxisX.Title = "Tidsperiod " + timeInterval.ToLower() + " från och med " + period_from + " till och med " + period_to;            
+            chartResponseTime.ChartAreas[0].AxisX.IntervalAutoMode = IntervalAutoMode.VariableCount;
             chartResponseTime.ChartAreas[0].AxisX.LabelStyle.Angle = -90;
-            chartResponseTime.ChartAreas[0].AxisX.Interval = 20;
 
             // Axis Y
             chartResponseTime.ChartAreas[0].AxisY.Title = "Svartider " + timeInterval.ToLower() + " i antal minuter";
@@ -828,12 +840,12 @@ namespace IK075G
                     current_value = Convert.ToDouble(item.maxValue);
                     current_time = item.maxTime;
                 }
-                else if (serie_name == med_serie)
-                {
+                //else if (serie_name == med_serie)
+                //{
                     // Föreberder för median serien
                     // current_value = Convert.ToDouble(item.medValue);
                     // current_time = item.maxTime;
-                }
+                //}
 
                 newPoint.SetValueY(current_value);
                 chartResponseTime.Series[serie_name].Points.Add(newPoint);
@@ -1084,9 +1096,9 @@ namespace IK075G
 
                 // Hanterar diagram
                 ClearChart();
-                
                 AddChartTitle(timeInterval.ToLower(), analys, customer);
-                
+                AddChartArea();
+
                 foreach (ChartSeries item in newSerieList)
                 {
                     if (item.serieSelected == true)
@@ -1173,8 +1185,8 @@ namespace IK075G
 
             // Hanterar diagram 
             ClearChart();
-
             AddChartTitle(timeInterval.ToLower(), analys, customer);
+            AddChartArea();
 
             foreach (ChartSeries item in newSerieList)
             {
